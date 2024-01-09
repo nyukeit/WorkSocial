@@ -24,9 +24,11 @@ app.use(
 
 // import and mount the API routes
 
-const router = require("./router");
+const userRouter = require("./routers/UserRouter");
+const eventCommentsRouter = require("./routers/EventCommentsRouter");
 
-app.use(router);
+app.use(userRouter);
+app.use(eventCommentsRouter);
 
 // serve the `backend/public` folder for public resources
 
