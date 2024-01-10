@@ -1,5 +1,5 @@
 // EventLikeController.js
-const EventLikeManager = require('../managers/EventLikeManager');
+const EventLikeManager = require("../models/Manager/EventLikeManager");
 
 const EventLikeController = {
   likeEvent: (req, res) => {
@@ -27,7 +27,7 @@ const EventLikeController = {
         console.error(err);
         res.sendStatus(500);
       });
-  }
+  },
 };
 
 module.exports = EventLikeController;

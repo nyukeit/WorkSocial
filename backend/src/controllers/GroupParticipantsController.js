@@ -1,5 +1,5 @@
 // GroupParticipantsController.js
-const GroupParticipantsManager = require('../managers/GroupParticipantsManager');
+const GroupParticipantsManager = require("../models/Manager/GroupParticipantsManager");
 
 const GroupParticipantsController = {
   getAllParticipants: (req, res) => {
@@ -40,7 +40,7 @@ const GroupParticipantsController = {
         console.error(err);
         res.sendStatus(500);
       });
-  }
+  },
 };
 
 module.exports = GroupParticipantsController;

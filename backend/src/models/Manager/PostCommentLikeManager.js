@@ -1,5 +1,5 @@
 // PostCommentLikeManager.js
-const AbstractManager = require("./AbstractManager");
+const AbstractManager = require("../AbstractManager/AbstractManager");
 
 class PostCommentLikeManager extends AbstractManager {
   constructor() {
@@ -14,7 +14,9 @@ class PostCommentLikeManager extends AbstractManager {
   }
 
   delete(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE Like_ID = ?`, [id]);
+    return this.database.query(`DELETE FROM ${this.table} WHERE Like_ID = ?`, [
+      id,
+    ]);
   }
 }
 

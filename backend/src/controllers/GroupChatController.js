@@ -1,5 +1,5 @@
 // GroupChatController.js
-const GroupChatManager = require('../managers/GroupChatManager');
+const GroupChatManager = require("../models/Manager/GroupChatManager");
 
 const GroupChatController = {
   getAllGroupChats: (req, res) => {
@@ -58,7 +58,7 @@ const GroupChatController = {
         console.error(err);
         res.sendStatus(500);
       });
-  }
+  },
 };
 
 module.exports = GroupChatController;

@@ -1,5 +1,5 @@
 // GroupChatManager.js
-const AbstractManager = require("./AbstractManager");
+const AbstractManager = require("../AbstractManager/AbstractManager");
 
 class GroupChatManager extends AbstractManager {
   constructor() {
@@ -11,7 +11,10 @@ class GroupChatManager extends AbstractManager {
   }
 
   find(id) {
-    return this.database.query(`SELECT * FROM ${this.table} WHERE GroupChat_ID = ?`, [id]);
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE GroupChat_ID = ?`,
+      [id]
+    );
   }
 
   insert(groupChat) {
@@ -29,7 +32,10 @@ class GroupChatManager extends AbstractManager {
   }
 
   delete(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE GroupChat_ID = ?`, [id]);
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE GroupChat_ID = ?`,
+      [id]
+    );
   }
 }
 

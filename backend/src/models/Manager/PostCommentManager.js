@@ -1,5 +1,5 @@
 // PostCommentManager.js
-const AbstractManager = require("./AbstractManager");
+const AbstractManager = require("../AbstractManager/AbstractManager");
 
 class PostCommentManager extends AbstractManager {
   constructor() {
@@ -7,7 +7,10 @@ class PostCommentManager extends AbstractManager {
   }
 
   findByPostId(postId) {
-    return this.database.query(`SELECT * FROM ${this.table} WHERE Post_ID = ?`, [postId]);
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Post_ID = ?`,
+      [postId]
+    );
   }
 
   insert(comment) {
@@ -18,7 +21,10 @@ class PostCommentManager extends AbstractManager {
   }
 
   delete(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE Comment_ID = ?`, [id]);
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE Comment_ID = ?`,
+      [id]
+    );
   }
 }
 
