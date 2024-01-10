@@ -1,5 +1,5 @@
 // PostManager.js
-const AbstractManager = require("./AbstractManager");
+const AbstractManager = require("../AbstractManager/AbstractManager");
 
 class PostManager extends AbstractManager {
   constructor() {
@@ -11,7 +11,10 @@ class PostManager extends AbstractManager {
   }
 
   find(id) {
-    return this.database.query(`SELECT * FROM ${this.table} WHERE Post_ID = ?`, [id]);
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Post_ID = ?`,
+      [id]
+    );
   }
 
   insert(post) {
@@ -24,12 +27,21 @@ class PostManager extends AbstractManager {
   update(post) {
     return this.database.query(
       `UPDATE ${this.table} SET Image = ?, Title = ?, Content = ?, Visibility = ?, User_ID = ? WHERE Post_ID = ?`,
-      [post.Image, post.Title, post.Content, post.Visibility, post.User_ID, post.Post_ID]
+      [
+        post.Image,
+        post.Title,
+        post.Content,
+        post.Visibility,
+        post.User_ID,
+        post.Post_ID,
+      ]
     );
   }
 
   delete(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE Post_ID = ?`, [id]);
+    return this.database.query(`DELETE FROM ${this.table} WHERE Post_ID = ?`, [
+      id,
+    ]);
   }
 }
 

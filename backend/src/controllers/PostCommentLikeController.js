@@ -1,11 +1,11 @@
 // PostCommentLikeController.js
-const PostCommentLikeManager = require('../managers/PostCommentLikeManager');
+const PostCommentLikeManager = require("../models/Manager/PostCommentLikeManager");
 
 const PostCommentLikeController = {
   likeComment: (req, res) => {
     const like = {
       Comment_ID: req.params.commentId,
-      User_ID: req.body.User_ID
+      User_ID: req.body.User_ID,
     };
 
     PostCommentLikeManager.insert(like)
@@ -19,7 +19,7 @@ const PostCommentLikeController = {
   },
 
   unlikeComment: (req, res) => {
-    const likeId = req.params.likeId;
+    const { likeId } = req.params;
 
     PostCommentLikeManager.delete(likeId)
       .then(() => {
@@ -29,7 +29,7 @@ const PostCommentLikeController = {
         console.error(err);
         res.sendStatus(500);
       });
-  }
+  },
 };
 
 module.exports = PostCommentLikeController;

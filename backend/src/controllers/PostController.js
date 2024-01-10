@@ -1,5 +1,5 @@
 // PostController.js
-const PostManager = require('../managers/PostManager');
+const PostManager = require("../models/Manager/PostManager");
 
 const PostController = {
   getAllPosts: (req, res) => {
@@ -65,7 +65,7 @@ const PostController = {
         console.error(err);
         res.sendStatus(500);
       });
-  }
+  },
 };
 
 module.exports = PostController;

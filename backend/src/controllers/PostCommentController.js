@@ -1,9 +1,9 @@
 // PostCommentController.js
-const PostCommentManager = require('../managers/PostCommentManager');
+const PostCommentManager = require("../models/Manager/PostCommentManager");
 
 const PostCommentController = {
   getAllCommentsForPost: (req, res) => {
-    const postId = req.params.postId;
+    const { postId } = req.params;
 
     PostCommentManager.findByPostId(postId)
       .then(([rows]) => {
@@ -19,12 +19,14 @@ const PostCommentController = {
     const comment = {
       Post_ID: req.params.postId,
       User_ID: req.body.User_ID,
-      Comment: req.body.Comment
+      Comment: req.body.Comment,
     };
 
     PostCommentManager.insert(comment)
       .then(([result]) => {
-        res.location(`/posts/${comment.Post_ID}/comments/${result.insertId}`).sendStatus(201);
+        res
+          .location(`/posts/${comment.Post_ID}/comments/${result.insertId}`)
+          .sendStatus(201);
       })
       .catch((err) => {
         console.error(err);
@@ -33,7 +35,7 @@ const PostCommentController = {
   },
 
   deleteComment: (req, res) => {
-    const commentId = req.params.commentId;
+    const { commentId } = req.params;
 
     PostCommentManager.delete(commentId)
       .then(() => {
@@ -43,7 +45,7 @@ const PostCommentController = {
         console.error(err);
         res.sendStatus(500);
       });
-  }
+  },
 };
 
 module.exports = PostCommentController;

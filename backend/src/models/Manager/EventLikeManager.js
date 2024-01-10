@@ -1,5 +1,5 @@
 // EventLikeManager.js
-const AbstractManager = require("./AbstractManager");
+const AbstractManager = require("../AbstractManager/AbstractManager");
 
 class EventLikeManager extends AbstractManager {
   constructor() {
