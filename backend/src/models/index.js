@@ -30,9 +30,12 @@ pool.getConnection().catch(() => {
 const models = {};
 
 const UserManager = require("./Manager/UserManager");
+const EventCommentsManager = require("./Manager/EventCommentsManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
+models.eventComments = new EventCommentsManager();
+models.eventComments.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
