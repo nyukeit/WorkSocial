@@ -1,8 +1,9 @@
 // SurveyController.js
-const SurveyManager = require("../models/Manager/SurveyManager");
+const models = require("../models");
 
 const getSurveys = (req, res) => {
-  SurveyManager.findAll()
+  models.survey
+    .findAll()
     .then(([rows]) => {
       res.send(rows);
     })
@@ -13,7 +14,8 @@ const getSurveys = (req, res) => {
 };
 
 const getSurveyByID = (req, res) => {
-  SurveyManager.find(req.params.id)
+  models.survey
+    .find(req.params.id)
     .then(([rows]) => {
       if (rows.length === 0) {
         res.sendStatus(404);
@@ -28,17 +30,10 @@ const getSurveyByID = (req, res) => {
 };
 
 const createSurvey = (req, res) => {
-  const { Option1, Option2, Option3, Option4 } = req.body;
+  const survey = req.body;
 
-  // Ensure at least Option1 and Option2 are provided
-  if (!Option1 || !Option2) {
-    res.status(400).send("Option1 and Option2 are mandatory.");
-    return;
-  }
-
-  const options = [Option1, Option2, Option3, Option4];
-
-  SurveyManager.createSurvey(options)
+  models.survey
+    .insert(survey)
     .then(([result]) => {
       res.location(`/surveys/${result.insertId}`).sendStatus(201);
     })
@@ -52,7 +47,8 @@ const updateSurvey = (req, res) => {
   const survey = req.body;
   survey.id = parseInt(req.params.id, 10);
 
-  SurveyManager.update(survey)
+  models.survey
+    .update(survey)
     .then(() => {
       res.sendStatus(204);
     })
@@ -63,7 +59,8 @@ const updateSurvey = (req, res) => {
 };
 
 const deleteSurvey = (req, res) => {
-  SurveyManager.delete(req.params.id)
+  models.survey
+    .delete(req.params.id)
     .then(() => {
       res.sendStatus(204);
     })

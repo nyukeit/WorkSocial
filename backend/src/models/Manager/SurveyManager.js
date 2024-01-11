@@ -5,9 +5,36 @@ class SurveyManager extends AbstractManager {
     super({ table: "survey" });
   }
 
+  findAll() {
+    return this.database.query(`SELECT * FROM ${this.table}`);
+  }
+
+  find(id) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Survey_ID = ?`,
+      [id]
+    );
+  }
+
   insert(survey) {
     return this.database.query(
-      `INSERT INTO ${this.table} (Image, Title, Content, VoteCount, Visibility, User_ID, Option1, Option2, Option3, Option4) VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ${this.table} (Title, Content, Visibility, Option1, Option2, Option3, Option4) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        survey.Title,
+        survey.Content,
+        survey.Visibility,
+        survey.Option1,
+        survey.Option2,
+        survey.Option3,
+        survey.Option4,
+      ]
+    );
+  }
+
+  update(survey) {
+    return this.database.query(
+      `UPDATE ${this.table}
+      SET Image = ?, Title = ?, Content = ?, VoteCount = ?, Visibility = ?, User_ID = ?, Option1 = ?, Option2 = ?, Option3 = ?, Option4 = ? WHERE Survey_ID = ?`,
       [
         survey.Image,
         survey.Title,
@@ -19,20 +46,7 @@ class SurveyManager extends AbstractManager {
         survey.Option2,
         survey.Option3,
         survey.Option4,
-      ]
-    );
-  }
-
-  update(survey) {
-    return this.database.query(
-      `UPDATE ${this.table} SET Image = ?, Title = ?, Content = ?, Visibility = ?, User_ID = ? WHERE Survey_ID = ?`,
-      [
-        survey.Image,
-        survey.Title,
-        survey.Content,
-        survey.Visibility,
-        survey.User_ID,
-        survey.survey_ID,
+        survey.id,
       ]
     );
   }

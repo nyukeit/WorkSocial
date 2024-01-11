@@ -4,11 +4,11 @@ const express = require("express");
 const router = express.Router();
 const surveyController = require("../controllers/surveyController");
 
-const verifyToken = require("../middleware/auth");
+const { verifyToken } = require("../middleware/auth");
 
 // Authentication Wall - Everything after this requires an authenticated user
-router.use(verifyToken);
 
+router.use(verifyToken);
 // Get all surveys
 router.get("/surveys", surveyController.getSurveys);
 

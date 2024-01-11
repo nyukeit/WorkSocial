@@ -14,7 +14,7 @@ const {
 router.post("/users", hashPassword, userControllers.add);
 router.post("/users/login", userControllers.login, verifyPassword);
 
-router.use(verifyToken);
+// router.use(verifyToken);
 
 router.get("/users", verifyToken, userControllers.browse);
 router.get("/users/:id", verifyToken, userControllers.read);
