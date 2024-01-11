@@ -31,11 +31,14 @@ const models = {};
 
 const UserManager = require("./Manager/UserManager");
 const EventCommentsManager = require("./Manager/EventCommentsManager");
+const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
 models.eventComments = new EventCommentsManager();
 models.eventComments.setDatabase(pool);
+models.surveyComments = new SurveyCommentsManager();
+models.surveyComments.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model

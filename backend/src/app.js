@@ -26,9 +26,11 @@ app.use(
 
 const userRouter = require("./routers/UserRouter");
 const eventCommentsRouter = require("./routers/EventCommentsRouter");
+const surveyCommentsRouter = require("./routers/SurveyCommentsRouter");
 
 app.use(userRouter);
 app.use(eventCommentsRouter);
+app.use(surveyCommentsRouter);
 
 // serve the `backend/public` folder for public resources
 
