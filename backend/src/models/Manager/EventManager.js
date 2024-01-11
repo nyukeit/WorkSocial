@@ -63,7 +63,7 @@ class EventManager extends AbstractManager {
         event.Created_At,
         event.Updated_At,
         event.User_ID,
-        event.Event_ID,
+        event.id,
       ]
     );
   }
