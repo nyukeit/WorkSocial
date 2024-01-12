@@ -26,6 +26,11 @@ app.use(
 
 const userRouter = require("./routers/UserRouter");
 const eventCommentsRouter = require("./routers/EventCommentsRouter");
+const surveyCommentsRouter = require("./routers/SurveyCommentsRouter");
+
+app.use(userRouter);
+app.use(eventCommentsRouter);
+app.use(surveyCommentsRouter);
 const eventRouter = require("./routers/EvenRouter");
 
 app.use(userRouter);

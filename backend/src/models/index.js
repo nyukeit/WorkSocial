@@ -31,6 +31,7 @@ const models = {};
 
 const UserManager = require("./Manager/UserManager");
 const EventCommentsManager = require("./Manager/EventCommentsManager");
+const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
 const EventManager = require("./Manager/EventManager");
 const SurveyManager = require("./Manager/SurveyManager");
 
@@ -40,6 +41,8 @@ models.event = new EventManager();
 models.event.setDatabase(pool);
 models.eventComments = new EventCommentsManager();
 models.eventComments.setDatabase(pool);
+models.surveyComments = new SurveyCommentsManager();
+models.surveyComments.setDatabase(pool);
 models.survey = new SurveyManager();
 models.survey.setDatabase(pool);
 
