@@ -31,9 +31,12 @@ const models = {};
 
 const UserManager = require("./Manager/UserManager");
 const EventCommentsManager = require("./Manager/EventCommentsManager");
+const EventManager = require("./Manager/EventManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
+models.event = new EventManager();
+models.event.setDatabase(pool);
 models.eventComments = new EventCommentsManager();
 models.eventComments.setDatabase(pool);
 
