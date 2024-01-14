@@ -1,16 +1,23 @@
 const models = require("../models");
 
-const login = (req, res) => {
-  const { Email, Password } = req.body; // Extraction de Email et Password depuis le corps de la requête
-
-  models.user
-    .login(Email, Password) // Appel de la méthode addLogin avec Email et Password
+const login = async (req, res, next) => {
+  const Email = req.body;
+  await models.user
+    .login(Email)
     .then(([result]) => {
-      res.location(`/users/${result.insertId}`).sendStatus(201);
+      if (result.length === 0) {
+        // User not found
+        res.sendStatus(401);
+      } else {
+        const user = result[0];
+        // Pass the entire user object to auth.js for password verification
+        req.user = user;
+        next(); // Proceed to password verification in the auth middleware
+      }
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.status(500).send("Error retrieving data from database");
     });
 };
 
