@@ -259,7 +259,7 @@ CREATE TABLE `user` (
   `Email` varchar(255) NOT NULL,
   `Phone` varchar(255) DEFAULT NULL,
   `Biography` text DEFAULT NULL,
-  `PasswordHash` varchar(255) NOT NULL,
+  `hashedPassword` varchar(255) NOT NULL,
   `Role` enum('Admin','User') NOT NULL,
   `Gender` enum('Male','Female','Other') NOT NULL,
   `ProfileImage` text DEFAULT NULL,

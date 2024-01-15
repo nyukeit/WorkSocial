@@ -34,6 +34,7 @@ const EventCommentsManager = require("./Manager/EventCommentsManager");
 const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
 const EventManager = require("./Manager/EventManager");
 const SurveyManager = require("./Manager/SurveyManager");
+const IndividualchatManager = require("./Manager/IndividualchatManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
@@ -45,7 +46,8 @@ models.surveyComments = new SurveyCommentsManager();
 models.surveyComments.setDatabase(pool);
 models.survey = new SurveyManager();
 models.survey.setDatabase(pool);
-
+models.individualchat = new IndividualchatManager();
+models.individualchat.setDatabase(pool);
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
