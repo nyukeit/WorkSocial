@@ -8,60 +8,63 @@ const hashingOptions = {
   parallelism: 1,
 };
 
-const hashPassword = (req, res, next) => {
+const hashPassword = async (req, res, next) => {
   // hash the password using argon2 then call next()
-  argon2
-    .hash(req.body.password, hashingOptions)
-    .then((hashedPassword) => {
-      req.body.hashedPassword = hashedPassword;
-      delete req.body.password;
-      next();
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+  try {
+    const hash = await argon2.hash(req.body.Password, hashingOptions);
+    req.body.hashedPassword = hash;
+    delete req.body.Password;
+    next();
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 };
-const verifyPassword = (req, res) => {
-  argon2
-    .verify(req.user.hashedPassword, req.body.password)
-    .then((isVerified) => {
-      if (isVerified) {
-        const payload = { sub: req.user.id };
 
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-          expiresIn: "4h",
-        });
-
-        delete req.user.hashedPassword;
-        res.send({ token, user: req.user });
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+const verifyPassword = async (req, res) => {
+  try {
+    if (await argon2.verify(req.user.hashedPassword, req.body.Password)) {
+      const payload = { sub: req.user.User_ID };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "4h",
+      });
+      // delete req.user.hashedPassword;
+      res.send({ token, user: req.user });
+    } else {
+      res.status(401).send("Incorrect password");
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 };
 
 const verifyToken = (req, res, next) => {
   try {
-    const authorizationHeader = req.get("Authorization");
-
-    if (authorizationHeader == null) {
-      throw new Error("Authorization header is missing");
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res
+        .status(401)
+        .send("Vous n'avez pas d'authorisation de voir cette ressource");
     }
-
-    const [type, token] = authorizationHeader.split(" ");
-
-    if (type !== "Bearer") {
-      throw new Error("Authorization header has not the 'Bearer' type");
+    // Check if the token starts with "Bearer "
+    const isBearerToken = authHeader.startsWith("Bearer ");
+    if (!isBearerToken) {
+      res
+        .status(401)
+        .send({ message: "Authorisation Header is not of the type 'Bearer'" });
     }
-
-    req.payload = jwt.verify(token, process.env.JWT_SECRET);
-
-    next();
+    const token = authHeader.replace(/^Bearer\s+/, "");
+    req.payload = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        console.error("JWT verification error:", err);
+        res.sendStatus(401);
+      } else {
+        // Token is valid, proceed with the next middleware
+        req.payload = decoded;
+        next();
+      }
+    });
   } catch (err) {
     console.error(err);
     res.sendStatus(401);

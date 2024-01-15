@@ -5,16 +5,23 @@ class userManager extends AbstractManager {
     super({ table: "user" });
   }
 
+  find(id) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE User_ID = ?`,
+      [id]
+    );
+  }
+
   login(user) {
-    const query = `select * from ${this.table} where Username = ? and PasswordHash = ?`;
-    const values = [user.Username, user.PasswordHash];
-    return this.database.query(query, values);
+    return this.database.query(`SELECT * FROM  ${this.table} WHERE Email = ?`, [
+      user.Email,
+    ]);
   }
 
   insert(user) {
     const query = `
       INSERT INTO ${this.table} 
-        (Username, LastName, FirstName, BirthDate, Age, Address, Email, Phone, Biography, PasswordHash, Role, Gender)
+        (Username, LastName, FirstName, BirthDate, Age, Address, Email, Phone, Biography, hashedPassword, Role, Gender)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
     const values = [
       user.Username,
@@ -26,7 +33,7 @@ class userManager extends AbstractManager {
       user.Email,
       user.Phone,
       user.Biography,
-      user.PasswordHash,
+      user.hashedPassword,
       user.Role,
       user.Gender,
     ];

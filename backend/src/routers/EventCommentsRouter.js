@@ -4,6 +4,11 @@ const router = express.Router();
 
 const eventCommentsController = require("../controllers/eventCommentsController");
 
+const { verifyToken } = require("../middleware/auth");
+
+// Authentication Wall - Everything after this requires an authenticated user
+router.use(verifyToken);
+
 // Trouver tous les commentaiers d'un evenement
 router.get(
   "/events/:eventID/comments",

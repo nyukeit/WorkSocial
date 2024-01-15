@@ -4,6 +4,11 @@ const router = express.Router();
 
 const surveyCommentsController = require("../controllers/surveyCommentsController");
 
+const { verifyToken } = require("../middleware/auth");
+
+// Authentication Wall - Everything after this requires an authenticated user
+router.use(verifyToken);
+
 // Trouver tous les commentaiers d'un survey
 router.get(
   "/surveys/:surveyID/comments",

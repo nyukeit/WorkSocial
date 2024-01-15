@@ -4,6 +4,11 @@ const router = express.Router();
 
 const eventController = require("../controllers/eventController");
 
+const { verifyToken } = require("../middleware/auth");
+
+// Authentication Wall - Everything after this requires an authenticated user
+router.use(verifyToken);
+
 router.get("/events", eventController.browse);
 router.get("/events/:eventID", eventController.getEvent);
 router.post("/events", eventController.createEvent);
