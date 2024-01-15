@@ -12,7 +12,7 @@ const {
 } = require("../middleware/auth");
 
 router.post("/users", hashPassword, userControllers.add);
-router.post("/users/login", userControllers.login, verifyPassword);
+router.post("/login", userControllers.login, verifyPassword);
 
 // router.use(verifyToken);
 
