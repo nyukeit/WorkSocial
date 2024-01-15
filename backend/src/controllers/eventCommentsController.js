@@ -3,7 +3,7 @@
 const models = require("../models");
 
 const getEventComments = (req, res) => {
-  const { eventID } = req.params.eventID;
+  const eventID = parseInt(req.params.eventID, 10);
 
   models.eventComments
     .findByEventId(eventID)
