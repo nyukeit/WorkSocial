@@ -22,6 +22,7 @@ const hashPassword = async (req, res, next) => {
 };
 
 const verifyPassword = async (req, res) => {
+  console.info(req.user);
   try {
     const isVerified = await argon2.verify(
       req.user.hashedPassword,
