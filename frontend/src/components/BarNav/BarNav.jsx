@@ -21,6 +21,9 @@ function BarNav() {
         <li>
           <Link to="/InscriptionScreen">Inscription</Link>
         </li>
+        <li>
+          <Link to="/DeconnexionScreen">Deconnexion</Link>
+        </li>
         {/* <li><Link to="/EventsScreen">Events</Link></li>
              <li><Link to="/Sendage">Sendage</Link></li> */}
       </ul>

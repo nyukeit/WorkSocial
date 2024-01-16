@@ -6,7 +6,8 @@ import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
 import EventsScreen from "./pages/EventsScreen/EventsScreen";
-import Sendage from "./pages/SendageScreen/SendageScreen";
+import SendageScreen from "./pages/SendageScreen/SendageScreen";
+import DeconnexionScreen from "./pages/DeconnexionScreen/DeconnexionScreen";
 
 import "./App.css";
 
@@ -21,7 +22,8 @@ function App() {
         <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
         <Route path="/InscriptionScreen" element={<InscriptionScreen />} />
         <Route path="/EventsScreen" element={<EventsScreen />} />
-        <Route path="/Sendage" element={<Sendage />} />
+        <Route path="/SendageScreen" element={<SendageScreen />} />
+        <Route path="/DeconnexionScreen" element={<DeconnexionScreen />} />
       </Routes>
     </Router>
   );
