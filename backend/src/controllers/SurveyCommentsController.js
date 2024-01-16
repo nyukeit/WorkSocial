@@ -14,8 +14,8 @@ const getSurveyComments = (req, res) => {
     });
 };
 
-const getSurveyCommentById = (req, res) => {
-  const commentID = parseInt(req.params.commentID, 10);
+const getSurveyCommentByID = (req, res) => {
+  const commentID = parseInt(req.params.id, 10);
 
   models.surveyComments
     .findByPK(commentID)
@@ -56,24 +56,13 @@ const createSurveyComment = (req, res) => {
     });
 };
 
-const updateSurveyCommentById = async (req, res) => {
-  const commentID = parseInt(req.params.commentID, 10);
-  const surveyID = parseInt(req.params.surveyID, 10);
-  const userID = req.User_ID;
-  const { comment } = req.body;
-
-  // Check if the user is the owner of the comment
-  const [foundComment] = await models.surveyComments.findByPK(commentID);
-  console.info(foundComment[0].User_ID);
-  // If the user is not the owner of the comment, return a 403 error
-  if (foundComment[0].User_ID !== userID) {
-    res.status(403).send("You are not the owner of this comment");
-    return;
-  }
+const updateSurveyComment = (req, res) => {
+  const comment = req.body;
+  const commentID = parseInt(req.params.id, 10);
 
   // If User is owner of the comment, proceed to update the comment
   models.surveyComments
-    .update(commentID, surveyID, userID, comment)
+    .update(commentID, comment)
     .then(() => {
       res.status(204).send("Comment updated");
     })
@@ -84,12 +73,10 @@ const updateSurveyCommentById = async (req, res) => {
 };
 
 const deleteSurveyComment = (req, res) => {
-  const surveyID = parseInt(req.params.surveyID, 10);
-  const commentID = parseInt(req.params.commentID, 10);
-  const userID = req.User_ID;
+  const commentID = parseInt(req.params.id, 10);
 
   models.surveyComments
-    .delete(commentID, surveyID, userID)
+    .delete(commentID)
     .then(() => {
       res.status(204).send("Comment deleted");
     })
@@ -101,8 +88,8 @@ const deleteSurveyComment = (req, res) => {
 
 module.exports = {
   getSurveyComments,
-  getSurveyCommentById,
+  getSurveyCommentByID,
   createSurveyComment,
-  updateSurveyCommentById,
+  updateSurveyComment,
   deleteSurveyComment,
 };

@@ -49,6 +49,11 @@ const SurveyManager = require("./Manager/SurveyManager");
 models.survey = new SurveyManager();
 models.survey.setDatabase(pool);
 
+const PostCommentManager = require("./Manager/PostCommentsManager");
+
+models.postComments = new PostCommentManager();
+models.postComments.setDatabase(pool);
+
 const EventCommentsManager = require("./Manager/EventCommentsManager");
 
 models.eventComments = new EventCommentsManager();

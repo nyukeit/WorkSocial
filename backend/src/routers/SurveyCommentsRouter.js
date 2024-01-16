@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const surveyCommentsController = require("../controllers/surveyCommentsController");
+const surveyCommentsController = require("../controllers/SurveyCommentsController");
 
 const { verifyToken } = require("../middleware/auth");
 // Authentication Wall - Everything after this requires an authenticated user
@@ -16,8 +16,8 @@ router.get(
 
 // Trouver un seul commentaire d'un survey par son ID
 router.get(
-  "/surveys/:surveyID/comments/:commentID",
-  surveyCommentsController.getSurveyCommentById
+  "/surveys/:surveyID/comments/:id",
+  surveyCommentsController.getSurveyCommentByID
 );
 
 // Creer un commentaire sur un survey
@@ -28,13 +28,13 @@ router.post(
 
 // Mettre a jour un commentaire d'un survey par son ID
 router.put(
-  "/surveys/:surveyID/comments/:commentID",
-  surveyCommentsController.updateSurveyCommentById
+  "/surveys/:surveyID/comments/:id",
+  surveyCommentsController.updateSurveyComment
 );
 
 // Supprimer un commentaire d'un survey par son ID
 router.delete(
-  "/surveys/:surveyID/comments/:commentID",
+  "/surveys/:surveyID/comments/:id",
   surveyCommentsController.deleteSurveyComment
 );
 

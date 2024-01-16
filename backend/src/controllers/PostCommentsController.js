@@ -1,10 +1,9 @@
 const models = require("../models");
 
-const getEventComments = (req, res) => {
-  const eventID = parseInt(req.params.eventID, 10);
-
-  models.eventComments
-    .findByEventId(eventID)
+const getPostComments = (req, res) => {
+  const postID = parseInt(req.params.postID, 10);
+  models.postComments
+    .findByPostId(postID)
     .then(([rows]) => {
       res.send(rows);
     })
@@ -14,10 +13,10 @@ const getEventComments = (req, res) => {
     });
 };
 
-const getEventCommentByID = (req, res) => {
+const getPostCommentByID = (req, res) => {
   const commentID = parseInt(req.params.id, 10);
 
-  models.eventComments
+  models.postComments
     .findByPK(commentID)
     .then(([rows]) => {
       if (rows.length === 0) {
@@ -32,23 +31,21 @@ const getEventCommentByID = (req, res) => {
     });
 };
 
-const createEventComment = (req, res) => {
-  const eventComment = req.body.comment;
-  const eventID = parseInt(req.params.eventID, 10);
+const createPostComment = (req, res) => {
+  const postComment = req.body.comment;
+  const postId = parseInt(req.params.postID, 10);
   const userID = req.User_ID;
 
-  if (!eventComment) {
+  if (!postComment) {
     res.status(400).send("Missing comment");
     return;
   }
 
-  models.eventComments
-    .insert(eventID, userID, eventComment)
+  models.postComments
+    .insert(postId, userID, postComment)
     .then(([result]) => {
       res
-        .location(
-          `/events/${eventComment.Event_ID}/comments/${result.insertId}`
-        )
+        .location(`/posts/${postComment.Post_ID}/comments/${result.insertId}`)
         .status(201)
         .send("Comment created");
     })
@@ -58,11 +55,11 @@ const createEventComment = (req, res) => {
     });
 };
 
-const updateEventComment = (req, res) => {
-  const comment = req.body;
+const updatePostComment = (req, res) => {
   const commentID = parseInt(req.params.id, 10);
+  const comment = req.body;
 
-  models.eventComments
+  models.postComments
     .update(commentID, comment)
     .then(() => {
       res.status(204).send("Comment updated");
@@ -73,10 +70,10 @@ const updateEventComment = (req, res) => {
     });
 };
 
-const deleteEventComment = (req, res) => {
+const deletePostComment = (req, res) => {
   const commentID = parseInt(req.params.id, 10);
 
-  models.eventComments
+  models.postComments
     .delete(commentID)
     .then(() => {
       res.status(204).send("Comment deleted");
@@ -88,9 +85,9 @@ const deleteEventComment = (req, res) => {
 };
 
 module.exports = {
-  getEventComments,
-  getEventCommentByID,
-  createEventComment,
-  updateEventComment,
-  deleteEventComment,
+  getPostComments,
+  getPostCommentByID,
+  createPostComment,
+  updatePostComment,
+  deletePostComment,
 };

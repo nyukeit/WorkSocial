@@ -31,7 +31,19 @@ const verifyOwner = async (req, res, next) => {
         model = models.user;
         break;
       case "comments":
-        model = models.user;
+        switch (primaryResource) {
+          case "events":
+            model = models.eventComments;
+            break;
+          case "surveys":
+            model = models.surveyComments;
+            break;
+          case "posts":
+            model = models.postComments;
+            break;
+          default:
+            res.status(400).send({ message: "Invalid resource type" });
+        }
         break;
       // Add more cases for other resource types
       default:
