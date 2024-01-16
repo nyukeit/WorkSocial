@@ -21,7 +21,7 @@ const login = async (req, res, next) => {
     });
 };
 
-const browse = (req, res) => {
+const getUsers = (req, res) => {
   models.user
     .findAll()
     .then(([rows]) => {
@@ -33,9 +33,9 @@ const browse = (req, res) => {
     });
 };
 
-const read = (req, res) => {
+const getUserByID = (req, res) => {
   models.user
-    .find(req.params.id)
+    .findByPK(req.params.id)
     .then(([rows]) => {
       if (rows[0] == null) {
         res.sendStatus(404);
@@ -49,15 +49,14 @@ const read = (req, res) => {
     });
 };
 
-const edit = (req, res) => {
+const updateUser = (req, res) => {
   const user = req.body;
-
-  // TODO validations (length, format...)
+  const userID = req.User_ID;
 
   user.id = parseInt(req.params.id, 10);
 
   models.user
-    .update(user)
+    .update(user, userID)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -71,10 +70,8 @@ const edit = (req, res) => {
     });
 };
 
-const add = (req, res) => {
+const createUser = (req, res) => {
   const user = req.body;
-
-  // TODO validations (length, format...)
 
   models.user
     .insert(user)
@@ -87,9 +84,21 @@ const add = (req, res) => {
     });
 };
 
-const destroy = (req, res) => {
+const deleteUser = async (req, res, next) => {
+  const emailInput = req.body.Email;
+  console.info(emailInput);
+
+  const [user] = await models.user.findByPK(req.params.id);
+  const userEmail = user[0].Email;
+
+  if (emailInput === userEmail) {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+
   models.user
-    .delete(req.params.id)
+    .delete(emailInput)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -104,10 +113,10 @@ const destroy = (req, res) => {
 };
 
 module.exports = {
-  browse,
-  read,
-  edit,
-  add,
-  destroy,
+  getUsers,
+  getUserByID,
+  updateUser,
+  createUser,
+  deleteUser,
   login,
 };

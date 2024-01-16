@@ -5,7 +5,16 @@ const models = require("../models");
 const verifyOwner = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const resourceType = req.url.split("/")[1];
+    // Extract the resource type from the URL
+    const primaryResource = req.url.split("/")[1];
+    let resourceType = "";
+    if (req.url.includes("comments")) {
+      resourceType = "comments";
+    } else if (req.url.includes("likes")) {
+      resourceType = "likes";
+    } else {
+      resourceType = primaryResource;
+    }
     console.info(resourceType);
     let model;
     switch (resourceType) {
@@ -13,13 +22,16 @@ const verifyOwner = async (req, res, next) => {
         model = models.survey;
         break;
       case "events":
-        model = models.EventManager;
+        model = models.event;
         break;
       case "posts":
-        model = models.PostManager;
+        model = models.post;
         break;
-      case "user":
-        model = models.UserManager;
+      case "users":
+        model = models.user;
+        break;
+      case "comments":
+        model = models.user;
         break;
       // Add more cases for other resource types
       default:

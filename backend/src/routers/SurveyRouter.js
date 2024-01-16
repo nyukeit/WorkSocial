@@ -1,14 +1,16 @@
-// SurveyRouter.js
 const express = require("express");
 
 const router = express.Router();
-const surveyController = require("../controllers/surveyController");
+const surveyController = require("../controllers/SurveyController");
 
 const { verifyToken } = require("../middleware/auth");
-const verifyOwner = require("../middleware/verifyOwner");
-// Authentication Wall - Everything after this requires an authenticated user
 
+// Verify if the user is the owner of the survey
+const verifyOwner = require("../middleware/verifyOwner");
+
+// Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
+
 // Get all surveys
 router.get("/surveys", surveyController.getSurveys);
 

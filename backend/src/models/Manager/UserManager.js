@@ -5,7 +5,7 @@ class userManager extends AbstractManager {
     super({ table: "user" });
   }
 
-  find(id) {
+  findByPK(id) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE User_ID = ?`,
       [id]
@@ -21,14 +21,13 @@ class userManager extends AbstractManager {
   insert(user) {
     const query = `
       INSERT INTO ${this.table} 
-        (Username, LastName, FirstName, BirthDate, Age, Address, Email, Phone, Biography, hashedPassword, Role, Gender)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
+        (Username, LastName, FirstName, BirthDate, Address, Email, Phone, Biography, hashedPassword, Role, Gender)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
     const values = [
       user.Username,
       user.LastName,
       user.FirstName,
       user.BirthDate,
-      user.Age,
       user.Address,
       user.Email,
       user.Phone,
@@ -40,11 +39,31 @@ class userManager extends AbstractManager {
     return this.database.query(query, values);
   }
 
-  update(user) {
-    return this.database.query(
-      `update ${this.table} set title = ? where id = ?`,
-      [user.title, user.id]
-    );
+  update(user, userID) {
+    const query = `
+      UPDATE ${this.table} 
+      SET Username = ?, LastName = ?, FirstName = ?, BirthDate = ?, Address = ?, Email = ?, Phone = ?, Biography = ?, Role = ?, Gender = ?
+      WHERE User_ID = ?`;
+    const values = [
+      user.Username,
+      user.LastName,
+      user.FirstName,
+      user.BirthDate,
+      user.Address,
+      user.Email,
+      user.Phone,
+      user.Biography,
+      user.Role,
+      user.Gender,
+      userID,
+    ];
+    return this.database.query(query, values);
+  }
+
+  delete(email) {
+    return this.database.query(`SELECT * FROM  ${this.table} WHERE Email = ?`, [
+      email,
+    ]);
   }
 }
 

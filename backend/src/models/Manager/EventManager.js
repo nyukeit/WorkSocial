@@ -5,19 +5,19 @@ class EventManager extends AbstractManager {
     super({ table: "event" });
   }
 
-  findByEventId(eventID) {
+  findByPK(id) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE Event_ID = ?`,
-      [eventID]
+      [id]
     );
   }
 
-  insert(event) {
+  insert(event, userID) {
     return this.database.query(
       `
       INSERT INTO ${this.table} 
-      (Event_ID, Image, EventName, StartDate, EndDate, StartTime, EndTime, Description, Visibility, ParticipantCount, Created_At, Updated_At, User_ID) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (Event_ID, Image, EventName, StartDate, EndDate, StartTime, EndTime, Description, Visibility, ParticipantCount, User_ID) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `,
       [
         event.Event_ID,
@@ -30,9 +30,7 @@ class EventManager extends AbstractManager {
         event.Description,
         event.Visibility,
         event.ParticipantCount,
-        event.Created_At,
-        event.Updated_At,
-        event.User_ID,
+        userID,
       ]
     );
   }
@@ -48,7 +46,7 @@ class EventManager extends AbstractManager {
       `UPDATE ${this.table}
        SET Image = ?, EventName = ?, StartDate = ?, EndDate = ?,
            StartTime = ?, EndTime = ?, Description = ?, Visibility = ?,
-           ParticipantCount = ?, Created_At = ?, Updated_At = ?, User_ID = ?
+           ParticipantCount = ?
        WHERE Event_ID = ?`,
       [
         event.Image,
@@ -60,9 +58,6 @@ class EventManager extends AbstractManager {
         event.Description,
         event.Visibility,
         event.ParticipantCount,
-        event.Created_At,
-        event.Updated_At,
-        event.User_ID,
         event.id,
       ]
     );

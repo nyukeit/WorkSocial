@@ -1,4 +1,3 @@
-// SurveyController.js
 const models = require("../models");
 
 const getSurveys = (req, res) => {
@@ -63,7 +62,7 @@ const deleteSurvey = (req, res) => {
   models.survey
     .delete(req.params.id)
     .then(() => {
-      res.sendStatus(204);
+      res.status(204).send("Successfully deleted Survey");
     })
     .catch((err) => {
       console.error(err);

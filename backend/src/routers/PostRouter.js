@@ -4,14 +4,24 @@ const router = express.Router();
 const PostController = require("../controllers/PostController");
 
 const { verifyToken } = require("../middleware/auth");
+const verifyOwner = require("../middleware/verifyOwner");
 
 // Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
 
-router.get("/posts", PostController.getAllPosts);
+// Get all posts
+router.get("/posts", PostController.getPosts);
+
+// Get a specific post by ID
 router.get("/posts/:id", PostController.getPostById);
-// router.post("/posts", upload.single("image"), PostController.createPost);
-router.put("/posts/:id", PostController.updatePost);
-router.delete("/posts/:id", PostController.deletePost);
+
+// Create a new post
+router.post("/posts", /* upload.single("image") */ PostController.createPost);
+
+// Update an existing post
+router.put("/posts/:id", verifyOwner, PostController.updatePost);
+
+// Delete a post
+router.delete("/posts/:id", verifyOwner, PostController.deletePost);
 
 module.exports = router;

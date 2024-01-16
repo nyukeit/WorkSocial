@@ -16,6 +16,24 @@ const getEventComments = (req, res) => {
     });
 };
 
+const getEventCommentByID = (req, res) => {
+  const commentID = parseInt(req.params.commentID, 10);
+
+  models.eventComments
+    .findByPK(commentID)
+    .then(([rows]) => {
+      if (rows.length === 0) {
+        res.sendStatus(404);
+      } else {
+        res.send(rows[0]);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 const createEventComment = (req, res) => {
   const eventComment = {
     Event_ID: req.params.eventID,
@@ -38,8 +56,23 @@ const createEventComment = (req, res) => {
     });
 };
 
+const updateEventComment = (req, res) => {
+  const eventComment = req.body;
+  eventComment.commentID = parseInt(req.params.commentID, 10);
+
+  models.eventComments
+    .update(eventComment)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 const deleteEventComment = (req, res) => {
-  const { commentID } = req.params.commentID;
+  const commentID = parseInt(req.params.commentID, 10);
 
   models.eventComments
     .delete(commentID)
@@ -54,6 +87,8 @@ const deleteEventComment = (req, res) => {
 
 module.exports = {
   getEventComments,
+  getEventCommentByID,
   createEventComment,
+  updateEventComment,
   deleteEventComment,
 };

@@ -25,22 +25,28 @@ app.use(
 // import and mount the API routes
 
 const userRouter = require("./routers/UserRouter");
-const eventCommentsRouter = require("./routers/EventCommentsRouter");
-const surveyCommentsRouter = require("./routers/SurveyCommentsRouter");
 
 app.use(userRouter);
-app.use(eventCommentsRouter);
-app.use(surveyCommentsRouter);
-const eventRouter = require("./routers/EvenRouter");
 
-app.use(userRouter);
-app.use(eventCommentsRouter);
+const postRouter = require("./routers/PostRouter");
+
+app.use(postRouter);
+
+const eventRouter = require("./routers/EventRouter");
+
 app.use(eventRouter);
+
 const surveyRouter = require("./routers/SurveyRouter");
 
-app.use(userRouter);
-app.use(eventCommentsRouter);
 app.use(surveyRouter);
+
+const eventCommentsRouter = require("./routers/EventCommentsRouter");
+
+app.use(eventCommentsRouter);
+
+const surveyCommentsRouter = require("./routers/SurveyCommentsRouter");
+
+app.use(surveyCommentsRouter);
 
 // serve the `backend/public` folder for public resources
 
