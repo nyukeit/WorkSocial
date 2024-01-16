@@ -5,7 +5,7 @@ const router = express.Router();
 const surveyController = require("../controllers/surveyController");
 
 const { verifyToken } = require("../middleware/auth");
-
+const verifyOwner = require("../middleware/verifyOwner");
 // Authentication Wall - Everything after this requires an authenticated user
 
 router.use(verifyToken);
@@ -19,9 +19,9 @@ router.get("/surveys/:id", surveyController.getSurveyByID);
 router.post("/surveys", surveyController.createSurvey);
 
 // Update an existing survey
-router.put("/surveys/:id", surveyController.updateSurvey);
+router.put("/surveys/:id", verifyOwner, surveyController.updateSurvey);
 
 // Delete a survey
-router.delete("/surveys/:id", surveyController.deleteSurvey);
+router.delete("/surveys/:id", verifyOwner, surveyController.deleteSurvey);
 
 module.exports = router;

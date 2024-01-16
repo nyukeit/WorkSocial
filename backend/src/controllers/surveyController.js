@@ -15,7 +15,7 @@ const getSurveys = (req, res) => {
 
 const getSurveyByID = (req, res) => {
   models.survey
-    .find(req.params.id)
+    .findByPK(req.params.id)
     .then(([rows]) => {
       if (rows.length === 0) {
         res.sendStatus(404);
@@ -31,9 +31,10 @@ const getSurveyByID = (req, res) => {
 
 const createSurvey = (req, res) => {
   const survey = req.body;
+  const userID = req.User_ID;
 
   models.survey
-    .insert(survey)
+    .insert(survey, userID)
     .then(([result]) => {
       res.location(`/surveys/${result.insertId}`).sendStatus(201);
     })

@@ -15,11 +15,10 @@ const getSurveyComments = (req, res) => {
 };
 
 const getSurveyCommentById = (req, res) => {
-  const surveyID = parseInt(req.params.surveyID, 10);
   const commentID = parseInt(req.params.commentID, 10);
 
   models.surveyComments
-    .findBySurveyCommentId(surveyID, commentID)
+    .findByPK(commentID)
     .then(([rows]) => {
       if (rows.length === 0) {
         res.sendStatus(404);
@@ -57,12 +56,22 @@ const createSurveyComment = (req, res) => {
     });
 };
 
-const updateSurveyCommentById = (req, res) => {
+const updateSurveyCommentById = async (req, res) => {
   const commentID = parseInt(req.params.commentID, 10);
   const surveyID = parseInt(req.params.surveyID, 10);
   const userID = req.User_ID;
   const { comment } = req.body;
 
+  // Check if the user is the owner of the comment
+  const [foundComment] = await models.surveyComments.findByPK(commentID);
+  console.info(foundComment[0].User_ID);
+  // If the user is not the owner of the comment, return a 403 error
+  if (foundComment[0].User_ID !== userID) {
+    res.status(403).send("You are not the owner of this comment");
+    return;
+  }
+
+  // If User is owner of the comment, proceed to update the comment
   models.surveyComments
     .update(commentID, surveyID, userID, comment)
     .then(() => {

@@ -13,10 +13,10 @@ class SurveyCommentsManager extends AbstractManager {
     );
   }
 
-  findBySurveyCommentId(surveyID, commentID) {
+  findByPK(commentID) {
     return this.database.query(
-      `SELECT * FROM ${this.table} WHERE Survey_ID = ? AND Comment_ID = ?`,
-      [surveyID, commentID]
+      `SELECT * FROM ${this.table} WHERE Comment_ID = ?`,
+      [commentID]
     );
   }
 
