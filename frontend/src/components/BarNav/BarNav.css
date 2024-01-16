@@ -1,0 +1,18 @@
+/* Barnav */
+
+.BarNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: aquamarine;
+}
+.navbar_logo {
+  height: 80px;
+}
+.NavLinks {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 1rem;
+  margin: 0;
+}
