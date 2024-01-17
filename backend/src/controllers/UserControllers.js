@@ -73,6 +73,11 @@ const updateUser = (req, res) => {
 const createUser = (req, res) => {
   const user = req.body;
 
+  // Ajouter le chemin de l'image de profil à l'objet user si une image est téléchargée
+  if (req.file) {
+    user.ProfileImage = req.file.path;
+  }
+
   models.user
     .insert(user)
     .then(([result]) => {

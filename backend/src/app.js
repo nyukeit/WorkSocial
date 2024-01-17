@@ -40,6 +40,7 @@ app.use(surveyRouter);
 app.use(postCommentsRouter);
 app.use(eventCommentsRouter);
 app.use(surveyCommentsRouter);
+app.use(individualchatRouter);
 
 // serve the `backend/public` folder for public resources
 

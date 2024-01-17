@@ -11,6 +11,8 @@ const {
   verifyToken,
 } = require("../middleware/auth");
 
+const verifyOwner = require("../middleware/verifyOwner");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "assets/upload/");
@@ -19,13 +21,18 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
+
 const upload = multer({ storage });
+
+// Create a new user
 router.post(
   "/users",
   upload.single("profileImage"),
   hashPassword,
-  userControllers.add
+  userControllers.createUser
 );
+
+// Login
 router.post("/login", userControllers.login, verifyPassword);
 
 // Authentication Wall - Everything after this requires an authenticated user

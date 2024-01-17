@@ -64,6 +64,11 @@ const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
 models.surveyComments = new SurveyCommentsManager();
 models.surveyComments.setDatabase(pool);
 
+const IndividualchatManager = require("./Manager/IndividualchatManager");
+
+models.individualchat = new IndividualchatManager();
+models.individualchat.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
