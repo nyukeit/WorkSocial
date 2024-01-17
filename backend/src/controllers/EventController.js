@@ -1,8 +1,6 @@
-// PostCommentController.js
-// const EventCommentsManager = require("../models/Manager/EventCommentsManager");
 const models = require("../models");
 
-const browse = (req, res) => {
+const getEvents = (req, res) => {
   models.event
     .findAll()
     .then(([rows]) => {
@@ -14,9 +12,9 @@ const browse = (req, res) => {
     });
 };
 
-const getEvent = (req, res) => {
+const getEventByID = (req, res) => {
   models.event
-    .findByEventId(req.params.eventID)
+    .findByPK(req.params.id)
     .then(([rows]) => {
       if (rows[0] == null) {
         res.sendStatus(404);
@@ -32,9 +30,10 @@ const getEvent = (req, res) => {
 
 const createEvent = (req, res) => {
   const event = req.body;
+  const userID = req.User_ID;
 
   models.event
-    .insert(event)
+    .insert(event, userID)
     .then(([result]) => {
       res.location(`/events/${result.insertId}`).sendStatus(201);
     })
@@ -44,15 +43,14 @@ const createEvent = (req, res) => {
     });
 };
 
-const deleteEvent = (req, res) => {
+const updateEvent = (req, res) => {
+  const event = req.body;
+  event.id = parseInt(req.params.id, 10);
+
   models.event
-    .delete(req.params.eventID)
-    .then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(204);
-      }
+    .update(event)
+    .then(() => {
+      res.status(204).send("Successfully updated Event Details");
     })
     .catch((err) => {
       console.error(err);
@@ -60,17 +58,11 @@ const deleteEvent = (req, res) => {
     });
 };
 
-const update = (req, res) => {
-  const event = req.body;
-  event.id = parseInt(req.params.eventID, 10);
+const deleteEvent = (req, res) => {
   models.event
-    .update(event)
-    .then(([result]) => {
-      if (result.length === 0) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(204);
-      }
+    .delete(req.params.id)
+    .then(() => {
+      res.status(204).send("Successfully deleted Event");
     })
     .catch((err) => {
       console.error(err);
@@ -79,9 +71,9 @@ const update = (req, res) => {
 };
 
 module.exports = {
-  browse,
-  getEvent,
+  getEvents,
+  getEventByID,
   createEvent,
+  updateEvent,
   deleteEvent,
-  update,
 };

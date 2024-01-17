@@ -5,7 +5,7 @@ class userManager extends AbstractManager {
     super({ table: "user" });
   }
 
-  find(id) {
+  findByPK(id) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE User_ID = ?`,
       [id]
@@ -28,7 +28,6 @@ class userManager extends AbstractManager {
       user.LastName,
       user.FirstName,
       user.BirthDate,
-      user.Age,
       user.Address,
       user.Email,
       user.Phone,

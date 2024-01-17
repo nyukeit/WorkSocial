@@ -6,24 +6,39 @@ class PostCommentManager extends AbstractManager {
     super({ table: "post_comments" });
   }
 
-  findByPostId(postId) {
+  findByPK(commentID) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Comment_ID = ?`,
+      [commentID]
+    );
+  }
+
+  findByPostId(postID) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE Post_ID = ?`,
-      [postId]
+      [postID]
     );
   }
 
-  insert(comment) {
+  insert(postID, userID, postComment) {
     return this.database.query(
       `INSERT INTO ${this.table} (Post_ID, User_ID, Comment) VALUES (?, ?, ?)`,
-      [comment.Post_ID, comment.User_ID, comment.Comment]
+      [postID, userID, postComment]
     );
   }
 
-  delete(id) {
+  update(commentID, comment) {
+    return this.database.query(
+      `UPDATE ${this.table}
+      SET Comment = ? WHERE Comment_ID = ?`,
+      [comment.comment, commentID]
+    );
+  }
+
+  delete(commentID) {
     return this.database.query(
       `DELETE FROM ${this.table} WHERE Comment_ID = ?`,
-      [id]
+      [commentID]
     );
   }
 }

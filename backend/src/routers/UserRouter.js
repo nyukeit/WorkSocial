@@ -3,14 +3,15 @@ const multer = require("multer");
 
 const router = express.Router();
 
-const userControllers = require("../controllers/userControllers");
+const userControllers = require("../controllers/UserControllers");
 
 const {
   hashPassword,
   verifyPassword,
   verifyToken,
-  verifyId,
 } = require("../middleware/auth");
+
+const verifyOwner = require("../middleware/verifyOwner");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -20,20 +21,33 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
+
 const upload = multer({ storage });
+
+// Create a new user
 router.post(
   "/users",
   upload.single("profileImage"),
   hashPassword,
-  userControllers.add
+  userControllers.createUser
 );
+
+// Login
 router.post("/login", userControllers.login, verifyPassword);
 
-// router.use(verifyToken);
+// Authentication Wall - Everything after this requires an authenticated user
+router.use(verifyToken);
 
-router.get("/users", verifyToken, userControllers.browse);
-router.get("/users/:id", verifyToken, userControllers.read);
-router.put("/users/:id", verifyId, userControllers.edit);
-router.delete("/users/:id", verifyId, userControllers.destroy);
+// Get all users
+router.get("/users", verifyToken, userControllers.getUsers);
+
+// Get a specific user by ID
+router.get("/users/:id", verifyToken, userControllers.getUserByID);
+
+// Update an existing user
+router.put("/users/:id", verifyOwner, userControllers.updateUser);
+
+// Delete a user
+router.delete("/users/:id", verifyOwner, userControllers.deleteUser);
 
 module.exports = router;

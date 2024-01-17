@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const eventCommentsController = require("../controllers/EventCommentsController");
+const postCommentsController = require("../controllers/PostCommentsController");
 
 const { verifyToken } = require("../middleware/auth");
 
@@ -12,35 +12,32 @@ const verifyOwner = require("../middleware/verifyOwner");
 router.use(verifyToken);
 
 // Trouver tous les commentaiers d'un evenement
-router.get(
-  "/events/:eventID/comments",
-  eventCommentsController.getEventComments
-);
+router.get("/posts/:postID/comments", postCommentsController.getPostComments);
 
 // Trouver un commentaire
 router.get(
-  "/events/:eventID/comments/:id",
-  eventCommentsController.getEventCommentByID
+  "/posts/:postID/comments/:id",
+  postCommentsController.getPostCommentByID
 );
 
 // Creer un commentaire
 router.post(
-  "/events/:eventID/comments",
-  eventCommentsController.createEventComment
+  "/posts/:postID/comments",
+  postCommentsController.createPostComment
 );
 
 // Modifier un commentaire
 router.put(
-  "/events/:eventID/comments/:id",
+  "/posts/:postID/comments/:id",
   verifyOwner,
-  eventCommentsController.updateEventComment
+  postCommentsController.updatePostComment
 );
 
 // Supprimer un commentaire
 router.delete(
-  "/events/:eventID/comments/:id",
+  "/posts/:postID/comments/:id",
   verifyOwner,
-  eventCommentsController.deleteEventComment
+  postCommentsController.deletePostComment
 );
 
 module.exports = router;

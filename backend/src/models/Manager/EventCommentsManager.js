@@ -6,6 +6,13 @@ class EventCommentsManager extends AbstractManager {
     super({ table: "event_comments" });
   }
 
+  findByPK(commentID) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Comment_ID = ?`,
+      [commentID]
+    );
+  }
+
   findByEventId(eventID) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE Event_ID = ?`,
@@ -13,17 +20,25 @@ class EventCommentsManager extends AbstractManager {
     );
   }
 
-  insert(eventComment) {
+  insert(eventID, userID, eventComment) {
     return this.database.query(
       `INSERT INTO ${this.table} (Event_ID, User_ID, Comment) VALUES (?, ?, ?)`,
-      [eventComment.Event_ID, eventComment.User_ID, eventComment.Comment]
+      [eventID, userID, eventComment]
     );
   }
 
-  delete(id) {
+  update(commentID, comment) {
+    return this.database.query(
+      `UPDATE ${this.table}
+      SET Comment = ? WHERE Comment_ID = ?`,
+      [comment.comment, commentID]
+    );
+  }
+
+  delete(commentID) {
     return this.database.query(
       `DELETE FROM ${this.table} WHERE Comment_ID = ?`,
-      [id]
+      [commentID]
     );
   }
 }

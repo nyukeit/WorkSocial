@@ -30,24 +30,45 @@ pool.getConnection().catch(() => {
 const models = {};
 
 const UserManager = require("./Manager/UserManager");
-const EventCommentsManager = require("./Manager/EventCommentsManager");
-const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
-const EventManager = require("./Manager/EventManager");
-const SurveyManager = require("./Manager/SurveyManager");
-const IndividualchatManager = require("./Manager/IndividualchatManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
+
+const PostManager = require("./Manager/PostManager");
+
+models.post = new PostManager();
+models.post.setDatabase(pool);
+
+const EventManager = require("./Manager/EventManager");
+
 models.event = new EventManager();
 models.event.setDatabase(pool);
-models.eventComments = new EventCommentsManager();
-models.eventComments.setDatabase(pool);
-models.surveyComments = new SurveyCommentsManager();
-models.surveyComments.setDatabase(pool);
+
+const SurveyManager = require("./Manager/SurveyManager");
+
 models.survey = new SurveyManager();
 models.survey.setDatabase(pool);
+
+const PostCommentManager = require("./Manager/PostCommentsManager");
+
+models.postComments = new PostCommentManager();
+models.postComments.setDatabase(pool);
+
+const EventCommentsManager = require("./Manager/EventCommentsManager");
+
+models.eventComments = new EventCommentsManager();
+models.eventComments.setDatabase(pool);
+
+const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
+
+models.surveyComments = new SurveyCommentsManager();
+models.surveyComments.setDatabase(pool);
+
+const IndividualchatManager = require("./Manager/IndividualchatManager");
+
 models.individualchat = new IndividualchatManager();
 models.individualchat.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 

@@ -1,4 +1,3 @@
-// SurveyController.js
 const models = require("../models");
 
 const getSurveys = (req, res) => {
@@ -15,7 +14,7 @@ const getSurveys = (req, res) => {
 
 const getSurveyByID = (req, res) => {
   models.survey
-    .find(req.params.id)
+    .findByPK(req.params.id)
     .then(([rows]) => {
       if (rows.length === 0) {
         res.sendStatus(404);
@@ -31,9 +30,10 @@ const getSurveyByID = (req, res) => {
 
 const createSurvey = (req, res) => {
   const survey = req.body;
+  const userID = req.User_ID;
 
   models.survey
-    .insert(survey)
+    .insert(survey, userID)
     .then(([result]) => {
       res.location(`/surveys/${result.insertId}`).sendStatus(201);
     })
@@ -62,7 +62,7 @@ const deleteSurvey = (req, res) => {
   models.survey
     .delete(req.params.id)
     .then(() => {
-      res.sendStatus(204);
+      res.status(204).send("Successfully deleted Survey");
     })
     .catch((err) => {
       console.error(err);

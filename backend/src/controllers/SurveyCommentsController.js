@@ -14,12 +14,11 @@ const getSurveyComments = (req, res) => {
     });
 };
 
-const getSurveyCommentById = (req, res) => {
-  const surveyID = parseInt(req.params.surveyID, 10);
-  const commentID = parseInt(req.params.commentID, 10);
+const getSurveyCommentByID = (req, res) => {
+  const commentID = parseInt(req.params.id, 10);
 
   models.surveyComments
-    .findBySurveyCommentId(surveyID, commentID)
+    .findByPK(commentID)
     .then(([rows]) => {
       if (rows.length === 0) {
         res.sendStatus(404);
@@ -34,18 +33,22 @@ const getSurveyCommentById = (req, res) => {
 };
 
 const createSurveyComment = (req, res) => {
-  const surveyComment = {
-    Survey_ID: req.params.surveyID,
-    User_ID: req.body.User_ID,
-    Comment: req.body.Comment,
-  };
+  const surveyComment = req.body.comment;
+  const surveyID = parseInt(req.params.surveyID, 10);
+  const userID = req.User_ID;
+
+  if (!surveyComment) {
+    res.status(400).send("Missing comment");
+    return;
+  }
 
   models.surveyComments
-    .insert(surveyComment)
+    .insert(surveyID, userID, surveyComment)
     .then(([result]) => {
       res
-        .location(`/surveys/${surveyComment.id}/comments/${result.insertId}`)
-        .sendStatus(201);
+        .location(`/surveys/${surveyID}/comments/${result.insertId}`)
+        .status(201)
+        .send("Comment added");
     })
     .catch((err) => {
       console.error(err);
@@ -53,16 +56,15 @@ const createSurveyComment = (req, res) => {
     });
 };
 
-const updateSurveyCommentById = (req, res) => {
-  const surveyComment = {
-    Survey_ID: parseInt(req.params.surveyID, 10),
-    Comment_ID: parseInt(req.params.commentID, 10),
-    Comment: req.body.Comment,
-  };
+const updateSurveyComment = (req, res) => {
+  const comment = req.body;
+  const commentID = parseInt(req.params.id, 10);
+
+  // If User is owner of the comment, proceed to update the comment
   models.surveyComments
-    .update(surveyComment)
+    .update(commentID, comment)
     .then(() => {
-      res.sendStatus(204);
+      res.status(204).send("Comment updated");
     })
     .catch((err) => {
       console.error(err);
@@ -71,13 +73,12 @@ const updateSurveyCommentById = (req, res) => {
 };
 
 const deleteSurveyComment = (req, res) => {
-  const surveyID = parseInt(req.params.surveyID, 10);
-  const commentID = parseInt(req.params.commentID, 10);
+  const commentID = parseInt(req.params.id, 10);
 
   models.surveyComments
-    .delete(surveyID, commentID)
+    .delete(commentID)
     .then(() => {
-      res.sendStatus(204);
+      res.status(204).send("Comment deleted");
     })
     .catch((err) => {
       console.error(err);
@@ -87,8 +88,8 @@ const deleteSurveyComment = (req, res) => {
 
 module.exports = {
   getSurveyComments,
-  getSurveyCommentById,
+  getSurveyCommentByID,
   createSurveyComment,
-  updateSurveyCommentById,
+  updateSurveyComment,
   deleteSurveyComment,
 };

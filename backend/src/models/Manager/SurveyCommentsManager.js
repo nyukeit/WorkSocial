@@ -13,31 +13,31 @@ class SurveyCommentsManager extends AbstractManager {
     );
   }
 
-  findBySurveyCommentId(surveyID, commentID) {
+  findByPK(commentID) {
     return this.database.query(
-      `SELECT * FROM ${this.table} WHERE Survey_ID = ? AND Comment_ID = ?`,
-      [surveyID, commentID]
+      `SELECT * FROM ${this.table} WHERE Comment_ID = ?`,
+      [commentID]
     );
   }
 
-  insert(surveyComment) {
+  insert(surveyID, userID, surveyComment) {
     return this.database.query(
       `INSERT INTO ${this.table} (Survey_ID, User_ID, Comment) VALUES (?, ?, ?)`,
-      [surveyComment.Survey_ID, surveyComment.User_ID, surveyComment.Comment]
+      [surveyID, userID, surveyComment]
     );
   }
 
-  update(surveyComment) {
+  update(commentID, comment) {
     return this.database.query(
-      `UPDATE ${this.table} SET Comment = ? WHERE Survey_ID =? AND Comment_ID = ?`,
-      [surveyComment.Comment, surveyComment.Survey_ID, surveyComment.Comment_ID]
+      `UPDATE ${this.table} SET Comment = ? WHERE Comment_ID = ?`,
+      [comment.comment, commentID]
     );
   }
 
-  delete(surveyID, commentID) {
+  delete(commentID) {
     return this.database.query(
-      `DELETE FROM ${this.table} WHERE Survey_ID = ? AND Comment_ID = ?`,
-      [surveyID, commentID]
+      `DELETE FROM ${this.table} WHERE Comment_ID = ?`,
+      [commentID]
     );
   }
 }

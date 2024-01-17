@@ -24,7 +24,11 @@ const hashPassword = async (req, res, next) => {
 const verifyPassword = async (req, res) => {
   console.info(req.user);
   try {
-    if (await argon2.verify(req.user.hashedPassword, req.body.Password)) {
+    const isVerified = await argon2.verify(
+      req.user.hashedPassword,
+      req.body.Password
+    );
+    if (isVerified) {
       const payload = { sub: req.user.User_ID };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "4h",
@@ -56,13 +60,13 @@ const verifyToken = (req, res, next) => {
         .send({ message: "Authorisation Header is not of the type 'Bearer'" });
     }
     const token = authHeader.replace(/^Bearer\s+/, "");
-    req.payload = jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         console.error("JWT verification error:", err);
         res.sendStatus(401);
       } else {
         // Token is valid, proceed with the next middleware
-        req.payload = decoded;
+        req.User_ID = decoded.sub;
         next();
       }
     });
@@ -74,7 +78,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyId = (req, res, next) => {
   try {
-    if (req.payload.sub === parseInt(req.params.id, 10)) {
+    if (req.User_ID === parseInt(req.params.id, 10)) {
       next();
     } else {
       res.sendStatus(403);
