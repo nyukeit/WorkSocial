@@ -12,7 +12,7 @@ const login = async (req, res, next) => {
         const user = result[0];
         // Pass the entire user object to auth.js for password verification
         req.user = user;
-        next(); // Proceed to password verification in the auth middleware
+        next();
       }
     })
     .catch((err) => {
@@ -73,6 +73,11 @@ const edit = (req, res) => {
 
 const add = (req, res) => {
   const user = req.body;
+
+  // Ajouter le chemin de l'image de profil à l'objet user si une image est téléchargée
+  if (req.file) {
+    user.ProfileImage = req.file.path;
+  }
 
   // TODO validations (length, format...)
 
