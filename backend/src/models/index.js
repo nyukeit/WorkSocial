@@ -59,6 +59,11 @@ const EventCommentsManager = require("./Manager/EventCommentsManager");
 models.eventComments = new EventCommentsManager();
 models.eventComments.setDatabase(pool);
 
+const EventCommentsLikesManager = require("./Manager/EventCommentsLikesManager");
+
+models.eventCommentsLikes = new EventCommentsLikesManager();
+models.eventCommentsLikes.setDatabase(pool);
+
 const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
 
 models.surveyComments = new SurveyCommentsManager();
