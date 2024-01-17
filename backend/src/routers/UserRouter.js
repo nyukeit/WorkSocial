@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 
 const router = express.Router();
 
@@ -11,7 +12,21 @@ const {
   verifyId,
 } = require("../middleware/auth");
 
-router.post("/users", hashPassword, userControllers.add);
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "assets/upload/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+router.post(
+  "/users",
+  upload.single("profileImage"),
+  hashPassword,
+  userControllers.add
+);
 router.post("/login", userControllers.login, verifyPassword);
 
 // router.use(verifyToken);
