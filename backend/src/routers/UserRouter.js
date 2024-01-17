@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 
 const router = express.Router();
 
@@ -10,12 +11,21 @@ const {
   verifyToken,
 } = require("../middleware/auth");
 
-const verifyOwner = require("../middleware/verifyOwner");
-
-// Create a new account
-router.post("/users", hashPassword, userControllers.createUser);
-
-// Login
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "assets/upload/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+router.post(
+  "/users",
+  upload.single("profileImage"),
+  hashPassword,
+  userControllers.add
+);
 router.post("/login", userControllers.login, verifyPassword);
 
 // Authentication Wall - Everything after this requires an authenticated user

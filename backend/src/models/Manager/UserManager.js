@@ -20,9 +20,9 @@ class userManager extends AbstractManager {
 
   insert(user) {
     const query = `
-      INSERT INTO ${this.table} 
-        (Username, LastName, FirstName, BirthDate, Address, Email, Phone, Biography, hashedPassword, Role, Gender)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
+      INSERT INTO ${this.table}
+        (Username, LastName, FirstName, BirthDate, Age, Address, Email, Phone, Biography, hashedPassword, Role, Gender, ProfileImage)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
     const values = [
       user.Username,
       user.LastName,
@@ -35,35 +35,16 @@ class userManager extends AbstractManager {
       user.hashedPassword,
       user.Role,
       user.Gender,
+      user.ProfileImage,
     ];
     return this.database.query(query, values);
   }
 
-  update(user, userID) {
-    const query = `
-      UPDATE ${this.table} 
-      SET Username = ?, LastName = ?, FirstName = ?, BirthDate = ?, Address = ?, Email = ?, Phone = ?, Biography = ?, Role = ?, Gender = ?
-      WHERE User_ID = ?`;
-    const values = [
-      user.Username,
-      user.LastName,
-      user.FirstName,
-      user.BirthDate,
-      user.Address,
-      user.Email,
-      user.Phone,
-      user.Biography,
-      user.Role,
-      user.Gender,
-      userID,
-    ];
-    return this.database.query(query, values);
-  }
-
-  delete(email) {
-    return this.database.query(`SELECT * FROM  ${this.table} WHERE Email = ?`, [
-      email,
-    ]);
+  update(user) {
+    return this.database.query(
+      `update ${this.table} set title = ? where id = ?`,
+      [user.title, user.id]
+    );
   }
 }
 
