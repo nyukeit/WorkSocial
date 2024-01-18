@@ -117,6 +117,21 @@ const deleteUser = async (req, res, next) => {
     });
 };
 
+const logout = async (req, res) => {
+  try {
+    const token = req.headers.authorization.replace(/^Bearer\s+/, "");
+    models.tokenBlacklist.insert(token).then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    });
+  } catch (error) {
+    res.status(500).send({ message: "Error logging out" });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserByID,
@@ -124,4 +139,5 @@ module.exports = {
   createUser,
   deleteUser,
   login,
+  logout,
 };

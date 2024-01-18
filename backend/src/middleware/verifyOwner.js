@@ -51,14 +51,12 @@ const verifyOwner = async (req, res, next) => {
     }
 
     const [resource] = await model.findByPK(id);
-    console.info(resource[0].User_ID, req.User_ID);
-    // If the user is not the owner of the comment, return a 403 error
+    // If the user is not the owner of the resource, return a 403 error
     if (resource[0].User_ID === req.User_ID) {
       next();
     } else {
       res.status(403).send(`You are not the owner of this ${resourceType}`);
     }
-    // ... rest of the middleware logic
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

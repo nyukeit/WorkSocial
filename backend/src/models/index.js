@@ -69,6 +69,11 @@ const IndividualchatManager = require("./Manager/IndividualchatManager");
 models.individualchat = new IndividualchatManager();
 models.individualchat.setDatabase(pool);
 
+const TokenBlacklistManager = require("./Manager/TokenBlacklistManager");
+
+models.tokenBlacklist = new TokenBlacklistManager();
+models.tokenBlacklist.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
