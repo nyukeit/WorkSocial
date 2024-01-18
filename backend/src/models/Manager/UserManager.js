@@ -28,6 +28,7 @@ class userManager extends AbstractManager {
       user.LastName,
       user.FirstName,
       user.BirthDate,
+      user.Age,
       user.Address,
       user.Email,
       user.Phone,
