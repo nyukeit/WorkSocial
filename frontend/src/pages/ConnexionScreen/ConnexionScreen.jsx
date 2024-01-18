@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 console.info();
-
 function ConnexionScreen() {
   // React States
   const [errorMessages, setErrorMessages] = useState({});
