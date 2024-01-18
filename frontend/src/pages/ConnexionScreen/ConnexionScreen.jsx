@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./ConnexionScreen.css";
 
 console.info();
 function ConnexionScreen() {
@@ -59,40 +60,38 @@ function ConnexionScreen() {
     }
   };
 
-  // Générer le code pour le message d'erreur
   const renderErrorMessage = (name) =>
     name === errorMessages.name && (
-      <div className="error">{errorMessages.message}</div>
+      <div className="error-message">{errorMessages.message}</div>
     );
 
-  // Formulaire de connexion
   const renderForm = (
-    <div className="form-connexion">
-      <form onSubmit={handleSubmit}>
-        <div className="input">
-          <label htmlFor="mail">eMail</label>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="connexion-form">
+        <div className="form-group">
+          <label htmlFor="mail">E-Mail</label>
           <input type="email" id="mail" name="mail" required />
           {renderErrorMessage("mail")}
         </div>
-        <div className="input">
+        <div className="form-group">
           <label htmlFor="pass">Mot de passe</label>
           <input type="password" id="pass" name="pass" required />
           {renderErrorMessage("pass")}
         </div>
-        <div className="button">
-          <input type="submit" value="Soumettre" />
-        </div>
+        <button type="submit" className="submit-button">
+          Soumettre
+        </button>
       </form>
     </div>
   );
 
-  // Composant de formulaire de connexion
   return (
-    <div className="container">
-      <div className="login-form">
-        <div className="title">Connexion</div>
-        {isSubmitted ? <div>Connexion réussie !!</div> : renderForm}
-      </div>
+    <div className="connexion-screen">
+      {isSubmitted ? (
+        <div className="success-message">Connexion réussie !!</div>
+      ) : (
+        renderForm
+      )}
     </div>
   );
 }

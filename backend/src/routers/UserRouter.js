@@ -28,7 +28,7 @@ const upload = multer({ storage });
 // Create a new user
 router.post(
   "/users",
-  upload.single("profileImage"),
+  upload.single("ProfileImage"),
   hashPassword,
   userControllers.createUser
 );
