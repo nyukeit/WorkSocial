@@ -9,6 +9,7 @@ const {
   hashPassword,
   verifyPassword,
   verifyToken,
+  blacklistToken,
 } = require("../middleware/auth");
 
 const verifyOwner = require("../middleware/verifyOwner");
@@ -46,6 +47,9 @@ router.get("/users/:id", verifyToken, userControllers.getUserByID);
 
 // Update an existing user
 router.put("/users/:id", verifyOwner, userControllers.updateUser);
+
+// Logout
+router.get("/logout", userControllers.logout, blacklistToken);
 
 // Delete a user
 router.delete("/users/:id", verifyOwner, userControllers.deleteUser);
