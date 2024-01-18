@@ -17,18 +17,14 @@ function ConnexionScreen() {
     const passwordValue = pass.value;
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/login",
-        {
-          Email: emailValue,
-          Password: passwordValue,
+      const response = await axios.post("http://localhost:5000/login", {
+        Email: emailValue,
+        Password: passwordValue,
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      });
+      localStorage.setItem("authToken", response.data.authToken);
 
       console.info("Réponse du serveur:", response.data);
 
