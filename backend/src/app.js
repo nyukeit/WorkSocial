@@ -25,6 +25,7 @@ const eventRouter = require("./routers/EventRouter");
 const surveyRouter = require("./routers/SurveyRouter");
 const postCommentsRouter = require("./routers/PostCommentsRouter");
 const eventCommentsRouter = require("./routers/EventCommentsRouter");
+const eventCommentsLikesRouter = require("./routers/EventCommentsLikesRouter");
 const surveyCommentsRouter = require("./routers/SurveyCommentsRouter");
 const individualchatRouter = require("./routers/IndividualchatRouter");
 
@@ -34,6 +35,7 @@ app.use(eventRouter);
 app.use(surveyRouter);
 app.use(postCommentsRouter);
 app.use(eventCommentsRouter);
+app.use(eventCommentsLikesRouter);
 app.use(surveyCommentsRouter);
 app.use(individualchatRouter);
 
