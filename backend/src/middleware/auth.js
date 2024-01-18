@@ -1,5 +1,8 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+// const cookie = require("cookie");
+
+const models = require("../models");
 
 const hashingOptions = {
   type: argon2.argon2id,
@@ -22,7 +25,6 @@ const hashPassword = async (req, res, next) => {
 };
 
 const verifyPassword = async (req, res) => {
-  console.info(req.user);
   try {
     const isVerified = await argon2.verify(
       req.user.hashedPassword,
@@ -33,8 +35,7 @@ const verifyPassword = async (req, res) => {
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "4h",
       });
-      // delete req.user.hashedPassword;
-      res.send({ token, user: req.user });
+      res.status(200).send({ token, message: "Login successful" });
     } else {
       res.status(401).send("Incorrect password");
     }
@@ -44,7 +45,7 @@ const verifyPassword = async (req, res) => {
   }
 };
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -60,6 +61,12 @@ const verifyToken = (req, res, next) => {
         .send({ message: "Authorisation Header is not of the type 'Bearer'" });
     }
     const token = authHeader.replace(/^Bearer\s+/, "");
+
+    // Check for blacklisted tokens
+    const [result] = await models.tokenBlacklist.findByToken(token);
+    if (result.length > 0) {
+      res.status(401).send("Session Expired. Please log in again.");
+    }
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         console.error("JWT verification error:", err);
@@ -76,22 +83,26 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const verifyId = (req, res, next) => {
-  try {
-    if (req.User_ID === parseInt(req.params.id, 10)) {
-      next();
-    } else {
-      res.sendStatus(403);
-    }
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(401);
-  }
+const blacklistToken = async (req, res) => {
+  const token = req.headers.authorization.replace(/^Bearer\s+/, "");
+  await models.tokenBlacklist
+    .insert(token)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
 module.exports = {
   hashPassword,
   verifyPassword,
   verifyToken,
-  verifyId,
+  blacklistToken,
 };
