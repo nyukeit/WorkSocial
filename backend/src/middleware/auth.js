@@ -39,7 +39,6 @@ const verifyPassword = async (req, res) => {
       //   httpOnly: true,
       //   maxAge: 4 * 60 * 60 * 1000,
       // });
-      console.info(req.user.Username);
       res.status(200).send({
         authToken: token,
         user: req.user,
@@ -52,20 +51,20 @@ const verifyPassword = async (req, res) => {
     console.error(err);
     res.sendStatus(500);
   }
+  return null;
 };
 
 const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
+    // console.info(authHeader);
     if (!authHeader) {
-      res
-        .status(401)
-        .send("Vous n'avez pas d'authorisation de voir cette ressource");
+      return res.status(401).send("Please supply a valid header");
     }
     // Check if the token starts with "Bearer "
     const isBearerToken = authHeader.startsWith("Bearer ");
     if (!isBearerToken) {
-      res
+      return res
         .status(401)
         .send({ message: "Authorisation Header is not of the type 'Bearer'" });
     }
@@ -74,7 +73,7 @@ const verifyToken = async (req, res, next) => {
     // Check for blacklisted tokens
     const [result] = await models.tokenBlacklist.findByToken(token);
     if (result.length > 0) {
-      res.status(401).send("Session Expired. Please log in again.");
+      return res.status(401).send("Session Expired. Please log in again.");
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
@@ -90,6 +89,7 @@ const verifyToken = async (req, res, next) => {
     console.error(err);
     res.sendStatus(401);
   }
+  return null;
 };
 
 const blacklistToken = async (req, res) => {
@@ -107,6 +107,7 @@ const blacklistToken = async (req, res) => {
       console.error(err);
       res.sendStatus(500);
     });
+  return null;
 };
 
 module.exports = {

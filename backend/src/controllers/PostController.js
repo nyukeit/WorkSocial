@@ -30,7 +30,10 @@ const getPostById = (req, res) => {
 
 const createPost = (req, res) => {
   const post = req.body;
-  post.image = req.file?.path; // Assurez-vous de traiter correctement l'image
+  if (req.file) {
+    post.Image = req.file.path;
+  }
+  console.info(post);
   const userID = req.User_ID;
 
   models.post

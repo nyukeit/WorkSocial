@@ -8,7 +8,7 @@ function HomeScreen() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const tokenJWT = localStorage.getItem("jwtToken");
+        const tokenJWT = localStorage.getItem("userToken");
         const response = await fetch("http://localhost:5000/users", {
           headers: {
             Authorization: `Bearer ${tokenJWT}`,
