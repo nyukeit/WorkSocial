@@ -39,9 +39,10 @@ const verifyPassword = async (req, res) => {
       //   httpOnly: true,
       //   maxAge: 4 * 60 * 60 * 1000,
       // });
+      console.info(req.user.Username);
       res.status(200).send({
-        username: req.user.Username,
         authToken: token,
+        user: req.user,
         message: "Login successful",
       });
     } else {
