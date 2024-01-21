@@ -69,12 +69,12 @@ export default function PostScreen() {
 
   return (
     <>
-      <div>
+      <div className="createPost">
         <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
           {({ setFieldValue }) => (
             <Form>
               <h4>Create Poste</h4>
-              <div className="form-group">
+              <div className="title-content">
                 <label htmlFor="Title">Title</label>
                 <Field name="Title" placeholder="Title" type="text" />
                 <ErrorMessage name="Title" component="div" className="error" />
@@ -88,20 +88,27 @@ export default function PostScreen() {
                 />
               </div>
               <div className="visibility-group">
-                <label htmlFor="Visibility">Public</label>
-                <Field name="Visibility" type="radio" value="Public" />
-                <ErrorMessage name="Public" component="div" className="error" />
-
-                <label htmlFor="Visibility">Private</label>
-                <Field name="Visibility" type="radio" value="Private" />
-                <ErrorMessage
-                  name="Private"
-                  component="div"
-                  className="error"
-                />
+                <div className="radio-group">
+                  <label htmlFor="Visibility">Public</label>
+                  <Field name="Visibility" type="radio" value="Public" />
+                  <ErrorMessage
+                    name="Public"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="radio-group">
+                  <label htmlFor="Visibility">Private</label>
+                  <Field name="Visibility" type="radio" value="Private" />
+                  <ErrorMessage
+                    name="Private"
+                    component="div"
+                    className="error"
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="Image">Image</label>
+              <div className="img-upload">
+                <label htmlFor="Image">📎 Attach Image</label>
                 <input
                   id="Image"
                   name="Image"

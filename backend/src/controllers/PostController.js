@@ -31,7 +31,7 @@ const getPostById = (req, res) => {
 const createPost = (req, res) => {
   const post = req.body;
   if (req.file) {
-    post.Image = req.file.path;
+    post.Image = req.file.filename;
   }
   console.info(post);
   const userID = req.User_ID;

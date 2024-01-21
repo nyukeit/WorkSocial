@@ -5,7 +5,7 @@ import "./PostList.css";
 
 export default function PostList({ posts }) {
   return (
-    <div>
+    <div className="post-list">
       {posts.map((post) => (
         <PostCard key={post.Post_ID} post={post} />
       ))}

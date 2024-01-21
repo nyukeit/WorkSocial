@@ -48,11 +48,10 @@ app.use(surveyCommentsRouter);
 app.use(individualchatRouter);
 
 // serve the `backend/public` folder for public resources
-
+app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // serve REACT APP
-
 const reactIndexFile = path.join(
   __dirname,
   "..",
