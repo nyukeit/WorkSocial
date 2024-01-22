@@ -79,6 +79,9 @@ function BarNav() {
               <Link to="/SendageScreen">Sendage</Link>
             </li>
             <li>
+              <Link to="/posts">Posts</Link>
+            </li>
+            <li>
               <button type="button" onClick={handleOpenModal}>
                 Deconnexion
               </button>

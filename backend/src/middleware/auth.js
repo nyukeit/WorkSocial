@@ -39,7 +39,6 @@ const verifyPassword = async (req, res) => {
       //   httpOnly: true,
       //   maxAge: 4 * 60 * 60 * 1000,
       // });
-      console.info(req.user.Username);
       res.status(200).send({
         authToken: token,
         user: req.user,
@@ -52,6 +51,7 @@ const verifyPassword = async (req, res) => {
     console.error(err);
     res.sendStatus(500);
   }
+  return null;
 };
 
 // const verifyToken = async (req, res, next) => {
@@ -96,6 +96,7 @@ const verifyPassword = async (req, res) => {
 const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
+    // console.info(authHeader);
     if (!authHeader) {
       return res
         .status(401)
@@ -153,6 +154,7 @@ const blacklistToken = async (req, res) => {
       console.error(err);
       res.sendStatus(500);
     });
+  return null;
 };
 
 module.exports = {

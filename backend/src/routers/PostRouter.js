@@ -1,6 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
+const upload = require("../middleware/handleUpload");
 const PostController = require("../controllers/PostController");
 
 const { verifyToken } = require("../middleware/auth");
@@ -16,7 +17,7 @@ router.get("/posts", PostController.getPosts);
 router.get("/posts/:id", PostController.getPostById);
 
 // Create a new post
-router.post("/posts", /* upload.single("image") */ PostController.createPost);
+router.post("/posts", upload.single("Image"), PostController.createPost);
 
 // Update an existing post
 router.put("/posts/:id", verifyOwner, PostController.updatePost);
