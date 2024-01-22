@@ -1,31 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import "./PostCard.css";
+import ImageWithJWT from "../../../utils/ImageWithJWT";
 
 export default function PostCard({ post }) {
-  const [imageString, setImageString] = useState("");
-  const url = import.meta.env.VITE_BACKEND_URL;
-  const getBase64Img = async (res) => {
-    const blob = await res.blob();
-    const reader = new FileReader();
-    await new Promise((resolve, reject) => {
-      reader.onload = resolve;
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-    return reader.result;
-  };
-
-  useEffect(() => {
-    fetch(`${url}/upload/${post.Image}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-      },
-    })
-      .then(getBase64Img)
-      .then((imgString) => setImageString(imgString));
-  }, []);
+  const imageUrl = `http://localhost:5000/upload/${post.Image}`;
 
   return (
     <div>
@@ -38,7 +17,7 @@ export default function PostCard({ post }) {
           </div>
         </div>
         <div className="card-img">
-          <img src={imageString} alt={post.Title} className="postImage" />
+          <ImageWithJWT className="post-img" imageUrl={imageUrl} />
         </div>
         <div className="card-body">
           <h5 className="card-title">{post.Title}</h5>
