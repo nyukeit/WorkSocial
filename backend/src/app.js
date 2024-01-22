@@ -16,6 +16,7 @@ app.use(express.json());
 const cors = require("cors");
 
 app.use(cors());
+app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));
 
 // import and mount the API routes
 
