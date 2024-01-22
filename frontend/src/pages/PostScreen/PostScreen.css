@@ -1,6 +1,7 @@
-.container {
+.posts-container {
   display: flex;
   flex-direction: column;
+  /* justify-content: center; */
   gap: 1em;
   height: 100vh;
   padding: 2em;

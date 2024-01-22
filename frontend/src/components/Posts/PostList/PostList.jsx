@@ -4,6 +4,8 @@ import PostCard from "../PostCards/PostCard";
 import "./PostList.css";
 
 export default function PostList({ posts }) {
+  posts.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
+
   return (
     <div className="post-list">
       {posts.map((post) => (

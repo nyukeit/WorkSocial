@@ -12,6 +12,14 @@ export default function PostScreen() {
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
 
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   const getPosts = async () => {
     try {
       await fetch(`${url}/posts`, {
@@ -19,7 +27,6 @@ export default function PostScreen() {
           Authorization: `Bearer ${token}`,
         },
       }).then((res) => res.json().then((data) => setPosts(data)));
-      // setPosts(response.data);
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
@@ -58,17 +65,10 @@ export default function PostScreen() {
           console.error("Erreur lors de la requête:", res.statusText);
         }
       });
+      handleCloseModal();
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
-  };
-
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
   };
 
   const renderModal = showModal && (
@@ -116,7 +116,7 @@ export default function PostScreen() {
             <button
               id="createPost-btn"
               type="submit"
-              onClick={handleCloseModal}
+              onClick={handleCreatePost}
             >
               Create
             </button>
@@ -128,11 +128,10 @@ export default function PostScreen() {
 
   useEffect(() => {
     getPosts();
-    console.info(token);
   }, []);
 
   return (
-    <div className="container">
+    <div className="posts-container">
       <div className="button">
         <button id="createPost-btn" type="button" onClick={handleOpenModal}>
           Create Post
