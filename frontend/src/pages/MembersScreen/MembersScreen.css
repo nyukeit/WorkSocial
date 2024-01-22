@@ -1,0 +1,30 @@
+.users-list {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 1200px) {
+  .users-list {
+    grid-template-columns: repeat(
+      4,
+      1fr
+    ); /* 4 colonnes sur les écrans plus petits */
+  }
+}
+
+@media (max-width: 800px) {
+  .users-list {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* 2 colonnes sur les écrans encore plus petits */
+  }
+}
+
+@media (max-width: 500px) {
+  .users-list {
+    grid-template-columns: 1fr; /* 1 colonne sur les petits appareils */
+  }
+}

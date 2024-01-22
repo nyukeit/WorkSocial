@@ -1,7 +1,8 @@
+// UserFollowersController.js
 const models = require("../models");
 
-const browse = (req, res) => {
-  models.item
+const getUserFollowerss = (req, res) => {
+  models.userFollowers
     .findAll()
     .then(([rows]) => {
       res.send(rows);
@@ -12,8 +13,8 @@ const browse = (req, res) => {
     });
 };
 
-const read = (req, res) => {
-  models.item
+const getUserFollowersByID = (req, res) => {
+  models.userFollowers
     .find(req.params.id)
     .then(([rows]) => {
       if (rows[0] == null) {
@@ -28,15 +29,31 @@ const read = (req, res) => {
     });
 };
 
-const edit = (req, res) => {
-  const item = req.body;
+const createUserFollowers = (req, res) => {
+  const userFollowers = req.body;
 
   // TODO validations (length, format...)
 
-  item.id = parseInt(req.params.id, 10);
+  models.userFollowers
+    .insert(userFollowers)
+    .then(([result]) => {
+      res.location(`/userFollowerss/${result.insertId}`).sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 
-  models.item
-    .update(item)
+const updateUserFollowers = (req, res) => {
+  const userFollowers = req.body;
+
+  // TODO validations (length, format...)
+
+  userFollowers.id = parseInt(req.params.id, 10);
+
+  models.userFollowers
+    .update(userFollowers)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -50,24 +67,8 @@ const edit = (req, res) => {
     });
 };
 
-const add = (req, res) => {
-  const item = req.body;
-
-  // TODO validations (length, format...)
-
-  models.item
-    .insert(item)
-    .then(([result]) => {
-      res.location(`/items/${result.insertId}`).sendStatus(201);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-};
-
-const destroy = (req, res) => {
-  models.item
+const deleteUserFollowers = (req, res) => {
+  models.userFollowers
     .delete(req.params.id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
@@ -83,9 +84,9 @@ const destroy = (req, res) => {
 };
 
 module.exports = {
-  browse,
-  read,
-  edit,
-  add,
-  destroy,
+  getUserFollowerss,
+  getUserFollowersByID,
+  createUserFollowers,
+  updateUserFollowers,
+  deleteUserFollowers,
 };

@@ -13,7 +13,6 @@ const pool = mysql.createPool({
   password: DB_PASSWORD,
   database: DB_NAME,
 });
-
 // try a connection
 
 pool.getConnection().catch(() => {
@@ -29,10 +28,55 @@ pool.getConnection().catch(() => {
 
 const models = {};
 
-const ItemManager = require("./ItemManager");
+const UserManager = require("./Manager/UserManager");
 
-models.item = new ItemManager();
-models.item.setDatabase(pool);
+models.user = new UserManager();
+models.user.setDatabase(pool);
+
+const PostManager = require("./Manager/PostManager");
+
+models.post = new PostManager();
+models.post.setDatabase(pool);
+
+const EventManager = require("./Manager/EventManager");
+
+models.event = new EventManager();
+models.event.setDatabase(pool);
+
+const SurveyManager = require("./Manager/SurveyManager");
+
+models.survey = new SurveyManager();
+models.survey.setDatabase(pool);
+
+const PostCommentManager = require("./Manager/PostCommentsManager");
+
+models.postComments = new PostCommentManager();
+models.postComments.setDatabase(pool);
+
+const EventCommentsManager = require("./Manager/EventCommentsManager");
+
+models.eventComments = new EventCommentsManager();
+models.eventComments.setDatabase(pool);
+
+const EventCommentsLikesManager = require("./Manager/EventCommentsLikesManager");
+
+models.eventCommentsLikes = new EventCommentsLikesManager();
+models.eventCommentsLikes.setDatabase(pool);
+
+const SurveyCommentsManager = require("./Manager/SurveyCommentsManager");
+
+models.surveyComments = new SurveyCommentsManager();
+models.surveyComments.setDatabase(pool);
+
+const IndividualchatManager = require("./Manager/IndividualchatManager");
+
+models.individualchat = new IndividualchatManager();
+models.individualchat.setDatabase(pool);
+
+const TokenBlacklistManager = require("./Manager/TokenBlacklistManager");
+
+models.tokenBlacklist = new TokenBlacklistManager();
+models.tokenBlacklist.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
