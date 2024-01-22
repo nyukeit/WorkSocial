@@ -9,6 +9,7 @@ import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
 import EventsScreen from "./pages/EventsScreen/EventsScreen";
 import SendageScreen from "./pages/SendageScreen/SendageScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
+import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
 
 import "./App.css";
@@ -28,6 +29,7 @@ function App() {
             <Route path="/EventsScreen" element={<EventsScreen />} />
             <Route path="/SendageScreen" element={<SendageScreen />} />
             <Route path="/MembersScreen" element={<MembersScreen />} />
+            <Route path="/profile/:userId" element={<MyProfileScreen />} />
           </Routes>
         </Router>
       </AuthProvider>
