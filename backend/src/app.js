@@ -15,13 +15,8 @@ app.use(express.json());
 
 const cors = require("cors");
 
-// const corsOptions = {
-//   origin: "*",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
-//   allowedHeaders: "Content-Type, Authorization", // Add any other headers you need
-// };
+app.use(cors());
+app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));
 
 app.use(cors());
 // app.use(express.urlencoded({ extended: true }));

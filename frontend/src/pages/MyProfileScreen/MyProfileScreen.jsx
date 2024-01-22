@@ -57,10 +57,12 @@ function MyProfileScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
+  const imageName = user.ProfileImage.split("\\").pop();
+  const imageUrl = `${hostname}/upload/${imageName}`;
   return (
     <div className="my-profile-container">
       <h1>Profil de l'utilisateur</h1>
-      <img src={`${hostname}/${user.ProfileImage}`} alt={user.FirstName} />
+      <img src={imageUrl} alt={user.FirstName} />
       <p>
         Nom : {user.FirstName} {user.LastName}
       </p>
