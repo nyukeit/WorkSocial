@@ -30,6 +30,13 @@ export default function PostCard({ post }) {
   return (
     <div>
       <div className="card">
+        <div className="card-header">
+          <div className="profile">
+            {/* <img src={ProfileImage} alt={Username} className="profile-image" /> */}
+            <div className="profileImg-placeholder">0</div>
+            <span className="username">Dummy User</span>
+          </div>
+        </div>
         <div className="card-img">
           <img src={imageString} alt={post.Title} className="postImage" />
         </div>
