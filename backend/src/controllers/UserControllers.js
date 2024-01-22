@@ -75,7 +75,7 @@ const createUser = (req, res) => {
 
   // Ajouter le chemin de l'image de profil à l'objet user si une image est téléchargée
   if (req.file) {
-    user.ProfileImage = req.file.path;
+    user.ProfileImage = req.file.filename;
   }
 
   models.user
