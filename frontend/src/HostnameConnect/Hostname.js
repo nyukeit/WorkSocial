@@ -7,10 +7,10 @@ let settings = {
 };
 let hostname = `${LOCALHOST_IP}:5000`;
 
-function localImageServerUrl() {
-  // URL pour votre serveur d'images local
-  return `${LOCALHOST_IP}:5000/assets/upload/`;
-}
+// function localImageServerUrl() {
+//   // URL pour votre serveur d'images local
+//   return `${LOCALHOST_IP}:5000/assets/upload/`;
+// }
 
 // Utilisez export direct au lieu de module.exports
-export { settings, hostname, localImageServerUrl };
+export { settings, hostname };
