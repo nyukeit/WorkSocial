@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types"; // Importez PropTypes depuis la bibliothèque prop-types
 import "./UserCard.css";
 
 function UserCard({ user }) {
+  const [imageString, setImageString] = useState("");
+  const url = import.meta.env.VITE_BACKEND_URL;
+  const getBase64Img = async (res) => {
+    const blob = await res.blob();
+    const reader = new FileReader();
+    await new Promise((resolve, reject) => {
+      reader.onload = resolve;
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    return reader.result;
+  };
+
+  useEffect(() => {
+    fetch(`${url}/upload/${user.ProfileImage}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      },
+    })
+      .then(getBase64Img)
+      .then((imgString) => setImageString(imgString));
+  }, []);
   return (
     <div className="user-card">
-      <img
-        src={`http://localhost:5000/${user.ProfileImage}`}
-        alt={user.FirstName}
-      />
+      <img src={imageString} alt={user.FirstName} />
       <div className="user-info">
         <h2>
           {user.FirstName} {user.LastName}

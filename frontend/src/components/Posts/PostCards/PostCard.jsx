@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./PostCard.css";
 
@@ -17,7 +17,7 @@ export default function PostCard({ post }) {
   };
 
   useEffect(() => {
-    fetch(`${url}/assets/upload/${post.Image}`, {
+    fetch(`${url}/upload/${post.Image}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
