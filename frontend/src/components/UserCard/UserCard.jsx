@@ -4,8 +4,9 @@ import "./UserCard.css";
 import { useNavigate } from "react-router-dom";
 import ChatWebSocket from "../ChatPrivate/ChatWebSocket/ChatWebSocket";
 import { hostname } from "../../HostnameConnect/Hostname";
+import ImageWithJWT from "../../utils/ImageWithJWT";
 
-function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
+function UserCard({ user, onOpenChat, onCloseChat, chatPosition, token }) {
   const [isChatWebSocketOpen, setIsChatWebSocketOpen] = useState(false);
   const navigate = useNavigate();
   const [isModalMinimized, setIsModalMinimized] = useState(false);
@@ -46,7 +47,7 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
         role="button"
         tabIndex={0}
       >
-        <img src={imageUrl} alt={user.FirstName} />
+        <ImageWithJWT imageUrl={imageUrl} token={token} alt={user.FirstName} />
         <div className="user-info">
           <h2>
             {user.FirstName} {user.LastName}
@@ -92,6 +93,7 @@ UserCard.propTypes = {
   onOpenChat: PropTypes.func.isRequired,
   onCloseChat: PropTypes.func.isRequired,
   chatPosition: PropTypes.number.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default UserCard;
