@@ -37,6 +37,14 @@ export default function PostCard({ post }) {
           <h5 className="card-title">{post.Title}</h5>
           <p className="card-text">{post.Content}</p>
         </div>
+        <div className="card-actions">
+          <button className="like" type="button">
+            <i className="fa-regular fa-heart" />
+          </button>
+          <button className="comment" type="button">
+            <i className="fa-regular fa-comment" />
+          </button>
+        </div>
       </div>
     </div>
   );
