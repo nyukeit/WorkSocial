@@ -23,7 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/HomeScreen" element={<HomeScreen />} />
-            <Route path="/PostScreen" element={<PostScreen />} />
+            <Route path="/posts" element={<PostScreen />} />
             <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
             <Route path="/InscriptionScreen" element={<InscriptionScreen />} />
             <Route path="/EventsScreen" element={<EventsScreen />} />

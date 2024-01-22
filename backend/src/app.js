@@ -18,6 +18,8 @@ const cors = require("cors");
 app.use(cors());
 app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));
 
+app.use(cors());
+// app.use(express.urlencoded({ extended: true }));
 // import and mount the API routes
 
 const userRouter = require("./routers/UserRouter");
@@ -41,11 +43,10 @@ app.use(surveyCommentsRouter);
 app.use(individualchatRouter);
 
 // serve the `backend/public` folder for public resources
-
+app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));
 app.use(express.static(path.join(__dirname, "../public")));
 
 // serve REACT APP
-
 const reactIndexFile = path.join(
   __dirname,
   "..",

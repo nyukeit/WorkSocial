@@ -41,7 +41,6 @@ function MembersScreen() {
       oldChats.filter((chat) => chat.userId !== userId)
     );
   };
-
   useEffect(() => {
     fetchUsers();
   }, []);
