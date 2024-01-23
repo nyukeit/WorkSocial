@@ -1,33 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./MembersScreen.css";
 import UserCard from "../../components/UserCard/UserCard";
-import { hostname } from "../../HostnameConnect/Hostname";
+import { useUser } from "../../contexts/UserContext";
 
 function MembersScreen() {
-  const [users, setUsers] = useState([]);
   const [openChats, setOpenChats] = useState([]);
 
-  const fetchUsers = async () => {
-    try {
-      const token = localStorage.getItem("userToken");
-      console.info(token);
-      const response = await fetch(`${hostname}/users`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Erreur de réseau");
-      }
-
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des utilisateurs:", error);
-    }
-  };
+  const { users } = useUser();
 
   const handleOpenChat = (userId) => {
     setOpenChats((oldChats) => [
@@ -41,9 +20,6 @@ function MembersScreen() {
       oldChats.filter((chat) => chat.userId !== userId)
     );
   };
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   return (
     <div>

@@ -12,52 +12,29 @@ import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
 import { PostProvider } from "./contexts/PostContext";
+import { UserProvider } from "./contexts/UserContext";
 
 import "./App.css";
 
 function App() {
   return (
-    // <React.StrictMode>
-    //   <AuthProvider>
-    //     <Router>
-    //       <BarNav />
-    //       <Routes>
-    //         <Route path="/" element={<HomeScreen />} />
-    //         <Route path="/HomeScreen" element={<HomeScreen />} />
-    //         <PostProvider>
-    //           <Route path="/posts" element={<PostScreen />} />
-    //         </PostProvider>
-    //         <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
-    //         <Route path="/InscriptionScreen" element={<InscriptionScreen />} />
-    //         <Route path="/EventsScreen" element={<EventsScreen />} />
-    //         <Route path="/SendageScreen" element={<SendageScreen />} />
-    //         <Route path="/MembersScreen" element={<MembersScreen />} />
-    //         <Route path="/profile/:userId" element={<MyProfileScreen />} />
-    //       </Routes>
-    //     </Router>
-    //   </AuthProvider>
-    // </React.StrictMode>
     <React.StrictMode>
       <AuthProvider>
         <Router>
-          <>
-            <BarNav />
+          <BarNav />
+
+          <UserProvider>
             <Routes>
               <Route path="/" element={<HomeScreen />} />
               <Route path="/HomeScreen" element={<HomeScreen />} />
-
-              {/* Wrap BarNav and Routes with React.Fragment */}
               <Route
                 path="/posts"
                 element={
-                  // <React.Fragment>
                   <PostProvider>
                     <PostScreen />
                   </PostProvider>
-                  // </React.Fragment>
                 }
               />
-
               <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
               <Route
                 path="/InscriptionScreen"
@@ -68,7 +45,7 @@ function App() {
               <Route path="/MembersScreen" element={<MembersScreen />} />
               <Route path="/profile/:userId" element={<MyProfileScreen />} />
             </Routes>
-          </>
+          </UserProvider>
         </Router>
       </AuthProvider>
     </React.StrictMode>

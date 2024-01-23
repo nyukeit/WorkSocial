@@ -61,10 +61,17 @@
 }
 
 /* To be replaced by actual Profile Image */
-.profileImg-placeholder {
+.profileImgDiv {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   background-color: #ccc;
   margin-right: 0.5em;
+}
+
+.profileImgDiv img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
