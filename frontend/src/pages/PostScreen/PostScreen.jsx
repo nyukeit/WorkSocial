@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import { authHeader, token, userID } from "../../utils/auth";
+
 import PostList from "../../components/Posts/PostList/PostList";
 import "./PostScreen.css";
+import { usePost } from "../../contexts/PostContext";
+import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function PostScreen() {
-  const url = import.meta.env.VITE_BACKEND_URL;
-  const [posts, setPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  // const [isSubmitted, setIsSubmitted] = useState(false);
+
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
+
+  const posts = usePost();
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -18,18 +20,6 @@ export default function PostScreen() {
 
   const handleCloseModal = () => {
     setShowModal(false);
-  };
-
-  const getPosts = async () => {
-    try {
-      await fetch(`${url}/posts`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => res.json().then((data) => setPosts(data)));
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
   };
 
   const initialValues = {
@@ -52,7 +42,7 @@ export default function PostScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      await fetch(`${url}/posts`, {
+      await fetch(`${hostname}/posts`, {
         method: "POST",
         body: formData,
         headers: {
@@ -60,7 +50,7 @@ export default function PostScreen() {
         },
       }).then((res) => {
         if (res.ok) {
-          getPosts();
+          posts.getPosts();
         } else {
           console.error("Erreur lors de la requête:", res.statusText);
         }
@@ -78,11 +68,9 @@ export default function PostScreen() {
           <Form>
             <h4>Create Poste</h4>
             <div className="title-content">
-              {/* <label htmlFor="Title">Title</label> */}
               <Field name="Title" placeholder="Title" type="text" />
               <ErrorMessage name="Title" component="div" className="error" />
 
-              {/* <label htmlFor="Content">Content</label> */}
               <Field name="Content" type="text" placeholder="Write Post" />
               <ErrorMessage name="Content" component="div" className="error" />
             </div>
@@ -127,7 +115,7 @@ export default function PostScreen() {
   );
 
   useEffect(() => {
-    getPosts();
+    posts.getPosts();
   }, []);
 
   return (
@@ -138,7 +126,7 @@ export default function PostScreen() {
         </button>
       </div>
       <div className="posts">
-        <PostList posts={posts} />
+        <PostList posts={posts.posts} />
       </div>
       {renderModal}
     </div>
