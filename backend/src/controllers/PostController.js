@@ -50,7 +50,6 @@ const createPost = (req, res) => {
 const updatePost = (req, res) => {
   const post = req.body;
   post.id = parseInt(req.params.id, 10);
-
   models.post
     .update(post)
     .then(() => {

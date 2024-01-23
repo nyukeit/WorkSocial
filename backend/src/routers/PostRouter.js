@@ -23,6 +23,6 @@ router.post("/posts", upload.single("Image"), PostController.createPost);
 router.put("/posts/:id", verifyOwner, PostController.updatePost);
 
 // Delete a post
-router.delete("/posts/:id", verifyOwner, PostController.deletePost);
+router.delete("/posts/:id", PostController.deletePost);
 
 module.exports = router;

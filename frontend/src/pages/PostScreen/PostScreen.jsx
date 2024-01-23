@@ -63,6 +63,9 @@ export default function PostScreen() {
 
   const renderModal = showModal && (
     <div className="createPostmodal">
+      <button className="close-modal" onClick={handleCloseModal} type="button">
+        <i className="fa-solid fa-xmark" />
+      </button>
       <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
         {({ setFieldValue }) => (
           <Form>
