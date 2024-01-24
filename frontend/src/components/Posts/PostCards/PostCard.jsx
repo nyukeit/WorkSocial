@@ -93,19 +93,18 @@ export default function PostCard({ post }) {
         formData.append("Image", Image);
       }
       console.info(formData);
-      await fetch(`${hostname}/posts/${post.Post_ID}`, {
+      const response = await fetch(`${hostname}/posts/${post.Post_ID}`, {
         method: "PUT",
         body: formData,
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }).then((res) => {
-        if (res.ok) {
-          <div>Post Updated</div>;
-        } else {
-          console.error("Erreur lors de la requête:", res.statusText);
-        }
       });
+      if (response.ok) {
+        console.info("Post Edited");
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
       handleCloseModal();
       getPosts();
     } catch (error) {
@@ -120,9 +119,7 @@ export default function PostCard({ post }) {
       </button>
       <Formik
         initialValues={initialValues}
-        onSubmit={async (values) => {
-          await handleEditPost(values);
-        }}
+        onSubmit={handleEditPost}
         enableReinitialize
       >
         {({ setFieldValue }) => (
@@ -162,7 +159,7 @@ export default function PostCard({ post }) {
                 }
               />
             </div>
-            <button id="editPost-btn" type="submit" onClick={handleEditPost}>
+            <button id="editPost-btn" type="submit">
               Edit
             </button>
           </Form>
@@ -173,18 +170,17 @@ export default function PostCard({ post }) {
 
   const handleDeletePost = async () => {
     try {
-      await fetch(`${hostname}/posts/${post.Post_ID}`, {
+      const response = await fetch(`${hostname}/posts/${post.Post_ID}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }).then((res) => {
-        if (res.ok) {
-          <div>Post Deleted</div>;
-        } else {
-          console.error("Erreur lors de la requête:", res.statusText);
-        }
       });
+      if (response.ok) {
+        console.info("Post Deleted");
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
       handleCloseDelModal();
       getPosts();
     } catch (error) {

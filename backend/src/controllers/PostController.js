@@ -33,7 +33,6 @@ const createPost = (req, res) => {
   if (req.file) {
     post.Image = req.file.filename;
   }
-  console.info(post);
   const userID = req.User_ID;
 
   models.post
@@ -48,17 +47,49 @@ const createPost = (req, res) => {
 };
 
 const updatePost = (req, res) => {
-  const post = req.body;
-  post.id = parseInt(req.params.id, 10);
-  models.post
-    .update(post)
-    .then(() => {
-      res.sendStatus(204);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+  const { Title, Content, Visibility } = req.body;
+  const hasNewImage = req.file !== undefined;
+  const updatedPost = {
+    Title,
+    Content,
+    Visibility,
+    Post_ID: req.params.id,
+  };
+
+  if (hasNewImage) {
+    updatedPost.Image = req.file.filename;
+    models.post
+      .update(updatedPost)
+      .then(() => {
+        res.sendStatus(204);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  } else {
+    models.post
+      .updateWOImage(updatedPost)
+      .then(() => {
+        res.sendStatus(204);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  }
+
+  console.info(updatedPost);
+  //   models.post
+  //     // .update({ Title, Content, Image, Visibility, Post_ID: req.params.id })
+  //     .update(updatedPost)
+  //     .then(() => {
+  //       res.sendStatus(204);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       res.sendStatus(500);
+  //     });
 };
 
 const deletePost = (req, res) => {
