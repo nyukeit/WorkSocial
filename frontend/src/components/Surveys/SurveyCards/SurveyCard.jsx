@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
 import "./SurveyCard.css";
 import ImageWithJWT from "../../../utils/ImageWithJWT";
@@ -78,17 +78,34 @@ export default function SurveyCard({ survey }) {
     Content: `${survey.Content}`,
     Image: `${survey.Image}`,
     Visibility: `${survey.Visibility}`,
+    Option1: `${survey.Option1}`,
+    Option2: `${survey.Option2}`,
+    Option3: `${survey.Option3}`,
+    Option4: `${survey.Option4}`,
     UserID: survey.User_ID,
   };
 
   const handleEditSurvey = async (values) => {
-    const { Title, Content, Image, Visibility } = values;
+    const {
+      Title,
+      Content,
+      Image,
+      Visibility,
+      Option1,
+      Option2,
+      Option3,
+      Option4,
+    } = values;
     try {
       const formData = new FormData();
       formData.append("Title", Title);
       formData.append("Content", Content);
       formData.append("Visibility", Visibility);
       formData.append("UserID", survey.User_ID);
+      formData.append("Option1", Option1);
+      formData.append("Option2", Option2);
+      formData.append("Option3", Option3);
+      formData.append("Option4", Option4);
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
@@ -124,29 +141,37 @@ export default function SurveyCard({ survey }) {
       >
         {({ setFieldValue }) => (
           <Form>
-            <h4>Create Surveye</h4>
+            <h4>Edit Survey</h4>
             <div className="title-content">
               <Field name="Title" placeholder="Title" type="text" />
-              <ErrorMessage name="Title" component="div" className="error" />
-
               <Field name="Content" type="text" placeholder="Write Survey" />
-              <ErrorMessage name="Content" component="div" className="error" />
             </div>
             <div className="visibility-group">
               <div className="radio-group">
                 <label htmlFor="Visibility">Public</label>
                 <Field name="Visibility" type="radio" value="Public" />
-                <ErrorMessage name="Public" component="div" className="error" />
               </div>
               <div className="radio-group">
                 <label htmlFor="Visibility">Private</label>
                 <Field name="Visibility" type="radio" value="Private" />
-                <ErrorMessage
-                  name="Private"
-                  component="div"
-                  className="error"
-                />
               </div>
+            </div>
+            <div className="options-group">
+              <label htmlFor="Option1">Option 1</label>
+              <Field name="Option1" type="text" />
+              {/* <MyField name="Option1" type="radio" /> */}
+
+              <label htmlFor="Option2">Option 2</label>
+              <Field name="Option2" type="text" />
+              {/* <MyField name="Option2" type="radio" /> */}
+
+              <label htmlFor="Option3">Option 3</label>
+              <Field name="Option3" type="text" />
+              {/* <MyField name="Option3" type="radio" /> */}
+
+              <label htmlFor="Options4">Option 4</label>
+              <Field name="Option4" type="text" />
+              {/* <MyField name="Option4" type="radio" /> */}
             </div>
             <div className="img-upload">
               <label htmlFor="Image">📎 Attach Image</label>
@@ -240,6 +265,37 @@ export default function SurveyCard({ survey }) {
           <h5 className="card-title">{survey.Title}</h5>
           <p className="card-text">{survey.Content}</p>
         </div>
+        <div className="survey-options">
+          <form>
+            <div className="options-group">
+              <div className="surveyOption">
+                <input name="Options" type="radio" />
+                <label htmlFor="Option1">{survey.Option1}</label>
+              </div>
+              <div className="surveyOption">
+                <input name="Options" type="radio" />
+                <label htmlFor="Option2">{survey.Option2}</label>
+              </div>
+              {survey.Option3 ? (
+                <div className="surveyOption">
+                  <input name="Options" type="radio" />
+                  <label htmlFor="Option3">{survey.Option3}</label>
+                </div>
+              ) : null}
+              {survey.Option4 ? (
+                <div className="surveyOption">
+                  <input name="Options" type="radio" />
+                  <label htmlFor="Option4">{survey.Option4}</label>
+                </div>
+              ) : null}
+            </div>
+            <div className="submit-survey">
+              <button name="submit" type="submit">
+                Vote
+              </button>
+            </div>
+          </form>
+        </div>
         <div className="card-actions">
           <button className="like" type="button">
             <i className="fa-regular fa-heart" />
@@ -263,5 +319,9 @@ SurveyCard.propTypes = {
     Survey_ID: PropTypes.number.isRequired,
     Visibility: PropTypes.string.isRequired,
     User_ID: PropTypes.number.isRequired,
+    Option1: PropTypes.string.isRequired,
+    Option2: PropTypes.string.isRequired,
+    Option3: PropTypes.string.isRequired,
+    Option4: PropTypes.string.isRequired,
   }).isRequired,
 };

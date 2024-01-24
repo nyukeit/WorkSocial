@@ -57,20 +57,26 @@ form {
   margin: 1em 0;
 }
 
-.radio-group label {
-  display: inline;
-}
-
-.radio-group input {
-  margin-right: 0.5em;
+.img-upload {
+  margin-bottom: 1em;
 }
 
 .img-upload input[type="file"] {
   display: none;
+  margin-bottom: 1em;
 }
 
 .img-upload label {
   margin: 1em 0;
   cursor: pointer;
+}
+
+.options-group input[type="text"] {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.fa-solid, fa-regular {
+  margin-right: 0.5em;
 }
 

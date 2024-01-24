@@ -117,3 +117,18 @@
   font-size: 0.9em;
   cursor: pointer;
 }
+
+.surveyOption {
+  margin: 0.8em 0.8em 1em 0;
+}
+
+input[type="radio"] {
+  display: inline;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+label {
+  display: inline;
+  vertical-align: middle;
+}

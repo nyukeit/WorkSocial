@@ -131,11 +131,11 @@ export default function SurveyScreen() {
               <Field name="Content" type="text" placeholder="Write Survey" />
             </div>
             <div className="visibility-group">
-              <label htmlFor="Visibility">Public</label>
               <Field name="Visibility" type="radio" value="Public" />
+              <label htmlFor="Visibility">Public</label>
 
-              <label htmlFor="Visibility">Private</label>
               <Field name="Visibility" type="radio" value="Private" />
+              <label htmlFor="Visibility">Private</label>
             </div>
             <div className="options-group">
               <label htmlFor="Option1">Option 1</label>
@@ -155,7 +155,10 @@ export default function SurveyScreen() {
               {/* <MyField name="Option4" type="radio" /> */}
             </div>
             <div className="img-upload">
-              <label htmlFor="Image">📎 Attach Image</label>
+              <label htmlFor="Image">
+                <i className="fa-solid fa-image" />
+                Attach Image
+              </label>
               <input
                 id="Image"
                 name="Image"
