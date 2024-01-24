@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-function ImageWithJWT({ imageUrl, token }) {
+function ImageWithJWT({ imageUrl }) {
   const [imageString, setImageString] = useState("");
+  const token = localStorage.getItem("userToken");
 
   useEffect(() => {
     const getBase64Image = async (res) => {
@@ -31,6 +32,6 @@ function ImageWithJWT({ imageUrl, token }) {
 }
 ImageWithJWT.propTypes = {
   imageUrl: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
+  // token: PropTypes.string.isRequired,
 };
 export default ImageWithJWT;

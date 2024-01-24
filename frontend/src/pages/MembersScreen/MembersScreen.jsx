@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./MembersScreen.css";
 import UserCard from "../../components/UserCard/UserCard";
-import { hostname } from "../../HostnameConnect/Hostname";
+import { useUser } from "../../contexts/UserContext";
 
 function MembersScreen() {
-  const [users, setUsers] = useState([]);
   const [openChats, setOpenChats] = useState([]);
+
+  const { users } = useUser();
   const token = localStorage.getItem("userToken");
   const fetchUsers = async () => {
     try {
@@ -39,9 +40,6 @@ function MembersScreen() {
       oldChats.filter((chat) => chat.userId !== userId)
     );
   };
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   return (
     <div>
@@ -60,7 +58,6 @@ function MembersScreen() {
               onOpenChat={() => handleOpenChat(user.User_ID)}
               onCloseChat={() => handleCloseChat(user.User_ID)}
               chatPosition={chatPosition}
-              token={token}
             />
           );
         })}

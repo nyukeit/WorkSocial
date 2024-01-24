@@ -12,7 +12,10 @@ import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
 import EditProfileScreen from "./pages/EditProfileScreen/EditProfileScreen";
-//import PasswordEditScreen from "./components/PasswordEditScreen/PasswordEditScreen";
+// import PasswordEditScreen from "./components/PasswordEditScreen/PasswordEditScreen";
+import { PostProvider } from "./contexts/PostContext";
+import { UserProvider } from "./contexts/UserContext";
+
 import "./App.css";
 
 function App() {
@@ -37,6 +40,30 @@ function App() {
               element={<PasswordEditScreen />}
             /> */}
           </Routes>
+
+          <UserProvider>
+            <Routes>
+              <Route path="/" element={<HomeScreen />} />
+              <Route path="/HomeScreen" element={<HomeScreen />} />
+              <Route
+                path="/posts"
+                element={
+                  <PostProvider>
+                    <PostScreen />
+                  </PostProvider>
+                }
+              />
+              <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
+              <Route
+                path="/InscriptionScreen"
+                element={<InscriptionScreen />}
+              />
+              <Route path="/EventsScreen" element={<EventsScreen />} />
+              <Route path="/SendageScreen" element={<SendageScreen />} />
+              <Route path="/MembersScreen" element={<MembersScreen />} />
+              <Route path="/profile/:userId" element={<MyProfileScreen />} />
+            </Routes>
+          </UserProvider>
         </Router>
       </AuthProvider>
     </React.StrictMode>

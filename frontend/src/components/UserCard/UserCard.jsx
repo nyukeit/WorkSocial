@@ -36,11 +36,8 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition, token }) {
     onOpenChat();
     setIsChatWebSocketOpen(true);
   };
-  const imageName = user.ProfileImage
-    ? user.ProfileImage.split("\\").pop()
-    : "defaultImageName.jpg";
-  const imageUrl = `${hostname}/upload/${imageName}`;
-
+  // const imageName = user.ProfileImage.split("\\").pop();
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div>
       <div
