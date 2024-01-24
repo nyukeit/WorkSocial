@@ -22,13 +22,23 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+.close-modal {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  font-size: 1em;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 #createPost-btn {
   width: 20%;
   padding: 0.1em 0;
   font-size: 1em;
   color: white;
   border: none;
-  background-color: #4A4E69;
+  background-color: #4a4e69;
   border-radius: 5px;
 }
 
@@ -55,7 +65,7 @@ form {
   margin-right: 0.5em;
 }
 
-.img-upload input[type=file] {
+.img-upload input[type="file"] {
   display: none;
 }
 
