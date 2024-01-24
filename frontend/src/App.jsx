@@ -11,7 +11,8 @@ import SendageScreen from "./pages/SendageScreen/SendageScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
-
+import EditProfileScreen from "./pages/EditProfileScreen/EditProfileScreen";
+//import PasswordEditScreen from "./components/PasswordEditScreen/PasswordEditScreen";
 import "./App.css";
 
 function App() {
@@ -30,6 +31,11 @@ function App() {
             <Route path="/SendageScreen" element={<SendageScreen />} />
             <Route path="/MembersScreen" element={<MembersScreen />} />
             <Route path="/profile/:userId" element={<MyProfileScreen />} />
+            <Route path="/EditProfileScreen" element={<EditProfileScreen />} />
+            {/* <Route
+              path="/PasswordEditScreen"
+              element={<PasswordEditScreen />}
+            /> */}
           </Routes>
         </Router>
       </AuthProvider>

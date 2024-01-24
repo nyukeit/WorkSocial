@@ -3,20 +3,31 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
 import { useAuth } from "../../utils/useConnecte";
 import "./BarNav.css";
+import ImageWithJWT from "../../utils/ImageWithJWT";
+import { hostname } from "../../HostnameConnect/Hostname";
+import DropdownMenu from "./DropdownMenu";
 
 function BarNav() {
   const [showModal, setShowModal] = useState(false);
   const { isLoggedIn, logout } = useAuth();
+  const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const navigate = useNavigate();
-  const firstName = isLoggedIn ? localStorage.getItem("firstName") : "Visiteur";
-  // Déclaration de handleCloseModal avant son utilisation
+  const token = localStorage.getItem("userToken");
+  const firstName = user ? user.FirstName : "Visiteur";
+  const imageName =
+    user && user.ProfileImage
+      ? user.ProfileImage.split("\\").pop()
+      : "default-profile-image.png";
+  const imageUrl = user
+    ? `${hostname}/upload/${imageName}`
+    : "default-profile-image-url";
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("userToken");
       await fetch("http://localhost:5000/logout", {
         method: "GET",
         headers: {
@@ -56,7 +67,21 @@ function BarNav() {
         <img src={Logo} alt="logo" className="navbar_logo" />
       </div>
       <ul className="NavLinks">
-        <li className="welcome-message">Bonjour {firstName}</li>
+        <li className="profileItem">
+          <div className="image">
+            <ImageWithJWT
+              imageUrl={imageUrl}
+              token={token}
+              alt="Profile"
+              className="profile-image"
+            />
+          </div>
+          <div className="salutation">
+            {isLoggedIn && (
+              <DropdownMenu userName={firstName} onLogout={handleLogout} />
+            )}
+          </div>
+        </li>
         <li>
           <Link to="/HomeScreen">Accueil</Link>
         </li>

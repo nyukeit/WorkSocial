@@ -6,11 +6,9 @@ import { hostname } from "../../HostnameConnect/Hostname";
 function MembersScreen() {
   const [users, setUsers] = useState([]);
   const [openChats, setOpenChats] = useState([]);
-
+  const token = localStorage.getItem("userToken");
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("userToken");
-      console.info(token);
       const response = await fetch(`${hostname}/users`, {
         method: "GET",
         headers: {
@@ -62,6 +60,7 @@ function MembersScreen() {
               onOpenChat={() => handleOpenChat(user.User_ID)}
               onCloseChat={() => handleCloseChat(user.User_ID)}
               chatPosition={chatPosition}
+              token={token}
             />
           );
         })}

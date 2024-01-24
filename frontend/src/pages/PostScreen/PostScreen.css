@@ -27,7 +27,7 @@
   font-size: 1em;
   color: white;
   border: none;
-  background-color: #4A4E69;
+  background-color: #4a4e69;
   border-radius: 5px;
 }
 
@@ -54,7 +54,7 @@ form {
   margin-right: 0.5em;
 }
 
-.img-upload input[type=file] {
+.img-upload input[type="file"] {
   display: none;
 }
 

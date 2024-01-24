@@ -1,5 +1,4 @@
-/* BarNav.css */
-
+/* Style de la barre de navigation */
 .BarNav {
   display: flex;
   justify-content: space-between;
@@ -8,10 +7,12 @@
   padding: 0 20px;
 }
 
+/* Style du logo */
 .navbar_logo {
   height: 60px;
 }
 
+/* Style de la liste de liens */
 .NavLinks {
   display: flex;
   flex-direction: row;
@@ -20,6 +21,23 @@
   margin: 0;
 }
 
+/* Style de l'élément de profil */
+.profileItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style de l'image de profil */
+img {
+  width: 35px !important;
+  height: 35px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+/* Style des liens */
 .NavLinks li a {
   color: white;
   text-decoration: none;
@@ -30,6 +48,7 @@
   color: #9b4110;
 }
 
+/* Style des boutons */
 .NavLinks button {
   background: none;
   border: none;
@@ -43,6 +62,7 @@
   color: #f2e9e4;
 }
 
+/* Styles pour la modal */
 .modal {
   position: fixed;
   top: 50%;
