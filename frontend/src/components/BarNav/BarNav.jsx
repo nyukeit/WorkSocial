@@ -76,7 +76,7 @@ function BarNav() {
               <Link to="/MembersScreen">Membres</Link>
             </li>
             <li>
-              <Link to="/SendageScreen">Sendage</Link>
+              <Link to="/surveys">Surveys</Link>
             </li>
             <li>
               <Link to="/posts">Posts</Link>
