@@ -21,7 +21,11 @@ router.get("/surveys/:id", surveyController.getSurveyByID);
 router.post("/surveys", upload.single("Image"), surveyController.createSurvey);
 
 // Update an existing survey
-router.put("/surveys/:id", verifyOwner, surveyController.updateSurvey);
+router.put(
+  "/surveys/:id",
+  upload.single("Image"),
+  surveyController.updateSurvey
+);
 
 // Delete a survey
 router.delete("/surveys/:id", verifyOwner, surveyController.deleteSurvey);

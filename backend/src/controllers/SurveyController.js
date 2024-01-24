@@ -49,18 +49,43 @@ const createSurvey = (req, res) => {
 };
 
 const updateSurvey = (req, res) => {
-  const survey = req.body;
-  survey.id = parseInt(req.params.id, 10);
+  const { Title, Content, Visibility, Option1, Option2, Option3, Option4 } =
+    req.body;
+  const hasNewImage = req.file !== undefined;
+  const updatedSurvey = {
+    Title,
+    Content,
+    Visibility,
+    Option1,
+    Option2,
+    Option3,
+    Option4,
+    Survey_ID: req.params.id,
+  };
 
-  models.survey
-    .update(survey)
-    .then(() => {
-      res.sendStatus(204);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+  if (hasNewImage) {
+    updatedSurvey.Image = req.file.filename;
+    models.survey
+      .update(updatedSurvey)
+      .then(() => {
+        res.sendStatus(204);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  } else {
+    models.survey
+      .updateWOImage(updatedSurvey)
+      .then(() => {
+        res.sendStatus(204);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  }
+  console.info(updatedSurvey);
 };
 
 const deleteSurvey = (req, res) => {

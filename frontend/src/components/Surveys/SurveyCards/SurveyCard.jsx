@@ -321,7 +321,7 @@ SurveyCard.propTypes = {
     User_ID: PropTypes.number.isRequired,
     Option1: PropTypes.string.isRequired,
     Option2: PropTypes.string.isRequired,
-    Option3: PropTypes.string.isRequired,
-    Option4: PropTypes.string.isRequired,
+    Option3: PropTypes.string,
+    Option4: PropTypes.string,
   }).isRequired,
 };
