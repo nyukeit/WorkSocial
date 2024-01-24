@@ -10,3 +10,11 @@
   align-items: center;
   z-index: 1000;
 } */
+
+.edit-profile-button {
+  /* Vos styles pour le bouton, par exemple : */
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  /* Autres styles comme couleur, bordure, etc. */
+}

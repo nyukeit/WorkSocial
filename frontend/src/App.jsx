@@ -11,6 +11,8 @@ import SendageScreen from "./pages/SendageScreen/SendageScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
+import EditProfileScreen from "./pages/EditProfileScreen/EditProfileScreen";
+// import PasswordEditScreen from "./components/PasswordEditScreen/PasswordEditScreen";
 import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
 
@@ -22,6 +24,22 @@ function App() {
       <AuthProvider>
         <Router>
           <BarNav />
+          <Routes>
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/HomeScreen" element={<HomeScreen />} />
+            <Route path="/posts" element={<PostScreen />} />
+            <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
+            <Route path="/InscriptionScreen" element={<InscriptionScreen />} />
+            <Route path="/EventsScreen" element={<EventsScreen />} />
+            <Route path="/SendageScreen" element={<SendageScreen />} />
+            <Route path="/MembersScreen" element={<MembersScreen />} />
+            <Route path="/profile/:userId" element={<MyProfileScreen />} />
+            <Route path="/EditProfileScreen" element={<EditProfileScreen />} />
+            {/* <Route
+              path="/PasswordEditScreen"
+              element={<PasswordEditScreen />}
+            /> */}
+          </Routes>
 
           <UserProvider>
             <Routes>

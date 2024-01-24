@@ -1,6 +1,6 @@
 // MyProfileScreen.jsx
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ChatWebSocket from "../../components/ChatPrivate/ChatWebSocket/ChatWebSocket";
 import { hostname } from "../../HostnameConnect/Hostname";
 import "./MyProfileScreen.css";
@@ -15,7 +15,7 @@ function MyProfileScreen() {
   const token = localStorage.getItem("userToken");
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const chatManagerRef = useRef();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -48,6 +48,9 @@ function MyProfileScreen() {
 
     fetchUser();
   }, [userId]);
+  const handleEditProfile = () => {
+    navigate("/EditProfileScreen"); // Redirige vers la page de modification du profil
+  };
 
   const showChatButton = userIdLoggedIn !== userId;
   const handleOpenChat = () => {
@@ -75,7 +78,13 @@ function MyProfileScreen() {
       <p>Adresse : {user.Address}</p>
       <p>Date de naissance : {user.BirthDate}</p>
       <p>Biographie : {user.Biography}</p>
-      {/* Ajoutez d'autres détails ici si nécessaire */}
+      <button
+        type="button"
+        onClick={handleEditProfile}
+        className="edit-profile-button"
+      >
+        Modifier le Profil
+      </button>
       {showChatButton && (
         <button type="button" onClick={handleOpenChat}>
           Chat
