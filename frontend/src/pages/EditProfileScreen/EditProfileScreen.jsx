@@ -129,7 +129,7 @@ function EditProfil() {
       // Check if the response is OK (status code 200-299)
       if (response.ok) {
         // Navigate to ConnexionScreen on successful response
-        navigate("/ConnexionScreen");
+        navigate("/connexion");
       } else {
         // If the response status is not OK, handle errors
         const contentType = response.headers.get("content-type");
@@ -167,8 +167,10 @@ function EditProfil() {
   if (!user) {
     return <div>Chargement...</div>;
   }
-  const imageName = user.ProfileImage.split("\\").pop();
-  const imageUrl = `${hostname}/upload/${imageName}`;
+
+  // EVITER CETTE LIGNE PAS BESOIN C'EST UN SOUCIS AVEC LE BDD DE BILEL (C'EST PAS GLOBALE)
+  // const imageName = user.ProfileImage.split("\\").pop();
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div className="inscription-screen">
       <Formik
@@ -295,7 +297,7 @@ function EditProfil() {
       <div className="mdp">
         Changer le mot de passe
         <button type="button">
-          <NavLink to="/PasswordEditScreen">Changer</NavLink>
+          <NavLink to="/editpassword">Changer</NavLink>
         </button>
       </div>
     </div>

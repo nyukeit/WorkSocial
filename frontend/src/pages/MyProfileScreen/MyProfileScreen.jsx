@@ -12,10 +12,12 @@ function MyProfileScreen() {
   // const ChatWebSocketRef = useRef();
   const userIdLoggedIn = localStorage.getItem("userId");
   // recuperer le userToken du local storage
-  const token = localStorage.getItem("userToken");
+  // const token = localStorage.getItem("userToken");
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const chatManagerRef = useRef();
   const navigate = useNavigate();
+
+  // A CHANGER POUR UTILISER LE CONTEXT DE L'UTILISATEUR
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -49,7 +51,7 @@ function MyProfileScreen() {
     fetchUser();
   }, [userId]);
   const handleEditProfile = () => {
-    navigate("/EditProfileScreen"); // Redirige vers la page de modification du profil
+    navigate("/editprofile"); // Redirige vers la page de modification du profil
   };
 
   const showChatButton = userIdLoggedIn !== userId;
@@ -63,12 +65,16 @@ function MyProfileScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
-  const imageName = user.ProfileImage.split("\\").pop();
-  const imageUrl = `${hostname}/upload/${imageName}`;
+
+  // NE PAS UTILISER CETTE LIGNE C'EST UN SOUCIS AVEC BDD DE BILEL (PAS GLOBALE) - A EFFACER
+  // const imageName = user.ProfileImage.split("\\").pop();
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div className="my-profile-container">
       <h1>Profil de l'utilisateur</h1>
-      <ImageWithJWT imageUrl={imageUrl} token={token} alt={user.FirstName} />
+      <div className="profile-image">
+        <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+      </div>
       <p>
         Nom : {user.FirstName} {user.LastName}
       </p>

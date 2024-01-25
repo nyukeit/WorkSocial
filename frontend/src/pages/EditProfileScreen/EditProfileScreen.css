@@ -35,7 +35,9 @@ button {
   justify-content: space-between;
   align-items: center;
 }
-/Style pour le lien dans la section .mdp a {
+/* Style pour le lien dans la section  */
+
+.mdp a {
   color: #007bff;
   text-decoration: none;
   color: white;
@@ -43,4 +45,11 @@ button {
 
 .mdp button {
   font-size: 18px;
+}
+
+.profile-image-container img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }
