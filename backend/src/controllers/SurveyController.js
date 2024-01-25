@@ -68,15 +68,15 @@ const updateSurvey = (req, res) => {
 
   // if (hasNewImage) {
   //   updatedSurvey.Image = req.file.filename;
-    models.survey
-      .update(survey)
-      .then(() => {
-        res.sendStatus(204);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.sendStatus(500);
-      });
+  models.survey
+    .update(survey)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
   // } else {
   //   models.survey
   //     .updateWOImage(updatedSurvey)
