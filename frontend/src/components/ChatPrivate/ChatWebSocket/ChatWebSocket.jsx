@@ -108,6 +108,7 @@ function ChatWebSocket({
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  console.info("UserID Send:", userIdSend, "UserID:", userId);
 
   return (
     <div
