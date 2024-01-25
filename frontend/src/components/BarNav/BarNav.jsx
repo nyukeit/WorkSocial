@@ -102,7 +102,9 @@ function BarNav() {
             <li>
               <Link to="/members">Membres</Link>
             </li>
-
+            <li>
+              <Link to="/surveys">Surveys</Link>
+            </li>
             <li>
               <Link to="/posts">Posts</Link>
             </li>

@@ -10,13 +10,14 @@ import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
 import EventsScreen from "./pages/EventsScreen/EventsScreen";
-import SendageScreen from "./pages/SendageScreen/SendageScreen";
+import SurveyScreen from "./pages/SurveyScreen/SurveyScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
 import EditProfileScreen from "./pages/EditProfileScreen/EditProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
 import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
+import { SurveyProvider } from "./contexts/SurveyContext";
 
 import "./App.css";
 
@@ -41,7 +42,14 @@ function App() {
               <Route path="/connexion" element={<ConnexionScreen />} />
               <Route path="/inscription" element={<InscriptionScreen />} />
               <Route path="/events" element={<EventsScreen />} />
-              <Route path="/surveys" element={<SendageScreen />} />
+              <Route
+                path="/surveys"
+                element={
+                  <SurveyProvider>
+                    <SurveyScreen />
+                  </SurveyProvider>
+                }
+              />
               <Route path="/members" element={<MembersScreen />} />
               <Route path="/profile/:userId" element={<MyProfileScreen />} />
               <Route path="/editprofile" element={<EditProfileScreen />} />
