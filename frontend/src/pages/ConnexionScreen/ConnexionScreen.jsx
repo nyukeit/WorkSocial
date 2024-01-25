@@ -42,7 +42,7 @@ function ConnexionScreen() {
         localStorage.setItem("user", JSON.stringify(user));
         console.info("user", user);
         setIsSubmitted(true);
-        navigate("/HomeScreen");
+        navigate("/feed");
       } else {
         setErrorMessages({
           name: "pass",

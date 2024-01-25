@@ -35,7 +35,7 @@ function BarNav() {
         },
       });
       logout();
-      navigate("/HomeScreen");
+      navigate("/feed");
     } catch (error) {
       console.error("Erreur lors de la déconnexion : ", error);
     } finally {
@@ -68,13 +68,8 @@ function BarNav() {
       </div>
       <ul className="NavLinks">
         <li className="profileItem">
-          <div className="image">
-            <ImageWithJWT
-              imageUrl={imageUrl}
-              token={token}
-              alt="Profile"
-              className="profile-image"
-            />
+          <div className="profile-image">
+            <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
           </div>
           <div className="salutation">
             {isLoggedIn && (
@@ -83,25 +78,25 @@ function BarNav() {
           </div>
         </li>
         <li>
-          <Link to="/HomeScreen">Accueil</Link>
+          <Link to="/feed">Accueil</Link>
         </li>
         {!isLoggedIn && (
           <>
             <li>
-              <Link to="/ConnexionScreen">Connexion</Link>
+              <Link to="/connexion">Connexion</Link>
             </li>
             <li>
-              <Link to="/InscriptionScreen">Inscription</Link>
+              <Link to="/inscription">Inscription</Link>
             </li>
           </>
         )}
         {isLoggedIn && (
           <>
             <li>
-              <Link to="/MembersScreen">Membres</Link>
+              <Link to="/members">Membres</Link>
             </li>
             <li>
-              <Link to="/SendageScreen">Sendage</Link>
+              <Link to="/surveys">Sendage</Link>
             </li>
             <li>
               <Link to="/posts">Posts</Link>
