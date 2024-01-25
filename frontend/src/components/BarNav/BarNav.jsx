@@ -5,13 +5,16 @@ import { useAuth } from "../../utils/useConnecte";
 import "./BarNav.css";
 
 function BarNav() {
-  const [showModal, setShowModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   const firstName = isLoggedIn ? localStorage.getItem("firstName") : "Visiteur";
   // Déclaration de handleCloseModal avant son utilisation
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowLogoutModal(false);
+    setShowConfirmationModal(false);
   };
 
   const handleLogout = async () => {
@@ -32,23 +35,27 @@ function BarNav() {
     }
   };
 
-  const handleOpenModal = () => {
-    setShowModal(true);
+  const handleOpenLogoutModal = () => {
+    setShowLogoutModal(true);
   };
 
-  const renderModal = showModal && (
-    <div className="modal">
-      <div className="modal-content">
-        <p>Voulez-vous vraiment vous déconnecter ?</p>
-        <button type="button" onClick={handleLogout}>
-          Oui
-        </button>
-        <button type="button" onClick={handleCloseModal}>
-          Non
-        </button>
-      </div>
-    </div>
-  );
+  const handleCloseLogoutModal = () => {
+    setShowLogoutModal(false);
+  };
+
+  const handleOpenConfirmationModal = () => {
+    setShowConfirmationModal(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setShowConfirmationModal(false);
+  };
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // Exécuter l'action liée au clic lorsque la touche "Enter" est enfoncée
+      handleOpenLogoutModal();
+    }
+  };
 
   return (
     <nav className="BarNav">
@@ -56,7 +63,6 @@ function BarNav() {
         <img src={Logo} alt="logo" className="navbar_logo" />
       </div>
       <ul className="NavLinks">
-        <li className="welcome-message">Bonjour {firstName}</li>
         <li>
           <Link to="/HomeScreen">Accueil</Link>
         </li>
@@ -78,15 +84,45 @@ function BarNav() {
             <li>
               <Link to="/SendageScreen">Sendage</Link>
             </li>
-            <li>
-              <button type="button" onClick={handleOpenModal}>
-                Deconnexion
+            <li className="welcome-message">
+              <button
+                type="button"
+                onClick={handleOpenLogoutModal}
+                onKeyDown={handleKeyDown}
+              >
+                Bonjour {firstName}
+                {isLoggedIn && <span className="logout-arrow">▼</span>}
               </button>
             </li>
           </>
         )}
       </ul>
-      {renderModal}
+      {showLogoutModal && (
+        <div className="modal">
+          <div className="modal-content">
+            {firstName} {/* Ceci affiche le firstName */}
+            <button type="button" onClick={handleCloseLogoutModal}>
+              <Link to="/MyProfil">Modifier votre profil</Link>
+            </button>
+            <button type="button" onClick={handleOpenConfirmationModal}>
+              Déconnexion
+            </button>
+          </div>
+        </div>
+      )}
+      {showConfirmationModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>Êtes-vous sûr de vouloir vous déconnecter ?</p>
+            <button type="button" onClick={handleLogout}>
+              Oui
+            </button>
+            <button type="button" onClick={handleCloseConfirmationModal}>
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

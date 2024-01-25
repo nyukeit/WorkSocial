@@ -52,7 +52,6 @@ const getUserByID = (req, res) => {
 const updateUser = (req, res) => {
   const user = req.body;
   const userID = req.User_ID;
-
   user.id = parseInt(req.params.id, 10);
 
   models.user
@@ -68,6 +67,25 @@ const updateUser = (req, res) => {
       console.error(err);
       res.sendStatus(500);
     });
+};
+
+const updatePassword = async (req, res) => {
+  const user = req.body;
+  const userID = req.User_ID;
+  user.id = parseInt(req.params.id, 10);
+
+  try {
+    const result = await models.user.updatePassword(user, userID);
+
+    if (result.affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 };
 
 const createUser = (req, res) => {
@@ -91,7 +109,6 @@ const createUser = (req, res) => {
 
 const deleteUser = async (req, res, next) => {
   const emailInput = req.body.Email;
-  console.info(emailInput);
 
   const [user] = await models.user.findByPK(req.params.id);
   const userEmail = user[0].Email;
@@ -132,6 +149,25 @@ const logout = async (req, res) => {
   }
 };
 
+const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
+  const email = req.body;
+  models.user
+    .findUserByEmail(email.Email)
+    .then(([users]) => {
+      if (users[0] != null) {
+        const [firstUser] = users;
+        req.user = firstUser;
+        next();
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+
 module.exports = {
   getUsers,
   getUserByID,
@@ -140,4 +176,6 @@ module.exports = {
   deleteUser,
   login,
   logout,
+  getUserByEmailWithPasswordAndPassToNext,
+  updatePassword,
 };
