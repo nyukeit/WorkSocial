@@ -33,9 +33,9 @@ function App() {
             <Route path="/SendageScreen" element={<SendageScreen />} />
             <Route path="/MembersScreen" element={<MembersScreen />} />
             <Route path="/profile/:userId" element={<MyProfileScreen />} />
-            <Route path="/MyProfil" element={<MyUserProfilScreen />} />
-            <Route path="/EditProfil" element={<EditUserProfilScreen />} />
-            <Route path="/ChangePassword" element={<ChangePassword />} />
+            <Route path="/myprofil" element={<MyUserProfilScreen />} />
+            <Route path="/editprofil" element={<EditUserProfilScreen />} />
+            <Route path="/changepassword" element={<ChangePassword />} />
           </Routes>
         </Router>
       </AuthProvider>

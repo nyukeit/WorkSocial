@@ -240,7 +240,7 @@ function EditUserProfilScreen() {
             </div>
             <div className="form-group">
               <label htmlFor="email">E-mail</label>
-              <Field name="email" type="email" value={user.Email} />
+              <Field name="email" type="email" placeholder={user.Email} />
               <ErrorMessage name="email" component="div" className="error" />
               {emailError && <div className="error-message">{emailError}</div>}
             </div>
@@ -293,7 +293,7 @@ function EditUserProfilScreen() {
       <div className="mdp">
         Changer le mot de passe
         <button type="button">
-          <NavLink to="/ChangePassword">Changer</NavLink>
+          <NavLink to="/changepassword">Changer</NavLink>
         </button>
       </div>
     </div>

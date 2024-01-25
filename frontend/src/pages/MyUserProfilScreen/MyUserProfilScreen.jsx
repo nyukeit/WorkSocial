@@ -85,7 +85,7 @@ function MyUserProfilScreen() {
         </tbody>
       </table>
       <button type="button">
-        <Link to="/EditProfil">Modifier votre profil</Link>
+        <Link to="/editprofil">Modifier votre profil</Link>
       </button>
     </div>
   );
