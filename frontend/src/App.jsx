@@ -36,13 +36,9 @@ function App() {
                   </PostProvider>
                 }
               />
-<<<<<<< HEAD
-              <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
-              <Route
-                path="/InscriptionScreen"
-                element={<InscriptionScreen />}
-              />
-              <Route path="/EventsScreen" element={<EventsScreen />} />
+              <Route path="/connexion" element={<ConnexionScreen />} />
+              <Route path="/inscription" element={<InscriptionScreen />} />
+              <Route path="/events" element={<EventsScreen />} />
               <Route
                 path="/surveys"
                 element={
@@ -51,14 +47,7 @@ function App() {
                   </SurveyProvider>
                 }
               />
-              <Route path="/MembersScreen" element={<MembersScreen />} />
-=======
-              <Route path="/connexion" element={<ConnexionScreen />} />
-              <Route path="/inscription" element={<InscriptionScreen />} />
-              <Route path="/events" element={<EventsScreen />} />
-              <Route path="/surveys" element={<SendageScreen />} />
               <Route path="/members" element={<MembersScreen />} />
->>>>>>> 2958bf4ee429962fc7245677de34db1f15dd1913
               <Route path="/profile/:userId" element={<MyProfileScreen />} />
               <Route path="/editprofile" element={<EditProfileScreen />} />
             </Routes>
