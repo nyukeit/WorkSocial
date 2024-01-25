@@ -45,6 +45,9 @@ function App() {
               <Route path="/members" element={<MembersScreen />} />
               <Route path="/profile/:userId" element={<MyProfileScreen />} />
               <Route path="/editprofile" element={<EditProfileScreen />} />
+              <Route path="/myprofil" element={<MyUserProfilScreen />} />
+              <Route path="/editprofil" element={<EditUserProfilScreen />} />
+              <Route path="/changepassword" element={<ChangePassword />} />
             </Routes>
           </UserProvider>
         </Router>

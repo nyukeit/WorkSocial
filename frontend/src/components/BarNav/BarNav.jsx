@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
 import { useAuth } from "../../utils/useConnecte";
@@ -8,8 +8,8 @@ import { hostname } from "../../HostnameConnect/Hostname";
 import DropdownMenu from "./DropdownMenu";
 
 function BarNav() {
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  // const [showLogoutModal, setShowLogoutModal] = useState(false);
+  // const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const { isLoggedIn, logout } = useAuth();
   const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
@@ -24,10 +24,10 @@ function BarNav() {
     ? `${hostname}/upload/${imageName}`
     : "default-profile-image-url";
 
-  const handleCloseModal = () => {
-    setShowLogoutModal(false);
-    setShowConfirmationModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setShowLogoutModal(false);
+  //   setShowConfirmationModal(false);
+  // };
 
   const handleLogout = async () => {
     try {
@@ -41,32 +41,32 @@ function BarNav() {
       navigate("/feed");
     } catch (error) {
       console.error("Erreur lors de la déconnexion : ", error);
-    } finally {
-      handleCloseModal();
     }
+    //  finally {
+    //   handleCloseModal();
+    // }
   };
 
-  const handleOpenLogoutModal = () => {
-    setShowLogoutModal(true);
-  };
+  // const handleOpenLogoutModal = () => {
+  //   setShowLogoutModal(true);
+  // };
 
-  const handleCloseLogoutModal = () => {
-    setShowLogoutModal(false);
-  };
+  // const handleCloseLogoutModal = () => {
+  //   setShowLogoutModal(false);
+  // };
 
-  const handleOpenConfirmationModal = () => {
-    setShowConfirmationModal(true);
-  };
+  // const handleOpenConfirmationModal = () => {
+  //   setShowConfirmationModal(true);
+  // };
 
-  const handleCloseConfirmationModal = () => {
-    setShowConfirmationModal(false);
-  };
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      // Exécuter l'action liée au clic lorsque la touche "Enter" est enfoncée
-      handleOpenLogoutModal();
-    }
-  };
+  // const handleCloseConfirmationModal = () => {
+  //   setShowConfirmationModal(false);
+  // };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Enter") {
+  //     handleOpenLogoutModal();
+  //   }
+  // };
 
   return (
     <nav className="BarNav">
@@ -106,7 +106,7 @@ function BarNav() {
             <li>
               <Link to="/posts">Posts</Link>
             </li>
-            <li className="welcome-message">
+            {/* <li className="welcome-message">
               <button
                 type="button"
                 onClick={handleOpenLogoutModal}
@@ -115,16 +115,16 @@ function BarNav() {
                 Bonjour {firstName}
                 {isLoggedIn && <span className="logout-arrow">▼</span>}
               </button>
-            </li>
+            </li> */}
           </>
         )}
       </ul>
-      {showLogoutModal && (
+      {/* {showLogoutModal && (
         <div className="modal">
           <div className="modal-content">
-            {firstName} {/* Ceci affiche le firstName */}
+            {firstName} 
             <button type="button" onClick={handleCloseLogoutModal}>
-              <Link to="/MyProfil">Modifier votre profil</Link>
+              <Link to="/myprofil">Modifier votre profil</Link>
             </button>
             <button type="button" onClick={handleOpenConfirmationModal}>
               Déconnexion
@@ -144,7 +144,7 @@ function BarNav() {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </nav>
   );
 }

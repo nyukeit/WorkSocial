@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./EditUserProfilScreen.css";
+import ImageWithJWT from "../../utils/ImageWithJWT";
 
 import { hostname } from "../../HostnameConnect/Hostname";
 
@@ -180,6 +181,7 @@ function EditUserProfilScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div className="inscription-screen">
       <Formik
@@ -271,6 +273,13 @@ function EditUserProfilScreen() {
                   setFieldValue("ProfileImage", event.currentTarget.files[0])
                 }
                 required
+              />
+            </div>
+            <div className="profile-image-container">
+              <ImageWithJWT
+                imageUrl={imageUrl}
+                token={localStorage.getItem("userToken")}
+                alt="Image de Profil"
               />
             </div>
             <div className="form-group">

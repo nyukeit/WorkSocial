@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./MyUserProfilScreen.css";
 import { hostname } from "../../HostnameConnect/Hostname";
+import ImageWithJWT from "../../utils/ImageWithJWT";
 
 function MyUserProfilScreen() {
   const [user, setUser] = useState(null);
@@ -45,9 +46,13 @@ function MyUserProfilScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div className="my-profile-container">
       <h1>Profil de l'utilisateur</h1>
+      <div className="profile-image">
+        <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+      </div>
       <table>
         <tbody>
           <tr>
