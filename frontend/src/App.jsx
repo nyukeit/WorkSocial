@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import EditUserProfilScreen from "./pages/EditUserProfilScreen/EditUserProfilScreen";
+import MyUserProfilScreen from "./pages/MyUserProfilScreen/MyUserProfilScreen";
 import BarNav from "./components/BarNav/BarNav";
 
 import HomeScreen from "./pages/HomeScreen/HomeScreen";
@@ -42,6 +45,9 @@ function App() {
               <Route path="/members" element={<MembersScreen />} />
               <Route path="/profile/:userId" element={<MyProfileScreen />} />
               <Route path="/editprofile" element={<EditProfileScreen />} />
+              <Route path="/myprofil" element={<MyUserProfilScreen />} />
+              <Route path="/editprofil" element={<EditUserProfilScreen />} />
+              <Route path="/changepassword" element={<ChangePassword />} />
             </Routes>
           </UserProvider>
         </Router>

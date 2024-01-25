@@ -1,0 +1,51 @@
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Appliquer la même taille à tous les input, textarea et select */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Ajoutez d'autres styles au besoin */
+
+.mdp {
+  padding-top: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Style pour le lien dans la section "Changer le mot de passe" */
+.mdp a {
+  color: #007bff; /* Couleur du lien */
+  text-decoration: none; /* Supprimer le soulignement du lien */
+  color: white;
+}
+
+.mdp button {
+  font-size: 18px;
+}
+
+/* Style pour le bouton "Changer" */

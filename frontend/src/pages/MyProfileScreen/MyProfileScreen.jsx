@@ -51,7 +51,7 @@ function MyProfileScreen() {
     fetchUser();
   }, [userId]);
   const handleEditProfile = () => {
-    navigate("/editprofile"); // Redirige vers la page de modification du profil
+    navigate("/editprofil"); // Redirige vers la page de modification du profil
   };
 
   const showChatButton = userIdLoggedIn !== userId;

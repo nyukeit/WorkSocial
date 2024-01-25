@@ -33,6 +33,11 @@ router.post(
   userControllers.createUser
 );
 
+router.post(
+  "/users/checkOldPassword",
+  userControllers.getUserByEmailWithPasswordAndPassToNext,
+  verifyPassword
+);
 // Login
 router.post("/login", userControllers.login, verifyPassword);
 
@@ -46,9 +51,8 @@ router.get("/users", verifyToken, userControllers.getUsers);
 router.get("/users/:id", verifyToken, userControllers.getUserByID);
 
 // Update an existing user
-router.put("/users/:id", verifyOwner, userControllers.updateUser);
-
-// Logout
+router.put("/users/:id", verifyOwner, hashPassword, userControllers.updateUser);
+router.put("/updatePassword/:id", hashPassword, userControllers.updatePassword);
 router.get("/logout", userControllers.logout, blacklistToken);
 
 // Delete a user
