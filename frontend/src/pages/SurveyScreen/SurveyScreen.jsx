@@ -6,44 +6,6 @@ import "./SurveyScreen.css";
 import { useSurvey } from "../../contexts/SurveyContext";
 import { hostname } from "../../HostnameConnect/Hostname";
 
-// // eslint-disable-next-line react/function-component-definition
-// const MyField = (props) => {
-//   const {
-//     values: { Option1, Option2, Option3, Option4 },
-//     touched,
-//     setFieldValue,
-//   } = useFormikContext();
-//   const [field, meta] = useField(props);
-
-//   React.useEffect(() => {
-//     if (
-//       Option1.trim() !== "" &&
-//       Option2.trim() !== "" &&
-//       Option3.trim() !== "" &&
-//       Option4.trim() !== "" &&
-//       touched.Option1 &&
-//       touched.Option2 &&
-//       touched.Option3 &&
-//       touched.Option4
-//     ) {
-//       setFieldValue(
-//         // eslint-disable-next-line react/destructuring-assignment
-//         props.name,
-//         `${Option1}, ${Option2}, ${Option3}, ${Option4}`
-//       );
-//     }
-//     // eslint-disable-next-line react/destructuring-assignment
-//   }, [Option1, Option2, Option3, Option4, setFieldValue, props.name]);
-
-//   return (
-//     <>
-//       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-//       <input {...props} {...field} />
-//       {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-//     </>
-//   );
-// };
-
 export default function SurveyScreen() {
   const [showModal, setShowModal] = useState(false);
 

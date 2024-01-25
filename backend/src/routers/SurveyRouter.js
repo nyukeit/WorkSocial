@@ -6,7 +6,7 @@ const upload = require("../middleware/handleUpload");
 const { verifyToken } = require("../middleware/auth");
 
 // Verify if the user is the owner of the survey
-const verifyOwner = require("../middleware/verifyOwner");
+// const verifyOwner = require("../middleware/verifyOwner");
 
 // Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
@@ -28,6 +28,6 @@ router.put(
 );
 
 // Delete a survey
-router.delete("/surveys/:id", verifyOwner, surveyController.deleteSurvey);
+router.delete("/surveys/:id", surveyController.deleteSurvey);
 
 module.exports = router;

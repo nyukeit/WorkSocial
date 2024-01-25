@@ -18,17 +18,17 @@ class SurveyManager extends AbstractManager {
 
   insert(survey, userID) {
     return this.database.query(
-      `INSERT INTO ${this.table} (Image, Title, Content, Visibility, User_ID, Option1, Option2, Option3, Option4) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ${this.table} (Image, Title, Content, Visibility, Option1, Option2, Option3, Option4, User_ID ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         survey.Image,
         survey.Title,
         survey.Content,
         survey.Visibility,
-        userID,
         survey.Option1,
         survey.Option2,
         survey.Option3,
         survey.Option4,
+        userID,
       ]
     );
   }
