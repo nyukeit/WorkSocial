@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import "./EditProfil.css";
+import "./EditUserProfilScreen.css";
 
 import { hostname } from "../../HostnameConnect/Hostname";
 
-function EditProfil() {
+function EditUserProfilScreen() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const userIdLoggedIn = localStorage.getItem("userId");
@@ -240,7 +240,7 @@ function EditProfil() {
             </div>
             <div className="form-group">
               <label htmlFor="email">E-mail</label>
-              <Field name="email" type="email" placeholder={user.Email} />
+              <Field name="email" type="email" value={user.Email} />
               <ErrorMessage name="email" component="div" className="error" />
               {emailError && <div className="error-message">{emailError}</div>}
             </div>
@@ -300,4 +300,4 @@ function EditProfil() {
   );
 }
 
-export default EditProfil;
+export default EditUserProfilScreen;

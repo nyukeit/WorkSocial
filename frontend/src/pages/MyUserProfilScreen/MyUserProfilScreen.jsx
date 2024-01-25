@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import "./MyProfil.css";
+import "./MyUserProfilScreen.css";
 import { hostname } from "../../HostnameConnect/Hostname";
 
-function MyProfil() {
+function MyUserProfilScreen() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   // const ChatWebSocketRef = useRef();
@@ -91,4 +91,4 @@ function MyProfil() {
   );
 }
 
-export default MyProfil;
+export default MyUserProfilScreen;
