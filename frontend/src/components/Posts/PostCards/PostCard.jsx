@@ -13,7 +13,9 @@ export default function PostCard({ post }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
-  const currentUser = localStorage.getItem("userId");
+  const [like, setLike] = useState(false);
+  // const [totalLikes, setTotalLikes] = useState(0);
+  const currentUserID = localStorage.getItem("userId");
   const token = localStorage.getItem("userToken");
 
   if (loading) return <div>Loading...</div>; // Wait for users to load
@@ -206,6 +208,78 @@ export default function PostCard({ post }) {
     </div>
   );
 
+  // const getLikes = async () => {
+  //   try {
+  //     const response = await fetch(`${hostname}/posts/${post.Post_ID}/likes`, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setTotalLikes(data.length);
+  //       console.info(data);
+  //     } else {
+  //       console.error("Erreur lors de la requête:", response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur lors de la requête:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getLikes();
+  // }, []);
+
+  const handlePostLikeDislike = async (action, userId) => {
+    if (action === "like") {
+      try {
+        const response = await fetch(
+          `${hostname}/posts/${post.Post_ID}/likes`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        if (response.ok) {
+          setLike(true);
+          console.info("Post Liked");
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    } else if (action === "unlike") {
+      try {
+        const response = await fetch(
+          `${hostname}/posts/${post.Post_ID}/likes`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        if (response.ok) {
+          setLike(false);
+          console.info("Post Disliked");
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    }
+  };
+
   return (
     <div>
       <div className="card">
@@ -216,7 +290,7 @@ export default function PostCard({ post }) {
             </div>
             <span className="username">{postCreator.Username}</span>
           </div>
-          {parseInt(currentUser, 10) === parseInt(postCreator.User_ID, 10) ? (
+          {parseInt(currentUserID, 10) === parseInt(postCreator.User_ID, 10) ? (
             <div className="context-menu">
               <button
                 className="context-btn"
@@ -237,9 +311,24 @@ export default function PostCard({ post }) {
           <p className="card-text">{post.Content}</p>
         </div>
         <div className="card-actions">
-          <button className="like" type="button">
-            <i className="fa-regular fa-heart" />
-          </button>
+          {!like ? (
+            <button
+              name="like"
+              type="button"
+              onClick={() => handlePostLikeDislike("like", currentUserID)}
+            >
+              <i className="fa-regular fa-heart" />
+              {/* <span>{totalLikes}</span> */}
+            </button>
+          ) : (
+            <button
+              name="unlike"
+              type="button"
+              onClick={() => handlePostLikeDislike("unlike", currentUserID)}
+            >
+              <i className="fa-solid fa-heart" />
+            </button>
+          )}
           <button className="comment" type="button">
             <i className="fa-regular fa-comment" />
           </button>
