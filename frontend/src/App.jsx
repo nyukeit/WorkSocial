@@ -13,7 +13,10 @@ import EventsScreen from "./pages/EventsScreen/EventsScreen";
 import SendageScreen from "./pages/SendageScreen/SendageScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import MyProfileScreen from "./pages/MyProfileScreen/MyProfileScreen";
+import EditProfileScreen from "./pages/EditProfileScreen/EditProfileScreen";
 import { AuthProvider } from "./utils/useConnecte";
+import { PostProvider } from "./contexts/PostContext";
+import { UserProvider } from "./contexts/UserContext";
 
 import "./App.css";
 
@@ -23,20 +26,27 @@ function App() {
       <AuthProvider>
         <Router>
           <BarNav />
-          <Routes>
-            <Route path="/" element={<HomeScreen />} />
-            <Route path="/HomeScreen" element={<HomeScreen />} />
-            <Route path="/PostScreen" element={<PostScreen />} />
-            <Route path="/ConnexionScreen" element={<ConnexionScreen />} />
-            <Route path="/InscriptionScreen" element={<InscriptionScreen />} />
-            <Route path="/EventsScreen" element={<EventsScreen />} />
-            <Route path="/SendageScreen" element={<SendageScreen />} />
-            <Route path="/MembersScreen" element={<MembersScreen />} />
-            <Route path="/profile/:userId" element={<MyProfileScreen />} />
-            <Route path="/myprofil" element={<MyUserProfilScreen />} />
-            <Route path="/editprofil" element={<EditUserProfilScreen />} />
-            <Route path="/changepassword" element={<ChangePassword />} />
-          </Routes>
+          <UserProvider>
+            <Routes>
+              <Route path="/" element={<HomeScreen />} />
+              <Route path="/feed" element={<HomeScreen />} />
+              <Route
+                path="/posts"
+                element={
+                  <PostProvider>
+                    <PostScreen />
+                  </PostProvider>
+                }
+              />
+              <Route path="/connexion" element={<ConnexionScreen />} />
+              <Route path="/inscription" element={<InscriptionScreen />} />
+              <Route path="/events" element={<EventsScreen />} />
+              <Route path="/surveys" element={<SendageScreen />} />
+              <Route path="/members" element={<MembersScreen />} />
+              <Route path="/profile/:userId" element={<MyProfileScreen />} />
+              <Route path="/editprofile" element={<EditProfileScreen />} />
+            </Routes>
+          </UserProvider>
         </Router>
       </AuthProvider>
     </React.StrictMode>

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import "./UserCard.css";
 import { useNavigate } from "react-router-dom";
 import ChatWebSocket from "../ChatPrivate/ChatWebSocket/ChatWebSocket";
+import { hostname } from "../../HostnameConnect/Hostname";
+import ImageWithJWT from "../../utils/ImageWithJWT";
 
 function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   const [isChatWebSocketOpen, setIsChatWebSocketOpen] = useState(false);
@@ -32,9 +34,10 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   const handleChatClick = (e) => {
     e.stopPropagation();
     onOpenChat();
-    setIsChatWebSocketOpen(true); // Ajouter cette ligne
+    setIsChatWebSocketOpen(true);
   };
-
+  // const imageName = user.ProfileImage.split("\\").pop();
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div>
       <div
@@ -44,10 +47,7 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
         role="button"
         tabIndex={0}
       >
-        <img
-          src={`http://localhost:5000/${user.ProfileImage}`}
-          alt={user.FirstName}
-        />
+        <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
         <div className="user-info">
           <h2>
             {user.FirstName} {user.LastName}
@@ -93,6 +93,7 @@ UserCard.propTypes = {
   onOpenChat: PropTypes.func.isRequired,
   onCloseChat: PropTypes.func.isRequired,
   chatPosition: PropTypes.number.isRequired,
+  // token: PropTypes.string.isRequired,
 };
 
 export default UserCard;
