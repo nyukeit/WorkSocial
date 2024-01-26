@@ -16,8 +16,7 @@ const getLikesByPostId = (req, res) => {
 const likePost = (req, res) => {
   const { postId } = req.params;
   const { userId } = req.body;
-  console.info(req.body);
-  console.info(postId);
+
   models.postLike
     .like(postId, userId)
     .then(() => {
