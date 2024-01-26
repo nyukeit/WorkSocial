@@ -9,7 +9,8 @@ const { verifyToken } = require("../middleware/auth");
 // Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
 
+router.get("/posts/:postId/likes", PostLikeController.getLikesByPostId);
 router.post("/posts/:postId/likes", PostLikeController.likePost);
-router.delete("/posts/:postId/likes/:userId", PostLikeController.unlikePost);
+router.delete("/posts/:postId/likes", PostLikeController.unlikePost);
 
 module.exports = router;

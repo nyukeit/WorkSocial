@@ -6,6 +6,13 @@ class PostLikeManager extends AbstractManager {
     super({ table: "post_likes" });
   }
 
+  getLikesByPostId(postId) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Post_ID = ?`,
+      [postId]
+    );
+  }
+
   like(postId, userId) {
     return this.database.query(
       `INSERT INTO ${this.table} (Post_ID, User_ID) VALUES (?, ?)`,

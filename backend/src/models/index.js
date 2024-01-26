@@ -73,6 +73,11 @@ const IndividualchatManager = require("./Manager/IndividualchatManager");
 models.individualchat = new IndividualchatManager();
 models.individualchat.setDatabase(pool);
 
+const PostLikeManager = require("./Manager/PostLikeManager");
+
+models.postLike = new PostLikeManager();
+models.postLike.setDatabase(pool);
+
 const TokenBlacklistManager = require("./Manager/TokenBlacklistManager");
 
 models.tokenBlacklist = new TokenBlacklistManager();
