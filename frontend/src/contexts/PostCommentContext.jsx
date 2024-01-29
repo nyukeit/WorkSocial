@@ -36,6 +36,7 @@ export function PostCommentProvider({ children }) {
           console.error("Erreur lors de la requête:", response.statusText);
           return [];
         }
+        return null; // To be changed
       });
     } catch (error) {
       console.error("Erreur lors de la requête:", error);

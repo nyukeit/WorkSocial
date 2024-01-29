@@ -81,20 +81,6 @@
   padding: 0.8em 1em;
 }
 
-.editPostmodal {
-  position: fixed;
-  width: 30em;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  text-align: left;
-  padding: 1em;
-  z-index: 1000;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
 .postMenuBtn {
   margin: 0.5em;
   border: none;
@@ -102,11 +88,6 @@
   font-size: 0.9em;
   cursor: pointer;
 }
-
-/* i {
-  color: black;
-  margin: none;
-} */
 
 .view-comments-btn {
   text-decoration: none;
