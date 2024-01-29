@@ -15,6 +15,7 @@
 
 .card-title {
   font-size: 1.1em;
+  font-weight: 700;
   margin-bottom: 0.5em;
   margin-top: 0;
 }
@@ -30,18 +31,19 @@
   /* border-radius: 5px 5px 0 0; */
 }
 
-.card-actions {
-  display: flex;
-  justify-content: start;
-  padding: 0 1em 1em;
-}
-
-.card-actions button {
+.action-btn {
   margin-right: 0.5em;
   border: none;
   background-color: transparent;
-  font-size: 0.9em;
+  font-size: 1em;
   cursor: pointer;
+  margin: 1em 0;
+  padding: none;
+}
+
+.action-btn-text {
+  margin: 0 0.3em;
+  font-size: 1.1em;
 }
 
 .username {
@@ -79,47 +81,9 @@
   padding: 0.8em 1em;
 }
 
-.context-btn {
-  border: none;
-  background-color: transparent;
-  font-size: 0.9em;
-  cursor: pointer;
-}
-
-/* .post-menu {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: auto;
-  top: 32%;
-  left: 38.5%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  text-align: right;
-  padding: 1em;
-  z-index: 1000;
-  border-radius: 10px;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-} */
-
 .editPostmodal {
   position: fixed;
   width: 30em;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  text-align: left;
-  padding: 1em;
-  z-index: 1000;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.deletePostmodal {
-  position: fixed;
-  width: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -139,6 +103,46 @@
   cursor: pointer;
 }
 
-i {
+/* i {
   color: black;
+  margin: none;
+} */
+
+.view-comments-btn {
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+  margin-top: none;
+  padding: 5px;
+}
+
+#submit-comment-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: black;
+  width: 20%;
+  margin: 0;
+  padding: 5px;
+  font-size: 1.2em;
+}
+
+.submit-comment-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0;
+}
+
+.modals {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: auto;
+  width: auto;
+  transform: translate(-50%, -50%);
+}
+
+.modal-content {
+  text-align: left;
 }

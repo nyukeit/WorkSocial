@@ -1,21 +1,35 @@
+// Import Modules
 import React, { useEffect, useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
-// import { Toast } from "bootstrap";
+
+// Import Styles
 import "./PostCard.css";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Modal from "react-bootstrap/Modal";
+import { Form as MyForm } from "react-bootstrap";
+
+// Import Utitlities
 import ImageWithJWT from "../../../utils/ImageWithJWT";
 import { hostname } from "../../../HostnameConnect/Hostname";
+
+// Import Contexts
 import { useUser } from "../../../contexts/UserContext";
 import { usePost } from "../../../contexts/PostContext";
 
 export default function PostCard({ post }) {
   const { getPosts } = usePost();
   const { users, loading } = useUser();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
   const [like, setLike] = useState(false);
   const [totalLikes, setTotalLikes] = useState(0);
+  const [comment, setComment] = useState(""); // Ecrire un commentaire
+  const [comments, setComments] = useState(""); // Afficher les commentaires
   const currentUserID = localStorage.getItem("userId");
   const token = localStorage.getItem("userToken");
 
@@ -34,53 +48,73 @@ export default function PostCard({ post }) {
     return <div>Loading...</div>;
   }
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleOpenDelModal = () => {
-    setShowDelModal(true);
-  };
-
-  const handleCloseDelModal = () => {
-    setShowDelModal(false);
-  };
-
-  const handleOpenMenu = () => {
-    if (isMenuOpen) {
-      setIsMenuOpen(false);
-    } else {
-      setIsMenuOpen(true);
+  const getLikes = async () => {
+    try {
+      const response = await fetch(`${hostname}/posts/${post.Post_ID}/likes`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length === 0) {
+          setLike(false);
+          setTotalLikes(0);
+        } else {
+          setTotalLikes(data.length);
+          const userHasLiked = data.some(
+            (l) => parseInt(l.User_ID, 10) === parseInt(currentUserID, 10)
+          );
+          if (userHasLiked) {
+            setLike(true);
+          }
+        }
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
     }
   };
 
-  const renderMenu = () => {
-    if (isMenuOpen) {
-      return (
-        <div className="post-menu">
-          <button
-            className="postMenuBtn"
-            type="button"
-            onClick={handleOpenModal}
-          >
-            Edit
-          </button>
-          <button
-            className="postMenuBtn"
-            type="button"
-            onClick={handleOpenDelModal}
-          >
-            Delete
-          </button>
-        </div>
+  const getComments = async () => {
+    try {
+      const response = await fetch(
+        `${hostname}/posts/${post.Post_ID}/comments`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length === 0) {
+          setComments([]);
+        } else {
+          setComments(data);
+        }
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
     }
-    return null;
   };
+
+  useEffect(() => {
+    getLikes();
+    getComments();
+  }, []);
+
+  // Handle Modals
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const handleOpenDelModal = () => setShowDelModal(true);
+  const handleCloseDelModal = () => setShowDelModal(false);
+  const handleOpenCommentModal = () => setShowCommentModal(true);
+  const handleCloseCommentModal = () => setShowCommentModal(false);
 
   const initialValues = {
     Title: `${post.Title}`,
@@ -121,62 +155,6 @@ export default function PostCard({ post }) {
     }
   };
 
-  const renderModal = showModal && (
-    <div className="editPostmodal">
-      <button className="close-modal" onClick={handleCloseModal} type="button">
-        <i className="fa-solid fa-xmark" />
-      </button>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleEditPost}
-        enableReinitialize
-      >
-        {({ setFieldValue }) => (
-          <Form>
-            <h4>Create Poste</h4>
-            <div className="title-content">
-              <Field name="Title" placeholder="Title" type="text" />
-              <ErrorMessage name="Title" component="div" className="error" />
-
-              <Field name="Content" type="text" placeholder="Write Post" />
-              <ErrorMessage name="Content" component="div" className="error" />
-            </div>
-            <div className="visibility-group">
-              <div className="radio-group">
-                <label htmlFor="Visibility">Public</label>
-                <Field name="Visibility" type="radio" value="Public" />
-                <ErrorMessage name="Public" component="div" className="error" />
-              </div>
-              <div className="radio-group">
-                <label htmlFor="Visibility">Private</label>
-                <Field name="Visibility" type="radio" value="Private" />
-                <ErrorMessage
-                  name="Private"
-                  component="div"
-                  className="error"
-                />
-              </div>
-            </div>
-            <div className="img-upload">
-              <label htmlFor="Image">📎 Attach Image</label>
-              <input
-                id="Image"
-                name="Image"
-                type="file"
-                onChange={(event) =>
-                  setFieldValue("Image", event.currentTarget.files[0])
-                }
-              />
-            </div>
-            <button id="editPost-btn" type="submit">
-              Edit
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-
   const handleDeletePost = async () => {
     try {
       const response = await fetch(`${hostname}/posts/${post.Post_ID}`, {
@@ -197,24 +175,6 @@ export default function PostCard({ post }) {
     }
   };
 
-  const renderDeleteModal = showDelModal && (
-    <div className="deletePostmodal">
-      <button
-        className="close-modal"
-        onClick={handleCloseDelModal}
-        type="button"
-      >
-        <i className="fa-solid fa-xmark" />
-      </button>
-      <div className="delPostAlert">
-        <h3>Are you sure you want to delete this post?</h3>
-        <button id="deletePost-btn" type="button" onClick={handleDeletePost}>
-          Delete
-        </button>
-      </div>
-    </div>
-  );
-
   const handlePostLikeDislike = async (action, userId) => {
     if (action === "like") {
       try {
@@ -231,6 +191,7 @@ export default function PostCard({ post }) {
         );
         if (response.ok) {
           setLike(true);
+          getLikes();
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
         }
@@ -252,6 +213,7 @@ export default function PostCard({ post }) {
         );
         if (response.ok) {
           setLike(false);
+          getLikes();
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
         }
@@ -260,46 +222,40 @@ export default function PostCard({ post }) {
       }
     }
   };
-  useEffect(() => {
-    const getLikes = async () => {
-      try {
-        const response = await fetch(
-          `${hostname}/posts/${post.Post_ID}/likes`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          if (data.length === 0) {
-            setLike(false);
-            setTotalLikes(0);
-          } else {
-            setTotalLikes(data.length);
 
-            const userHasLiked = data.some(
-              (l) => parseInt(l.User_ID, 10) === parseInt(currentUserID, 10)
-            );
-            if (userHasLiked) {
-              setLike(true);
-            }
-          }
-        } else {
-          console.error("Erreur lors de la requête:", response.statusText);
+  const handleComment = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${hostname}/posts/${post.Post_ID}/comments`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ comment }),
         }
-      } catch (error) {
-        console.error("Erreur lors de la requête:", error);
+      );
+      if (response.ok) {
+        console.info("Comment Added");
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
       }
-    };
-    getLikes();
-  }, [like, totalLikes]);
+      setComment("");
+      getComments();
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
+  };
 
   return (
     <div>
-      <div className="card">
+      <Card>
         <div className="card-header">
           <div className="profile">
             <div className="profileImgDiv">
@@ -308,56 +264,189 @@ export default function PostCard({ post }) {
             <span className="username">{postCreator.Username}</span>
           </div>
           {parseInt(currentUserID, 10) === parseInt(postCreator.User_ID, 10) ? (
-            <div className="context-menu">
-              <button
-                className="context-btn"
-                type="button"
-                onClick={handleOpenMenu}
-              >
-                <i className="fa-solid fa-ellipsis-vertical" />
-              </button>
-            </div>
+            <DropdownButton id="context-menu-btn">
+              <Dropdown.Item onClick={handleOpenModal}>Edit</Dropdown.Item>
+              <Dropdown.Item onClick={handleOpenDelModal}>Delete</Dropdown.Item>
+            </DropdownButton>
           ) : null}
-          {renderMenu()}
         </div>
-        <div className="card-img">
-          <ImageWithJWT className="post-img" imageUrl={imageUrl[0]} />
-        </div>
-        <div className="card-body">
-          <h5 className="card-title">{post.Title}</h5>
-          <p className="card-text">{post.Content}</p>
-        </div>
-        <div className="card-actions">
+        <Card.Body>
+          <div className="card-img">
+            <ImageWithJWT className="post-img" imageUrl={imageUrl[0]} />
+          </div>
           {!like ? (
-            <>
-              <button
-                name="like"
-                type="button"
-                onClick={() => handlePostLikeDislike("like", currentUserID)}
-              >
-                <i className="fa-regular fa-heart" />
-              </button>
-              <span>{totalLikes}</span>
-            </>
+            <button
+              className="action-btn"
+              name="like"
+              type="button"
+              onClick={() => handlePostLikeDislike("like", currentUserID)}
+            >
+              <i className="fa-regular fa-heart" />
+              <span className="action-btn-text">{totalLikes}</span>
+            </button>
           ) : (
             <>
               <button
+                className="action-btn"
                 name="unlike"
                 type="button"
                 onClick={() => handlePostLikeDislike("unlike", currentUserID)}
               >
                 <i className="fa-solid fa-heart" />
               </button>
-              <span>{totalLikes}</span>
+              <span className="action-btn-text">{totalLikes}</span>
             </>
           )}
-          <button className="comment" type="button">
+          <button
+            className="action-btn"
+            type="button"
+            onClick={handleOpenCommentModal}
+          >
             <i className="fa-regular fa-comment" />
           </button>
-        </div>
-      </div>
-      {renderModal}
-      {renderDeleteModal}
+          <Card.Title>{post.Title}</Card.Title>
+          <Card.Text>{post.Content}</Card.Text>
+          <Card.Link
+            onClick={handleOpenCommentModal}
+            className="view-comments-btn"
+          >
+            View All Comments
+          </Card.Link>
+          <MyForm className="submit-comment-form">
+            <MyForm.Control
+              type="text"
+              placeholder="Write a comment..."
+              value={comment}
+              onChange={handleComment}
+            />
+            <button
+              id="submit-comment-btn"
+              type="submit"
+              onClick={handleSubmitComment}
+            >
+              Post
+            </button>
+          </MyForm>
+        </Card.Body>
+      </Card>
+      <Modal show={showModal} onHide={handleCloseModal} className="modals">
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleEditPost}
+            enableReinitialize
+          >
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="title-content">
+                  <label htmlFor="Title">Title</label>
+                  <Field
+                    name="Title"
+                    placeholder="Title"
+                    type="text"
+                    className="form-control"
+                  />
+                  <label htmlFor="Content">Content</label>
+                  <Field
+                    name="Content"
+                    component="textarea"
+                    rows="3"
+                    placeholder="Write Post"
+                    className="form-control"
+                  />
+                </div>
+                <div className="visibility-group">
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Public" />
+                    <label htmlFor="Visibility">Public</label>
+                  </div>
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Private" />
+                    <label htmlFor="Visibility">Private</label>
+                  </div>
+                </div>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" />
+                    Attach Image
+                  </label>
+                  <input
+                    id="Image"
+                    name="Image"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("Image", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <button id="editPost-btn" type="submit">
+                  Edit
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showDelModal}
+        onHide={handleCloseDelModal}
+        className="modals"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDelModal}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={handleDeletePost}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showCommentModal}
+        onHide={handleCloseCommentModal}
+        className="modals"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Comments</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {comments.length === 0 ? (
+            <p>No comments yet</p>
+          ) : (
+            comments.map((ct) => (
+              <div className="comment" key={ct.Comment_ID}>
+                {/* <ImageWithJWT
+                  imageUrl={`${hostname}/upload/${commentCreator.ProfileImage}`}
+                /> */}
+                <p>{ct.Comment}</p>
+              </div>
+            ))
+          )}
+
+          <MyForm className="submit-comment-form">
+            <MyForm.Control
+              type="text"
+              placeholder="Write a comment..."
+              value={comment}
+              onChange={handleComment}
+            />
+            <button
+              id="submit-comment-btn"
+              type="submit"
+              onClick={handleSubmitComment}
+            >
+              <i className="fa-regular fa-paper-plane" />
+            </button>
+          </MyForm>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function PostScreen() {
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
 
-  const posts = usePost();
+  const { posts, getPosts } = usePost();
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -50,7 +50,7 @@ export default function PostScreen() {
         },
       }).then((res) => {
         if (res.ok) {
-          posts.getPosts();
+          getPosts();
         } else {
           console.error("Erreur lors de la requête:", res.statusText);
         }
@@ -118,7 +118,7 @@ export default function PostScreen() {
   );
 
   useEffect(() => {
-    posts.getPosts();
+    getPosts();
   }, []);
 
   return (
@@ -129,7 +129,7 @@ export default function PostScreen() {
         </button>
       </div>
       <div className="posts">
-        <PostList posts={posts.posts} />
+        <PostList posts={posts} />
       </div>
       {renderModal}
     </div>
