@@ -20,7 +20,7 @@ label {
   font-size: 16px;
 }
 
-button {
+#editProfile-btn {
   background-color: #007bff;
   color: white;
   padding: 10px 15px;

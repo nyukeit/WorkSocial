@@ -23,7 +23,7 @@
   text-align: center;
 }
 
-button {
+#editProfile-btn {
   padding: 10px 20px; /* Ajustez la taille du bouton selon vos besoins */
   margin-top: 10px; /* Espacement en haut du bouton */
   background-color: #007bff; /* Couleur de fond du bouton */
