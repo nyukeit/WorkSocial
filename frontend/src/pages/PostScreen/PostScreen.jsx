@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 
+import Modal from "react-bootstrap/Modal";
 import PostList from "../../components/Posts/PostList/PostList";
 import "./PostScreen.css";
 import { usePost } from "../../contexts/PostContext";
@@ -14,13 +15,9 @@ export default function PostScreen() {
 
   const { posts, getPosts } = usePost();
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
+  const handleOpenModal = () => setShowModal(true);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  const handleCloseModal = () => setShowModal(false);
 
   const initialValues = {
     Title: "",
@@ -61,62 +58,6 @@ export default function PostScreen() {
     }
   };
 
-  const renderModal = showModal && (
-    <div className="createPostmodal">
-      <button className="close-modal" onClick={handleCloseModal} type="button">
-        <i className="fa-solid fa-xmark" />
-      </button>
-      <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
-        {({ setFieldValue }) => (
-          <Form>
-            <h4>Create Poste</h4>
-            <div className="title-content">
-              <Field name="Title" placeholder="Title" type="text" />
-              <ErrorMessage name="Title" component="div" className="error" />
-
-              <Field name="Content" type="text" placeholder="Write Post" />
-              <ErrorMessage name="Content" component="div" className="error" />
-            </div>
-            <div className="visibility-group">
-              <div className="radio-group">
-                <label htmlFor="Visibility">Public</label>
-                <Field name="Visibility" type="radio" value="Public" />
-                <ErrorMessage name="Public" component="div" className="error" />
-              </div>
-              <div className="radio-group">
-                <label htmlFor="Visibility">Private</label>
-                <Field name="Visibility" type="radio" value="Private" />
-                <ErrorMessage
-                  name="Private"
-                  component="div"
-                  className="error"
-                />
-              </div>
-            </div>
-            <div className="img-upload">
-              <label htmlFor="Image">📎 Attach Image</label>
-              <input
-                id="Image"
-                name="Image"
-                type="file"
-                onChange={(event) =>
-                  setFieldValue("Image", event.currentTarget.files[0])
-                }
-              />
-            </div>
-            <button
-              id="createPost-btn"
-              type="submit"
-              onClick={handleCreatePost}
-            >
-              Create
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-
   useEffect(() => {
     getPosts();
   }, []);
@@ -131,7 +72,62 @@ export default function PostScreen() {
       <div className="posts">
         <PostList posts={posts} />
       </div>
-      {renderModal}
+      <Modal show={showModal} onHide={handleCloseModal} className="modals">
+        <Modal.Header closeButton>Create Post</Modal.Header>
+        <Modal.Body>
+          <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="title-content">
+                  <Field
+                    name="Title"
+                    placeholder="Title"
+                    type="text"
+                    className="form-control"
+                  />
+                  <Field
+                    name="Content"
+                    component="textarea"
+                    rows="3"
+                    placeholder="Write Post"
+                    className="form-control"
+                  />
+                </div>
+                <div className="visibility-group">
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Public" />
+                    <label htmlFor="Visibility">Public</label>
+                  </div>
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Private" />
+                    <label htmlFor="Visibility">Private</label>
+                  </div>
+                </div>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" /> Attach Image
+                  </label>
+                  <input
+                    id="Image"
+                    name="Image"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("Image", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <button
+                  id="createPost-btn"
+                  type="submit"
+                  onClick={handleCreatePost}
+                >
+                  Create
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

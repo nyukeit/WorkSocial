@@ -31,7 +31,7 @@ export default function PostCard({ post }) {
   const [comment, setComment] = useState(""); // Ecrire un commentaire
   const [comments, setComments] = useState(""); // Afficher les commentaires
   const currentUserID = localStorage.getItem("userId");
-  const token = localStorage.getItem("userToken");
+  const token = localStorage.getItem("userToken"); // To Be Removed From Local Storage
 
   const postCreator = users.find((user) => user.User_ID === post.User_ID);
 
@@ -48,6 +48,7 @@ export default function PostCard({ post }) {
     return <div>Loading...</div>;
   }
 
+  // Handle Fetch Likes & Comments
   const getLikes = async () => {
     try {
       const response = await fetch(`${hostname}/posts/${post.Post_ID}/likes`, {
@@ -116,6 +117,7 @@ export default function PostCard({ post }) {
   const handleOpenCommentModal = () => setShowCommentModal(true);
   const handleCloseCommentModal = () => setShowCommentModal(false);
 
+  // Handle Post Edit
   const initialValues = {
     Title: `${post.Title}`,
     Content: `${post.Content}`,
@@ -155,6 +157,7 @@ export default function PostCard({ post }) {
     }
   };
 
+  // Handle Post Delete
   const handleDeletePost = async () => {
     try {
       const response = await fetch(`${hostname}/posts/${post.Post_ID}`, {
@@ -175,6 +178,7 @@ export default function PostCard({ post }) {
     }
   };
 
+  // Handle Post Like / Dislike
   const handlePostLikeDislike = async (action, userId) => {
     if (action === "like") {
       try {
@@ -223,9 +227,8 @@ export default function PostCard({ post }) {
     }
   };
 
-  const handleComment = (e) => {
-    setComment(e.target.value);
-  };
+  // Handle Post Comment
+  const handleComment = (e) => setComment(e.target.value);
 
   const handleSubmitComment = async (e) => {
     e.preventDefault();
@@ -253,6 +256,7 @@ export default function PostCard({ post }) {
     }
   };
 
+  // Handle HTML
   return (
     <div>
       <Card>
@@ -370,8 +374,7 @@ export default function PostCard({ post }) {
                 </div>
                 <div className="img-upload">
                   <label htmlFor="Image">
-                    <i className="fa-solid fa-image" />
-                    Attach Image
+                    <i className="fa-solid fa-image" /> Attach Image
                   </label>
                   <input
                     id="Image"
@@ -451,6 +454,7 @@ export default function PostCard({ post }) {
   );
 }
 
+// PropTypes
 PostCard.propTypes = {
   post: PropTypes.shape({
     Title: PropTypes.string.isRequired,
