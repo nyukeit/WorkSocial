@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
 import "./SurveyCard.css";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Modal from "react-bootstrap/Modal";
+import { Form as MyForm } from "react-bootstrap";
 import ImageWithJWT from "../../../utils/ImageWithJWT";
 import { hostname } from "../../../HostnameConnect/Hostname";
 import { useUser } from "../../../contexts/UserContext";
@@ -10,69 +16,182 @@ import { useSurvey } from "../../../contexts/SurveyContext";
 export default function SurveyCard({ survey }) {
   const { getSurveys } = useSurvey();
   const { users, loading } = useUser();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
-  const currentUser = localStorage.getItem("userId");
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [like, setLike] = useState(false);
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [comment, setComment] = useState(""); // Ecrire un commentaire
+  const [comments, setComments] = useState(""); // Afficher les commentaires
+  const currentUserID = localStorage.getItem("userId");
   const token = localStorage.getItem("userToken");
 
-  if (loading) return <div>Loading...</div>; // Wait for users to load
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const surveyCreator = users.find((user) => user.User_ID === survey.User_ID);
+
+  if (!surveyCreator) {
+    return <div>Loading...</div>;
+  }
 
   const imageUrl = [
     `${hostname}/upload/${survey.Image}`,
     `${hostname}/upload/${surveyCreator.ProfileImage}`,
   ];
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
+  // Handle Modals
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const handleOpenDelModal = () => setShowDelModal(true);
+  const handleCloseDelModal = () => setShowDelModal(false);
+  const handleOpenCommentModal = () => setShowCommentModal(true);
+  const handleCloseCommentModal = () => setShowCommentModal(false);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleOpenDelModal = () => {
-    setShowDelModal(true);
-  };
-
-  const handleCloseDelModal = () => {
-    setShowDelModal(false);
-  };
-
-  const handleOpenMenu = () => {
-    if (isMenuOpen) {
-      setIsMenuOpen(false);
-    } else {
-      setIsMenuOpen(true);
-    }
-  };
-
-  const renderMenu = () => {
-    if (isMenuOpen) {
-      return (
-        <div className="survey-menu">
-          <button
-            className="surveyMenuBtn"
-            type="button"
-            onClick={handleOpenModal}
-          >
-            Edit
-          </button>
-          <button
-            className="surveyMenuBtn"
-            type="button"
-            onClick={handleOpenDelModal}
-          >
-            Delete
-          </button>
-        </div>
+  // Handle Fetch Likes & Comments
+  const getLikes = async () => {
+    try {
+      const response = await fetch(
+        `${hostname}/surveys/${survey.Survey_ID}/likes`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length === 0) {
+          setLike(false);
+          setTotalLikes(0);
+        } else {
+          setTotalLikes(data.length);
+          const userHasLiked = data.some(
+            (l) => parseInt(l.User_ID, 10) === parseInt(currentUserID, 10)
+          );
+          if (userHasLiked) {
+            setLike(true);
+          }
+        }
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
     }
-    return null;
   };
 
+  const getComments = async () => {
+    try {
+      const response = await fetch(
+        `${hostname}/surveys/${survey.Survey_ID}/comments`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length === 0) {
+          setComments([]);
+        } else {
+          setComments(data);
+        }
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
+  };
+
+  useEffect(() => {
+    getLikes();
+    getComments();
+  }, []);
+
+  // Handle Post Like / Dislike
+  const handleSurveyLikeDislike = async (action, userId) => {
+    if (action === "like") {
+      try {
+        const response = await fetch(
+          `${hostname}/surveys/${survey.Survey_ID}/likes`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        if (response.ok) {
+          setLike(true);
+          getLikes();
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    } else if (action === "unlike") {
+      try {
+        const response = await fetch(
+          `${hostname}/posts/${survey.Survey_ID}/likes`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        if (response.ok) {
+          setLike(false);
+          getLikes();
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    }
+  };
+
+  // Handle Survey Comment
+  const handleComment = (e) => setComment(e.target.value);
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        `${hostname}/surveys/${survey.Survey_ID}/comments`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ comment }),
+        }
+      );
+      if (response.ok) {
+        console.info("Comment Added");
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+      setComment("");
+      getComments();
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
+  };
+
+  // Handle Edit Survey
   const initialValues = {
     Title: `${survey.Title}`,
     Content: `${survey.Content}`,
@@ -129,70 +248,7 @@ export default function SurveyCard({ survey }) {
     }
   };
 
-  const renderModal = showModal && (
-    <div className="editSurveymodal">
-      <button className="close-modal" onClick={handleCloseModal} type="button">
-        <i className="fa-solid fa-xmark" />
-      </button>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleEditSurvey}
-        enableReinitialize
-      >
-        {({ setFieldValue }) => (
-          <Form>
-            <h4>Edit Survey</h4>
-            <div className="title-content">
-              <Field name="Title" placeholder="Title" type="text" />
-              <Field name="Content" type="text" placeholder="Write Survey" />
-            </div>
-            <div className="visibility-group">
-              <div className="radio-group">
-                <label htmlFor="Visibility">Public</label>
-                <Field name="Visibility" type="radio" value="Public" />
-              </div>
-              <div className="radio-group">
-                <label htmlFor="Visibility">Private</label>
-                <Field name="Visibility" type="radio" value="Private" />
-              </div>
-            </div>
-            <div className="options-group">
-              <label htmlFor="Option1">Option 1</label>
-              <Field name="Option1" type="text" />
-              {/* <MyField name="Option1" type="radio" /> */}
-
-              <label htmlFor="Option2">Option 2</label>
-              <Field name="Option2" type="text" />
-              {/* <MyField name="Option2" type="radio" /> */}
-
-              <label htmlFor="Option3">Option 3</label>
-              <Field name="Option3" type="text" />
-              {/* <MyField name="Option3" type="radio" /> */}
-
-              <label htmlFor="Options4">Option 4</label>
-              <Field name="Option4" type="text" />
-              {/* <MyField name="Option4" type="radio" /> */}
-            </div>
-            <div className="img-upload">
-              <label htmlFor="Image">📎 Attach Image</label>
-              <input
-                id="Image"
-                name="Image"
-                type="file"
-                onChange={(event) =>
-                  setFieldValue("Image", event.currentTarget.files[0])
-                }
-              />
-            </div>
-            <button id="editSurvey-btn" type="submit">
-              Edit
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-
+  // Handle Delete Survey
   const handleDeleteSurvey = async () => {
     try {
       const response = await fetch(`${hostname}/surveys/${survey.Survey_ID}`, {
@@ -213,31 +269,9 @@ export default function SurveyCard({ survey }) {
     }
   };
 
-  const renderDeleteModal = showDelModal && (
-    <div className="deleteSurveymodal">
-      <button
-        className="close-modal"
-        onClick={handleCloseDelModal}
-        type="button"
-      >
-        <i className="fa-solid fa-xmark" />
-      </button>
-      <div className="delSurveyAlert">
-        <h3>Are you sure you want to delete this survey?</h3>
-        <button
-          id="deleteSurvey-btn"
-          type="button"
-          onClick={handleDeleteSurvey}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <div>
-      <div className="card">
+      <Card>
         <div className="card-header">
           <div className="profile">
             <div className="profileImgDiv">
@@ -245,68 +279,228 @@ export default function SurveyCard({ survey }) {
             </div>
             <span className="username">{surveyCreator.Username}</span>
           </div>
-          {parseInt(currentUser, 10) === parseInt(surveyCreator.User_ID, 10) ? (
-            <div className="context-menu">
-              <button
-                className="context-btn"
-                type="button"
-                onClick={handleOpenMenu}
-              >
-                <i className="fa-solid fa-ellipsis-vertical" />
-              </button>
-            </div>
+          {parseInt(currentUserID, 10) ===
+          parseInt(surveyCreator.User_ID, 10) ? (
+            <DropdownButton id="context-menu-btn">
+              <Dropdown.Item onClick={handleOpenModal}>Edit</Dropdown.Item>
+              <Dropdown.Item onClick={handleOpenDelModal}>Delete</Dropdown.Item>
+            </DropdownButton>
           ) : null}
-          {renderMenu()}
         </div>
-        <div className="card-img">
-          <ImageWithJWT className="survey-img" imageUrl={imageUrl[0]} />
-        </div>
-        <div className="card-body">
-          <h5 className="card-title">{survey.Title}</h5>
-          <p className="card-text">{survey.Content}</p>
-        </div>
-        <div className="survey-options">
-          <form>
-            <div className="options-group">
-              <div className="surveyOption">
-                <input name="Options" type="radio" />
-                <label htmlFor="Option1">{survey.Option1}</label>
-              </div>
-              <div className="surveyOption">
-                <input name="Options" type="radio" />
-                <label htmlFor="Option2">{survey.Option2}</label>
-              </div>
-              {survey.Option3 ? (
-                <div className="surveyOption">
-                  <input name="Options" type="radio" />
-                  <label htmlFor="Option3">{survey.Option3}</label>
-                </div>
-              ) : null}
-              {survey.Option4 ? (
-                <div className="surveyOption">
-                  <input name="Options" type="radio" />
-                  <label htmlFor="Option4">{survey.Option4}</label>
-                </div>
-              ) : null}
-            </div>
-            <div className="submit-survey">
-              <button name="submit" type="submit">
-                Vote
+        <Card.Body>
+          <div className="card-img">
+            <ImageWithJWT imageUrl={imageUrl[0]} />
+          </div>
+          {!like ? (
+            <button
+              className="action-btn"
+              name="like"
+              type="button"
+              onClick={() => handleSurveyLikeDislike("like", currentUserID)}
+            >
+              <i className="fa-regular fa-heart" />
+              <span className="action-btn-text">{totalLikes}</span>
+            </button>
+          ) : (
+            <>
+              <button
+                className="action-btn"
+                name="unlike"
+                type="button"
+                onClick={() => handleSurveyLikeDislike("unlike", currentUserID)}
+              >
+                <i className="fa-solid fa-heart" />
               </button>
-            </div>
-          </form>
-        </div>
-        <div className="card-actions">
-          <button className="like" type="button">
-            <i className="fa-regular fa-heart" />
-          </button>
-          <button className="comment" type="button">
+              <span className="action-btn-text">{totalLikes}</span>
+            </>
+          )}
+          <button
+            className="action-btn"
+            type="button"
+            onClick={handleOpenCommentModal}
+          >
             <i className="fa-regular fa-comment" />
           </button>
-        </div>
-      </div>
-      {renderModal}
-      {renderDeleteModal}
+          <div className="card-body">
+            <h5 className="card-title">{survey.Title}</h5>
+            <p className="card-text">{survey.Content}</p>
+          </div>
+          <div className="survey-options">
+            <form>
+              <div className="options-group">
+                <div className="surveyOption">
+                  <input name="Options" type="radio" />
+                  <label htmlFor="Option1">{survey.Option1}</label>
+                </div>
+                <div className="surveyOption">
+                  <input name="Options" type="radio" />
+                  <label htmlFor="Option2">{survey.Option2}</label>
+                </div>
+                {survey.Option3 ? (
+                  <div className="surveyOption">
+                    <input name="Options" type="radio" />
+                    <label htmlFor="Option3">{survey.Option3}</label>
+                  </div>
+                ) : null}
+                {survey.Option4 ? (
+                  <div className="surveyOption">
+                    <input name="Options" type="radio" />
+                    <label htmlFor="Option4">{survey.Option4}</label>
+                  </div>
+                ) : null}
+              </div>
+              <div className="submit-survey">
+                <button name="submit" type="submit">
+                  Vote
+                </button>
+              </div>
+            </form>
+          </div>
+        </Card.Body>
+      </Card>
+      <Modal show={showModal} onHide={handleCloseModal} className="modals">
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Survey</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleEditSurvey}
+            enableReinitialize
+          >
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="title-content">
+                  <Field
+                    name="Title"
+                    placeholder="Title"
+                    type="text"
+                    className="form-control"
+                  />
+                  <Field
+                    name="Content"
+                    component="textarea"
+                    rows="3"
+                    placeholder="Write Survey"
+                    className="form-control"
+                  />
+                </div>
+                <div className="visibility-group">
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Public" />
+                    <label htmlFor="Visibility">Public</label>
+                  </div>
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Private" />
+                    <label htmlFor="Visibility">Private</label>
+                  </div>
+                </div>
+                <div className="options-group">
+                  <label htmlFor="Option1">Option 1</label>
+                  <Field name="Option1" type="text" className="form-control" />
+                  <label htmlFor="Option2">Option 2</label>
+                  <Field name="Option2" type="text" className="form-control" />
+                  <label htmlFor="Option3">Option 3</label>
+                  <Field name="Option3" type="text" className="form-control" />
+                  <label htmlFor="Options4">Option 4</label>
+                  <Field name="Option4" type="text" className="form-control" />
+                </div>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" /> Attach Image
+                  </label>
+                  <input
+                    id="Image"
+                    name="Image"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("Image", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <button id="editSurvey-btn" type="submit">
+                  Edit
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showDelModal}
+        onHide={handleCloseDelModal}
+        className="modals"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDelModal}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={handleDeleteSurvey}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showDelModal}
+        onHide={handleCloseDelModal}
+        className="modals"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this post?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseDelModal}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={handleDeleteSurvey}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showCommentModal}
+        onHide={handleCloseCommentModal}
+        className="modals"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Comments</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {comments.length === 0 ? (
+            <p>No comments yet</p>
+          ) : (
+            comments.map((ct) => (
+              <div className="comment" key={ct.Comment_ID}>
+                {/* <ImageWithJWT
+                  imageUrl={`${hostname}/upload/${commentCreator.ProfileImage}`}
+                /> */}
+                <p>{ct.Comment}</p>
+              </div>
+            ))
+          )}
+
+          <MyForm className="submit-comment-form">
+            <MyForm.Control
+              type="text"
+              placeholder="Write a comment..."
+              value={comment}
+              onChange={handleComment}
+            />
+            <button
+              id="submit-comment-btn"
+              type="submit"
+              onClick={handleSubmitComment}
+            >
+              <i className="fa-regular fa-paper-plane" />
+            </button>
+          </MyForm>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
