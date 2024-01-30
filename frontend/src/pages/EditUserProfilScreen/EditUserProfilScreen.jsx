@@ -295,7 +295,9 @@ function EditUserProfilScreen() {
                 className="error"
               />
             </div>
-            <button type="submit">Modifier</button>
+            <button type="submit" id="editProfile-btn">
+              Modifier
+            </button>
           </Form>
         )}
       </Formik>

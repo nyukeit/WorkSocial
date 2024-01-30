@@ -20,7 +20,7 @@
   border: 1px solid #ddd;
 }
 
-button[type="submit"] {
+#signup-btn {
   width: 100%;
   padding: 10px;
   border: none;
@@ -30,7 +30,7 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
+#signup-btn:hover {
   background-color: #0056b3;
 }
 

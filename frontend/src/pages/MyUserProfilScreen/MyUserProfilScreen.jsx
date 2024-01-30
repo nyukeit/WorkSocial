@@ -89,7 +89,7 @@ function MyUserProfilScreen() {
           </tr>
         </tbody>
       </table>
-      <button type="button">
+      <button type="button" id="editProfil-btn">
         <Link to="/editprofil">Modifier votre profil</Link>
       </button>
     </div>
