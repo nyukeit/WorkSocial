@@ -32,6 +32,7 @@ const eventCommentsLikesRouter = require("./routers/EventCommentsLikesRouter");
 const surveyCommentsRouter = require("./routers/SurveyCommentsRouter");
 const individualchatRouter = require("./routers/IndividualchatRouter");
 const PostLikeDislikeRouter = require("./routers/PostLikeDislikeRoutes");
+const SurveyLikesRouter = require("./routers/SurveyLikesRouter");
 
 app.use(userRouter);
 app.use(postRouter);
@@ -43,6 +44,7 @@ app.use(eventCommentsLikesRouter);
 app.use(surveyCommentsRouter);
 app.use(individualchatRouter);
 app.use(PostLikeDislikeRouter);
+app.use(SurveyLikesRouter);
 
 // serve the `backend/public` folder for public resources
 app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));

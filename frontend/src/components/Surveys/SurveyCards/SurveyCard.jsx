@@ -140,7 +140,7 @@ export default function SurveyCard({ survey }) {
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${hostname}/posts/${survey.Survey_ID}/likes`,
+          `${hostname}/surveys/${survey.Survey_ID}/likes`,
           {
             method: "DELETE",
             headers: {
