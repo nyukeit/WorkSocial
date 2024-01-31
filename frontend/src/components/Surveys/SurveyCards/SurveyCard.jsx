@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Modal from "react-bootstrap/Modal";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import { Form as MyForm } from "react-bootstrap";
 import ImageWithJWT from "../../../utils/ImageWithJWT";
 import { hostname } from "../../../HostnameConnect/Hostname";
@@ -23,6 +24,9 @@ export default function SurveyCard({ survey }) {
   const [totalLikes, setTotalLikes] = useState(0);
   const [comment, setComment] = useState(""); // Ecrire un commentaire
   const [comments, setComments] = useState(""); // Afficher les commentaires
+  const [votes, setVotes] = useState(0);
+  const [votedOption, setvotedOption] = useState("");
+  const [userHasVoted, setUserHasVoted] = useState(false);
   const currentUserID = localStorage.getItem("userId");
   const token = localStorage.getItem("userToken");
 
@@ -49,7 +53,7 @@ export default function SurveyCard({ survey }) {
   const handleOpenCommentModal = () => setShowCommentModal(true);
   const handleCloseCommentModal = () => setShowCommentModal(false);
 
-  // Handle Fetch Likes & Comments
+  // Handle Fetch Likes, Comments & Votes
   const getLikes = async () => {
     try {
       const response = await fetch(
@@ -108,9 +112,72 @@ export default function SurveyCard({ survey }) {
     }
   };
 
+  const getVotes = async () => {
+    try {
+      const response = await fetch(
+        `${hostname}/surveys/${survey.Survey_ID}/votes`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setVotes(data);
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
+  };
+
+  // const voteCreator =
+  //   votes.length > 0
+  //     ? users.find(
+  //         (user) => user.User_ID === votes.filter((vote) => vote.User_ID)
+  //       )
+  //     : setUserHasVoted(false);
+  // console.info(voteCreator);
+
+  const option1Votes =
+    votes.length > 0
+      ? Math.ceil(
+          (votes.filter((vote) => vote.Voted_For === "Option 1").length /
+            votes.length) *
+            100
+        )
+      : 0;
+  const option2Votes =
+    votes.length > 0
+      ? Math.ceil(
+          (votes.filter((vote) => vote.Voted_For === "Option 2").length /
+            votes.length) *
+            100
+        )
+      : 0;
+  const option3Votes =
+    votes.length > 0
+      ? Math.ceil(
+          (votes.filter((vote) => vote.Voted_For === "Option 3").length /
+            votes.length) *
+            100
+        )
+      : 0;
+  const option4Votes =
+    votes.length > 0
+      ? Math.ceil(
+          (votes.filter((vote) => vote.Voted_For === "Option 4").length /
+            votes.length) *
+            100
+        )
+      : 0;
+
   useEffect(() => {
     getLikes();
     getComments();
+    getVotes();
   }, []);
 
   // Handle Post Like / Dislike
@@ -188,6 +255,52 @@ export default function SurveyCard({ survey }) {
       getComments();
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
+    }
+  };
+
+  const handleOptionChange = (e) => setvotedOption(e.target.value);
+
+  const handleVote = async (e) => {
+    e.preventDefault();
+
+    // // Check if the user has already voted
+    // if (voteCreator.UserID === currentUserID) {
+    //   setUserHasVoted(true);
+    //   return;
+    // }
+
+    // Check if an option is selected
+    if (votedOption) {
+      console.info("Selected Vote:", votedOption);
+
+      try {
+        const response = await fetch(
+          `${hostname}/surveys/${survey.Survey_ID}/votes`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              votedOption,
+              userId: currentUserID,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          console.info("Vote Added");
+          setUserHasVoted(true);
+          getVotes();
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    } else {
+      console.error("Please select an option before voting.");
     }
   };
 
@@ -326,35 +439,69 @@ export default function SurveyCard({ survey }) {
             <p className="card-text">{survey.Content}</p>
           </div>
           <div className="survey-options">
-            <form>
-              <div className="options-group">
-                <div className="surveyOption">
-                  <input name="Options" type="radio" />
-                  <label htmlFor="Option1">{survey.Option1}</label>
-                </div>
-                <div className="surveyOption">
-                  <input name="Options" type="radio" />
-                  <label htmlFor="Option2">{survey.Option2}</label>
-                </div>
-                {survey.Option3 ? (
-                  <div className="surveyOption">
-                    <input name="Options" type="radio" />
-                    <label htmlFor="Option3">{survey.Option3}</label>
-                  </div>
-                ) : null}
-                {survey.Option4 ? (
-                  <div className="surveyOption">
-                    <input name="Options" type="radio" />
-                    <label htmlFor="Option4">{survey.Option4}</label>
-                  </div>
-                ) : null}
+            {userHasVoted ? (
+              <div className="voting-results">
+                <ProgressBar now={option1Votes} />
+                <ProgressBar now={option2Votes} />
+                <ProgressBar now={option3Votes} />
+                <ProgressBar now={option4Votes} />
               </div>
-              <div className="submit-survey">
-                <button name="submit" type="submit">
-                  Vote
-                </button>
-              </div>
-            </form>
+            ) : (
+              <MyForm>
+                <div className="options-group">
+                  <div className="surveyOption">
+                    <input
+                      name="surveyOption"
+                      type="radio"
+                      className="form-check-input"
+                      value="Option1"
+                      checked={votedOption === "Option1"}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="Option1">{survey.Option1}</label>
+                  </div>
+                  <div className="surveyOption">
+                    <input
+                      name="surveyOption"
+                      type="radio"
+                      className="form-check-input"
+                      value="Option2"
+                      checked={votedOption === "Option2"}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="Option2">{survey.Option2}</label>
+                  </div>
+                  <div className="surveyOption">
+                    <input
+                      name="surveyOption"
+                      type="radio"
+                      className="form-check-input"
+                      value="Option3"
+                      checked={votedOption === "Option3"}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="Option2">{survey.Option3}</label>
+                  </div>
+                  <div className="surveyOption">
+                    <input
+                      name="surveyOption"
+                      type="radio"
+                      className="form-check-input"
+                      value="Option4"
+                      checked={votedOption === "Option4"}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="Option2">{survey.Option4}</label>
+                  </div>
+                  {/* ... other options */}
+                </div>
+                <div className="submit-survey">
+                  <button name="submit" type="submit" onClick={handleVote}>
+                    Vote
+                  </button>
+                </div>
+              </MyForm>
+            )}
           </div>
         </Card.Body>
       </Card>
@@ -387,11 +534,21 @@ export default function SurveyCard({ survey }) {
                 </div>
                 <div className="visibility-group">
                   <div className="radio-group">
-                    <Field name="Visibility" type="radio" value="Public" />
+                    <Field
+                      name="Visibility"
+                      type="radio"
+                      value="Public"
+                      className="form-check-input"
+                    />
                     <label htmlFor="Visibility">Public</label>
                   </div>
                   <div className="radio-group">
-                    <Field name="Visibility" type="radio" value="Private" />
+                    <Field
+                      name="Visibility"
+                      type="radio"
+                      value="Private"
+                      className="form-check-input"
+                    />
                     <label htmlFor="Visibility">Private</label>
                   </div>
                 </div>
