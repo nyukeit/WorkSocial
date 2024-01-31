@@ -125,6 +125,7 @@ export default function SurveyCard({ survey }) {
       if (response.ok) {
         const data = await response.json();
         setVotes(data);
+        console.info(votes);
       } else {
         console.error("Erreur lors de la requête:", response.statusText);
       }
@@ -133,18 +134,10 @@ export default function SurveyCard({ survey }) {
     }
   };
 
-  // const voteCreator =
-  //   votes.length > 0
-  //     ? users.find(
-  //         (user) => user.User_ID === votes.filter((vote) => vote.User_ID)
-  //       )
-  //     : setUserHasVoted(false);
-  // console.info(voteCreator);
-
   const option1Votes =
     votes.length > 0
       ? Math.ceil(
-          (votes.filter((vote) => vote.Voted_For === "Option 1").length /
+          (votes.filter((vote) => vote.Voted_For === "Option1").length /
             votes.length) *
             100
         )
@@ -152,7 +145,7 @@ export default function SurveyCard({ survey }) {
   const option2Votes =
     votes.length > 0
       ? Math.ceil(
-          (votes.filter((vote) => vote.Voted_For === "Option 2").length /
+          (votes.filter((vote) => vote.Voted_For === "Option2").length /
             votes.length) *
             100
         )
@@ -160,7 +153,7 @@ export default function SurveyCard({ survey }) {
   const option3Votes =
     votes.length > 0
       ? Math.ceil(
-          (votes.filter((vote) => vote.Voted_For === "Option 3").length /
+          (votes.filter((vote) => vote.Voted_For === "Option3").length /
             votes.length) *
             100
         )
@@ -168,7 +161,7 @@ export default function SurveyCard({ survey }) {
   const option4Votes =
     votes.length > 0
       ? Math.ceil(
-          (votes.filter((vote) => vote.Voted_For === "Option 4").length /
+          (votes.filter((vote) => vote.Voted_For === "Option4").length /
             votes.length) *
             100
         )
@@ -263,11 +256,15 @@ export default function SurveyCard({ survey }) {
   const handleVote = async (e) => {
     e.preventDefault();
 
-    // // Check if the user has already voted
-    // if (voteCreator.UserID === currentUserID) {
-    //   setUserHasVoted(true);
-    //   return;
-    // }
+    // Check if user has already voted
+    const voteCreator =
+      votes.length > 0 ? votes.find((vote) => vote.User_ID) : null;
+
+    if (voteCreator && voteCreator.User_ID === currentUserID) {
+      console.error("You have already voted.");
+      setUserHasVoted(true);
+      return;
+    }
 
     // Check if an option is selected
     if (votedOption) {
@@ -434,17 +431,31 @@ export default function SurveyCard({ survey }) {
           >
             <i className="fa-regular fa-comment" />
           </button>
-          <div className="card-body">
-            <h5 className="card-title">{survey.Title}</h5>
-            <p className="card-text">{survey.Content}</p>
-          </div>
+          <h5 className="card-title">{survey.Title}</h5>
+          <p className="card-text">{survey.Content}</p>
           <div className="survey-options">
             {userHasVoted ? (
               <div className="voting-results">
-                <ProgressBar now={option1Votes} />
-                <ProgressBar now={option2Votes} />
-                <ProgressBar now={option3Votes} />
-                <ProgressBar now={option4Votes} />
+                <div className="vote-result">
+                  <ProgressBar now={option1Votes > 0 ? option1Votes : 0} />
+                  <span>{survey.Option1}</span>
+                </div>
+                <div className="vote-result">
+                  <ProgressBar now={option2Votes > 0 ? option2Votes : 0} />
+                  <span>{survey.Option2}</span>
+                </div>
+                {survey.Option3 ? (
+                  <div className="vote-result">
+                    <ProgressBar now={option3Votes > 0 ? option3Votes : 0} />
+                    <span>{survey.Option3}</span>
+                  </div>
+                ) : null}
+                {survey.Option4 ? (
+                  <div className="vote-result">
+                    <ProgressBar now={option4Votes > 0 ? option4Votes : 0} />
+                    <span>{survey.Option4}</span>
+                  </div>
+                ) : null}
               </div>
             ) : (
               <MyForm>
@@ -471,29 +482,32 @@ export default function SurveyCard({ survey }) {
                     />
                     <label htmlFor="Option2">{survey.Option2}</label>
                   </div>
-                  <div className="surveyOption">
-                    <input
-                      name="surveyOption"
-                      type="radio"
-                      className="form-check-input"
-                      value="Option3"
-                      checked={votedOption === "Option3"}
-                      onChange={handleOptionChange}
-                    />
-                    <label htmlFor="Option2">{survey.Option3}</label>
-                  </div>
-                  <div className="surveyOption">
-                    <input
-                      name="surveyOption"
-                      type="radio"
-                      className="form-check-input"
-                      value="Option4"
-                      checked={votedOption === "Option4"}
-                      onChange={handleOptionChange}
-                    />
-                    <label htmlFor="Option2">{survey.Option4}</label>
-                  </div>
-                  {/* ... other options */}
+                  {survey.Option3 ? (
+                    <div className="surveyOption">
+                      <input
+                        name="surveyOption"
+                        type="radio"
+                        className="form-check-input"
+                        value="Option3"
+                        checked={votedOption === "Option3"}
+                        onChange={handleOptionChange}
+                      />
+                      <label htmlFor="Option3">{survey.Option3}</label>
+                    </div>
+                  ) : null}
+                  {survey.Option4 ? (
+                    <div className="surveyOption">
+                      <input
+                        name="surveyOption"
+                        type="radio"
+                        className="form-check-input"
+                        value="Option4"
+                        checked={votedOption === "Option4"}
+                        onChange={handleOptionChange}
+                      />
+                      <label htmlFor="Option4">{survey.Option4}</label>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="submit-survey">
                   <button name="submit" type="submit" onClick={handleVote}>
