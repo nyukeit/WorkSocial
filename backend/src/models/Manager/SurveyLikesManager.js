@@ -1,35 +1,31 @@
-// SurveyLikesManager.js
+// managers/SurveyLikeManager.js
 const AbstractManager = require("../AbstractManager/AbstractManager");
 
-class SurveyLikesManager extends AbstractManager {
+class SurveyLikeManager extends AbstractManager {
   constructor() {
     super({ table: "survey_likes" });
   }
 
-  getSurveyLikes() {
-    return this.database.query(`SELECT * FROM ${this.table}`);
+  getLikesBySurveyId(surveyId) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Survey_ID = ?`,
+      [surveyId]
+    );
   }
 
-  getSurveyLikesByID(id) {
-    return this.database.query(`SELECT * FROM ${this.table} WHERE id = ?`, [
-      id,
-    ]);
+  like(surveyId, userId) {
+    return this.database.query(
+      `INSERT INTO ${this.table} (Survey_ID, User_ID) VALUES (?, ?)`,
+      [surveyId, userId]
+    );
   }
 
-  createSurveyLikes(surveyLikes) {
-    return this.database.query(`INSERT INTO ${this.table} SET ?`, surveyLikes);
-  }
-
-  updateSurveyLikes(id, surveyLikes) {
-    return this.database.query(`UPDATE ${this.table} SET ? WHERE id = ?`, [
-      surveyLikes,
-      id,
-    ]);
-  }
-
-  deleteSurveyLikes(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
+  unlike(surveyId, userId) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE Survey_ID = ? AND User_ID = ?`,
+      [surveyId, userId]
+    );
   }
 }
 
-module.exports = SurveyLikesManager;
+module.exports = SurveyLikeManager;
