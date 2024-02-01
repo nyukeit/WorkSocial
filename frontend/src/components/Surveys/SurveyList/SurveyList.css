@@ -1,9 +1,0 @@
-.survey-list {
-  display: flex;
-  padding: 0;
-  margin: 0;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  /* gap: 20px; */
-}

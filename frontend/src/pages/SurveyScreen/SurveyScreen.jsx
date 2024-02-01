@@ -1,26 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field /* useField, useFormikContext */ } from "formik";
-
-import SurveyList from "../../components/Surveys/SurveyList/SurveyList";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+// import SurveyList from "../../components/Surveys/SurveyList/SurveyList";
+import SurveyCard from "../../components/Surveys/SurveyCard";
 import "./SurveyScreen.css";
 import { useSurvey } from "../../contexts/SurveyContext";
 import { hostname } from "../../HostnameConnect/Hostname";
+// import { useSurveyVotes } from "../../contexts/SurveyVotesContext";
 
 export default function SurveyScreen() {
   const [showModal, setShowModal] = useState(false);
+  const {
+    surveys,
+    getSurveys,
+    votes,
+    getVotes,
+    likes,
+    getLikes,
+    comments,
+    getComments,
+  } = useSurvey();
+
+  useEffect(() => {
+    getSurveys();
+    getVotes();
+    getComments();
+    getLikes();
+  }, []);
 
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
 
-  const surveys = useSurvey();
+  surveys.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const initialValues = {
     Title: "",
@@ -68,7 +83,7 @@ export default function SurveyScreen() {
       });
       if (response.ok) {
         console.info("Survey Created");
-        surveys.getSurveys();
+        getSurveys();
       } else {
         console.error("Erreur lors de la requête:", response.statusText);
       }
@@ -78,86 +93,101 @@ export default function SurveyScreen() {
     }
   };
 
-  const renderModal = showModal && (
-    <div className="createSurveymodal">
-      <button className="close-modal" onClick={handleCloseModal} type="button">
-        <i className="fa-solid fa-xmark" />
-      </button>
-      <Formik initialValues={initialValues} onSubmit={handleCreateSurvey}>
-        {({ setFieldValue }) => (
-          <Form>
-            <h4>Create Survey</h4>
-            <div className="title-content">
-              <Field name="Title" placeholder="Title" type="text" />
-
-              <Field name="Content" type="text" placeholder="Write Survey" />
-            </div>
-            <div className="visibility-group">
-              <Field name="Visibility" type="radio" value="Public" />
-              <label htmlFor="Visibility">Public</label>
-
-              <Field name="Visibility" type="radio" value="Private" />
-              <label htmlFor="Visibility">Private</label>
-            </div>
-            <div className="options-group">
-              <label htmlFor="Option1">Option 1</label>
-              <Field name="Option1" type="text" />
-              {/* <MyField name="Option1" type="radio" /> */}
-
-              <label htmlFor="Option2">Option 2</label>
-              <Field name="Option2" type="text" />
-              {/* <MyField name="Option2" type="radio" /> */}
-
-              <label htmlFor="Option3">Option 3</label>
-              <Field name="Option3" type="text" />
-              {/* <MyField name="Option3" type="radio" /> */}
-
-              <label htmlFor="Options4">Option 4</label>
-              <Field name="Option4" type="text" />
-              {/* <MyField name="Option4" type="radio" /> */}
-            </div>
-            <div className="img-upload">
-              <label htmlFor="Image">
-                <i className="fa-solid fa-image" />
-                Attach Image
-              </label>
-              <input
-                id="Image"
-                name="Image"
-                type="file"
-                onChange={(event) =>
-                  setFieldValue("Image", event.currentTarget.files[0])
-                }
-              />
-            </div>
-            <button
-              id="createSurvey-btn"
-              type="submit"
-              // onClick={handleCreateSurvey}
-            >
-              Create
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-
-  useEffect(() => {
-    surveys.getSurveys();
-  }, []);
-
   return (
     <div className="surveys-container">
-      <div className="button">
-        <button id="createSurvey-btn" type="button" onClick={handleOpenModal}>
-          Create Survey
-        </button>
+      <Button onClick={handleOpenModal}>Create Survey</Button>
+      <Modal show={showModal} onHide={handleCloseModal} className="modals">
+        <Modal.Header closeButton>
+          <Modal.Title>Create Survey</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Formik initialValues={initialValues} onSubmit={handleCreateSurvey}>
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="title-content">
+                  <Field
+                    name="Title"
+                    placeholder="Title"
+                    type="text"
+                    className="form-control"
+                  />
+
+                  <Field
+                    name="Content"
+                    component="textarea"
+                    rows="3"
+                    placeholder="Write Survey"
+                    className="form-control"
+                  />
+                </div>
+                <div className="visibility-group">
+                  <Field
+                    name="Visibility"
+                    type="radio"
+                    value="Public"
+                    className="form-check-input"
+                  />
+                  <label htmlFor="Visibility">Public</label>
+
+                  <Field
+                    name="Visibility"
+                    type="radio"
+                    value="Private"
+                    className="form-check-input"
+                  />
+                  <label htmlFor="Visibility">Private</label>
+                </div>
+                <div className="options-group">
+                  <label htmlFor="Option1">Option 1</label>
+                  <Field name="Option1" type="text" className="form-control" />
+                  <label htmlFor="Option2">Option 2</label>
+                  <Field name="Option2" type="text" className="form-control" />
+                  <label htmlFor="Option3">Option 3</label>
+                  <Field name="Option3" type="text" className="form-control" />
+                  <label htmlFor="Options4">Option 4</label>
+                  <Field name="Option4" type="text" className="form-control" />
+                </div>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" /> Attach Image
+                  </label>
+                  <input
+                    id="Image"
+                    name="Image"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("Image", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <Button type="submit">Create</Button>
+              </Form>
+            )}
+          </Formik>
+        </Modal.Body>
+      </Modal>
+      <div className="survey-list">
+        {surveys.map((survey) => {
+          const surveyVotes = votes.filter(
+            (vote) => vote.Survey_ID === survey.Survey_ID
+          );
+          const surveyLikes = likes.filter(
+            (like) => like.Survey_ID === survey.Survey_ID
+          );
+          const surveyComments = comments.filter(
+            (comment) => comment.Survey_ID === survey.Survey_ID
+          );
+          return (
+            <SurveyCard
+              key={survey.Survey_ID}
+              survey={survey}
+              surveyVotes={surveyVotes}
+              surveyLikes={surveyLikes}
+              surveyComments={surveyComments}
+            />
+          );
+        })}
       </div>
-      <div className="surveys">
-        <SurveyList surveys={surveys.surveys} />
-      </div>
-      {renderModal}
     </div>
   );
 }
