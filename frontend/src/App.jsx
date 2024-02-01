@@ -21,6 +21,7 @@ import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
 import { SurveyProvider } from "./contexts/SurveyContext";
 import { PostCommentProvider } from "./contexts/PostCommentContext";
+import { EventProvider } from "./contexts/EventContext";
 
 // Import des CSS
 import "./App.css";
@@ -47,7 +48,14 @@ function App() {
               />
               <Route path="/connexion" element={<ConnexionScreen />} />
               <Route path="/inscription" element={<InscriptionScreen />} />
-              <Route path="/events" element={<EventsScreen />} />
+              <Route
+                path="/events"
+                element={
+                  <EventProvider>
+                    <EventsScreen />
+                  </EventProvider>
+                }
+              />
               <Route
                 path="/surveys"
                 element={

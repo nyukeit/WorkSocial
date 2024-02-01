@@ -5,6 +5,10 @@ class EventManager extends AbstractManager {
     super({ table: "event" });
   }
 
+  findAll() {
+    return this.database.query(`SELECT * FROM ${this.table}`);
+  }
+
   findByPK(id) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE Event_ID = ?`,
