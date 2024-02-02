@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import EventCard from "../EventCard/EventCard";
 
 export default function EventList({ events }) {
-  console.info("Events:", events);
   events.sort((a, b) =>
     new Date(b.StartDate) > new Date(a.StartDate) ? 1 : -1
   );

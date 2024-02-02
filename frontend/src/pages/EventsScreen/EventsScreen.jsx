@@ -20,14 +20,15 @@ export default function EventScreen() {
     EventName: "",
     StartDate: "",
     EndDate: "",
-    StartTime: "",
-    EndTime: "",
+    StartTime: "00:00:00",
+    EndTime: "00:00:00",
     Description: "",
     Visibility: "Public",
     UserID: userID,
   };
 
   const handleCreateEvent = async (values) => {
+    console.info("Form values:", values);
     const {
       EventName,
       StartDate,
@@ -56,12 +57,15 @@ export default function EventScreen() {
         method: "POST",
         body: formData,
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+      }).then((res) => {
+        if (res.ok) {
+          getEvents();
+        } else {
+          console.error("Erreur lors de la requête:", res.statusText);
+        }
       });
-
-      getEvents();
 
       handleCloseModal();
     } catch (error) {
@@ -73,7 +77,7 @@ export default function EventScreen() {
     getEvents();
   }, []);
 
-  // console.("Events in EventScreen:", events);
+  console.info("Events in EventScreen:", events);
 
   return (
     <div className="events-container">
@@ -160,7 +164,11 @@ export default function EventScreen() {
                     }
                   />
                 </div>
-                <Button id="createEvent-btn" type="submit">
+                <Button
+                  id="createEvent-btn"
+                  type="submit"
+                  onClick={handleCreateEvent}
+                >
                   Create
                 </Button>
               </Form>

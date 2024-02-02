@@ -4,13 +4,23 @@ import PropTypes from "prop-types";
 
 // Import Styles
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+// import Button from "react-bootstrap/Button";
+
+// // Import Utils
+// import ImageWithJWT from "../../../utils/ImageWithJWT";
+// import { hostname } from "../../../HostnameConnect/Hostname";
+
+// // Import Contexts
+// import { useUser } from "../../../contexts/UserContext";
+// import { useEvent } from "../../../contexts/EventContext";
 
 export default function EventCard({ event }) {
+  console.info("event card", event);
   return (
     <Card>
       <Card.Body>
         <Card.Title>{event.EventName}</Card.Title>
+        <div className="card-img">img</div>
         <Card.Text>
           <strong>Start Date:</strong> {event.StartDate}
           <br />
@@ -24,7 +34,6 @@ export default function EventCard({ event }) {
           <br />
           <strong>Visibility:</strong> {event.Visibility}
         </Card.Text>
-        <Button variant="primary">{/* actions pour l'événement ici */}</Button>
       </Card.Body>
     </Card>
   );
