@@ -20,7 +20,7 @@ import { AuthProvider } from "./utils/useConnecte";
 import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
 import { SurveyProvider } from "./contexts/SurveyContext";
-import { PostCommentProvider } from "./contexts/PostCommentContext";
+
 import { EventProvider } from "./contexts/EventContext";
 
 // Import des CSS
@@ -40,9 +40,7 @@ function App() {
                 path="/posts"
                 element={
                   <PostProvider>
-                    <PostCommentProvider>
-                      <PostScreen />
-                    </PostCommentProvider>
+                    <PostScreen />
                   </PostProvider>
                 }
               />

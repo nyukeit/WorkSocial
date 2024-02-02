@@ -46,6 +46,8 @@ function MyUserProfilScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
+  const showModifyProfileButton = userIdLoggedIn === userId;
+
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
     <div className="my-profile-container">
@@ -89,9 +91,11 @@ function MyUserProfilScreen() {
           </tr>
         </tbody>
       </table>
-      <button type="button" id="editProfil-btn">
-        <Link to="/editprofil">Modifier votre profil</Link>
-      </button>
+      {showModifyProfileButton && (
+        <button type="button" id="editProfil-btn">
+          <Link to="/editprofil">Modifier votre profil</Link>
+        </button>
+      )}
     </div>
   );
 }
