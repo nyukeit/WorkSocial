@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/pages/HomeScreen/HomeScreen';
 import ConnexionScreen from './src/pages/connexionScreen/ConnexionScreen';
 import BarNav from './src/pages/BarNav/BarNav';
-import InscriptionMobileScreen from './src/pages/InscriptionWebMobil/InscriptionScreen/InscriptionMobileScreen';
+import InscriptionMobileScreen from './src/pages/InscriptionWebMobil/InscriptionMobileScreen/InscriptionMobileScreen';
 import InscriptionWebScreen from './src/pages/InscriptionWebMobil/InscriptionWebScreen/InscriptionWebScreen';
 import MembersScreen from './src/pages/DrawerPages/MembersScreen/MembresScreen';
 import MyProfileScreen from './src/pages/DrawerPages/ProfileScreen/MyProfileScreen/MyProfilScreen';
