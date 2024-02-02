@@ -13,27 +13,50 @@ import Modal from "react-bootstrap/Modal";
 import { Form as MyForm } from "react-bootstrap";
 
 // Import Utitlities
-import ImageWithJWT from "../../../utils/ImageWithJWT";
-import { hostname } from "../../../HostnameConnect/Hostname";
+import ImageWithJWT from "../../utils/ImageWithJWT";
+import { hostname } from "../../HostnameConnect/Hostname";
 
 // Import Contexts
-import { useUser } from "../../../contexts/UserContext";
-import { usePost } from "../../../contexts/PostContext";
+import { useUser } from "../../contexts/UserContext";
+import { usePost } from "../../contexts/PostContext";
 
-export default function PostCard({ post }) {
-  const { getPosts } = usePost();
+export default function PostCard({ post, postLikes, postComments }) {
+  // Contexts
   const { users, loading } = useUser();
+  const { getPosts, getLikes, getComments } = usePost();
+
+  // States
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [like, setLike] = useState(false);
-  const [totalLikes, setTotalLikes] = useState(0);
-  const [comment, setComment] = useState(""); // Ecrire un commentaire
-  const [comments, setComments] = useState(""); // Afficher les commentaires
-  const currentUserID = localStorage.getItem("userId");
-  const token = localStorage.getItem("userToken"); // To Be Removed From Local Storage
+  const [comment, setComment] = useState("");
 
+  // Local Storage Variables
+  const currentUserID = parseInt(localStorage.getItem("userId"), 10);
+  const token = localStorage.getItem("userToken");
+
+  // Mapping Creators
   const postCreator = users.find((user) => user.User_ID === post.User_ID);
+
+  const commentUserPairs = postComments.map((cmt) => {
+    const commentCreator = users.find(
+      (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
+    );
+    return {
+      commnt: cmt,
+      user: commentCreator,
+    };
+  });
+
+  // Check if user has liked
+  const userHasLiked = postLikes.some(
+    (pl) => parseInt(pl.User_ID, 10) === currentUserID
+  );
+
+  useEffect(() => {
+    getLikes();
+    getComments();
+  }, []);
 
   if (!postCreator) {
     return <div>Loading...</div>;
@@ -47,67 +70,6 @@ export default function PostCard({ post }) {
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  // Handle Fetch Likes & Comments
-  const getLikes = async () => {
-    try {
-      const response = await fetch(`${hostname}/posts/${post.Post_ID}/likes`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.length === 0) {
-          setLike(false);
-          setTotalLikes(0);
-        } else {
-          setTotalLikes(data.length);
-          const userHasLiked = data.some(
-            (l) => parseInt(l.User_ID, 10) === parseInt(currentUserID, 10)
-          );
-          if (userHasLiked) {
-            setLike(true);
-          }
-        }
-      } else {
-        console.error("Erreur lors de la requête:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
-  };
-
-  const getComments = async () => {
-    try {
-      const response = await fetch(
-        `${hostname}/posts/${post.Post_ID}/comments`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        if (data.length === 0) {
-          setComments([]);
-        } else {
-          setComments(data);
-        }
-      } else {
-        console.error("Erreur lors de la requête:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
-  };
-
-  useEffect(() => {
-    getLikes();
-    getComments();
-  }, []);
 
   // Handle Modals
   const handleOpenModal = () => setShowModal(true);
@@ -194,7 +156,6 @@ export default function PostCard({ post }) {
           }
         );
         if (response.ok) {
-          setLike(true);
           getLikes();
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
@@ -216,7 +177,6 @@ export default function PostCard({ post }) {
           }
         );
         if (response.ok) {
-          setLike(false);
           getLikes();
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
@@ -278,7 +238,7 @@ export default function PostCard({ post }) {
           <div className="card-img">
             <ImageWithJWT className="post-img" imageUrl={imageUrl[0]} />
           </div>
-          {!like ? (
+          {!userHasLiked ? (
             <button
               className="action-btn"
               name="like"
@@ -286,7 +246,7 @@ export default function PostCard({ post }) {
               onClick={() => handlePostLikeDislike("like", currentUserID)}
             >
               <i className="fa-regular fa-heart" />
-              <span className="action-btn-text">{totalLikes}</span>
+              <span className="action-btn-text">{postLikes.length}</span>
             </button>
           ) : (
             <>
@@ -298,7 +258,7 @@ export default function PostCard({ post }) {
               >
                 <i className="fa-solid fa-heart" />
               </button>
-              <span className="action-btn-text">{totalLikes}</span>
+              <span className="action-btn-text">{postLikes.length}</span>
             </>
           )}
           <button
@@ -420,15 +380,22 @@ export default function PostCard({ post }) {
           <Modal.Title>Comments</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {comments.length === 0 ? (
+          {commentUserPairs.length === 0 ? (
             <p>No comments yet</p>
           ) : (
-            comments.map((ct) => (
-              <div className="comment" key={ct.Comment_ID}>
-                {/* <ImageWithJWT
-                  imageUrl={`${hostname}/upload/${commentCreator.ProfileImage}`}
-                /> */}
-                <p>{ct.Comment}</p>
+            commentUserPairs.map(({ commnt, user }) => (
+              <div className="comment" key={commnt.Comment_ID}>
+                {user && (
+                  <div className="profileImgDiv-comments">
+                    <ImageWithJWT
+                      imageUrl={`${hostname}/upload/${user.ProfileImage}`}
+                    />
+                  </div>
+                )}
+                <div className="commentData">
+                  <span className="username-comments">{user.Username}</span>
+                  <p id="comment-content">{commnt.Comment}</p>
+                </div>
               </div>
             ))
           )}
@@ -464,4 +431,22 @@ PostCard.propTypes = {
     Visibility: PropTypes.string.isRequired,
     User_ID: PropTypes.number.isRequired,
   }).isRequired,
+  postLikes: PropTypes.arrayOf(
+    PropTypes.shape({
+      Survey_ID: PropTypes.number.isRequired,
+      User_ID: PropTypes.number.isRequired,
+    })
+  ),
+  postComments: PropTypes.arrayOf(
+    PropTypes.shape({
+      Survey_ID: PropTypes.number.isRequired,
+      User_ID: PropTypes.number.isRequired,
+      Comment: PropTypes.string.isRequired,
+    })
+  ),
+};
+
+PostCard.defaultProps = {
+  postLikes: [],
+  postComments: [],
 };
