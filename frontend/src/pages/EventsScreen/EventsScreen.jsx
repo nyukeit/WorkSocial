@@ -156,7 +156,7 @@ export default function EventScreen() {
                   </div>
 
                   <label htmlFor="Image">Image</label>
-                  <Field
+                  <input
                     name="Image"
                     type="file"
                     onChange={(event) =>
@@ -167,7 +167,7 @@ export default function EventScreen() {
                 <Button
                   id="createEvent-btn"
                   type="submit"
-                  onClick={handleCreateEvent}
+                  // onClick={handleCreateEvent}
                 >
                   Create
                 </Button>

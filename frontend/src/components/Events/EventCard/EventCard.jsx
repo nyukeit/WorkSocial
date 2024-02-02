@@ -6,21 +6,24 @@ import PropTypes from "prop-types";
 import Card from "react-bootstrap/Card";
 // import Button from "react-bootstrap/Button";
 
-// // Import Utils
-// import ImageWithJWT from "../../../utils/ImageWithJWT";
-// import { hostname } from "../../../HostnameConnect/Hostname";
+// Import Utils
+import ImageWithJWT from "../../../utils/ImageWithJWT";
+import { hostname } from "../../../HostnameConnect/Hostname";
 
 // // Import Contexts
 // import { useUser } from "../../../contexts/UserContext";
 // import { useEvent } from "../../../contexts/EventContext";
 
 export default function EventCard({ event }) {
+  const imageUrl = `${hostname}/upload/${event.Image}`;
   console.info("event card", event);
   return (
     <Card>
       <Card.Body>
         <Card.Title>{event.EventName}</Card.Title>
-        <div className="card-img">img</div>
+        <div className="card-img">
+          <ImageWithJWT imageUrl={imageUrl} className="post-img" />
+        </div>
         <Card.Text>
           <strong>Start Date:</strong> {event.StartDate}
           <br />
@@ -41,13 +44,14 @@ export default function EventCard({ event }) {
 
 EventCard.propTypes = {
   event: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    Event_ID: PropTypes.number.isRequired,
     EventName: PropTypes.string.isRequired,
     StartDate: PropTypes.string.isRequired,
-    EndDate: PropTypes.string.isRequired,
-    StartTime: PropTypes.string.isRequired,
-    EndTime: PropTypes.string.isRequired,
-    Description: PropTypes.string.isRequired,
+    EndDate: PropTypes.string,
+    StartTime: PropTypes.string,
+    EndTime: PropTypes.string,
+    Description: PropTypes.string,
     Visibility: PropTypes.string.isRequired,
+    Image: PropTypes.string,
   }).isRequired,
 };
