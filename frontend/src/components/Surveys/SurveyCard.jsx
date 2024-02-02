@@ -33,22 +33,23 @@ export default function SurveyCard({
   // Mapping Creators
   const surveyCreator = users.find((user) => user.User_ID === survey.User_ID);
 
-  const commentCreators = surveyComments.map((cmt) =>
-    users.find(
-      (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
-    )
-  );
-  console.info(commentCreators);
-
-  // const commentUserPairs = surveyComments.map((cmt) => {
-  //   const commentCreator = users.find(
+  // const commentCreators = surveyComments.map((cmt) =>
+  //   users.find(
   //     (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
-  //   );
-  //   return {
-  //     comment: cmt,
-  //     user: commentCreator,
-  //   };
-  // });
+  //   )
+  // );
+
+  const commentUserPairs = surveyComments.map((cmt) => {
+    const commentCreator = users.find(
+      (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
+    );
+    return {
+      commnt: cmt,
+      user: commentCreator,
+    };
+  });
+  commentUserPairs.map((c) => console.info(c));
+  console.info(commentUserPairs);
 
   // Check if user has liked
   const userHasLiked = surveyLikes.some(
@@ -577,15 +578,22 @@ export default function SurveyCard({
           <Modal.Title>Comments</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {surveyComments.length === 0 ? (
+          {commentUserPairs.length === 0 ? (
             <p>No comments yet</p>
           ) : (
-            surveyComments.map((ct) => (
-              <div className="comment" key={ct.Comment_ID}>
-                {/* <ImageWithJWT
-                  imageUrl={`${hostname}/upload/${commentCreator.ProfileImage}`}
-                /> */}
-                <p>{ct.Comment}</p>
+            commentUserPairs.map(({ commnt, user }) => (
+              <div className="comment" key={commnt.Comment_ID}>
+                {user && (
+                  <div className="profileImgDiv-comments">
+                    <ImageWithJWT
+                      imageUrl={`${hostname}/upload/${user.ProfileImage}`}
+                    />
+                  </div>
+                )}
+                <div className="commentData">
+                  <span className="username-comments">{user.Username}</span>
+                  <p id="comment-content">{commnt.Comment}</p>
+                </div>
               </div>
             ))
           )}

@@ -54,3 +54,33 @@
   justify-content: center;
   margin: 1em 0;
 }
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* .profileImgDiv-comments {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 0.5em;
+} */
+
+.profileImgDiv-comments img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5em;
+}
+
+.username-comments {
+  font-weight: 600;
+  font-size: 0.8em;
+}
+
+#comment-content {
+  font-size: 0.8em;
+}
