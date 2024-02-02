@@ -1,55 +1,10 @@
 .surveys-container {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   gap: 1em;
   height: 100vh;
   padding: 2em;
   margin: 2em;
-}
-
-.createSurveymodal {
-  position: fixed;
-  width: 30em;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  text-align: left;
-  padding: 1em;
-  z-index: 1000;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.close-modal {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  font-size: 1em;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-#createSurvey-btn {
-  width: 20%;
-  padding: 0.1em 0;
-  font-size: 1em;
-  color: white;
-  border: none;
-  background-color: #4a4e69;
-  border-radius: 5px;
-}
-
-form {
-  width: 80%;
-  margin: 1em;
-}
-
-.title-content input[type="text"] {
-  width: 100%;
-  margin-bottom: 1em;
 }
 
 .visibility-group {
@@ -71,7 +26,11 @@ form {
   cursor: pointer;
 }
 
-.options-group input[type="text"] {
-  width: 100%;
-  margin-bottom: 1em;
+.modals {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: auto;
+  width: auto;
+  transform: translate(-50%, -50%);
 }

@@ -83,6 +83,11 @@ const SurveyLikeManager = require("./Manager/SurveyLikesManager");
 models.surveyLike = new SurveyLikeManager();
 models.surveyLike.setDatabase(pool);
 
+const SurveyVoteManager = require("./Manager/SurveyVoteManager");
+
+models.surveyVote = new SurveyVoteManager();
+models.surveyVote.setDatabase(pool);
+
 const TokenBlacklistManager = require("./Manager/TokenBlacklistManager");
 
 models.tokenBlacklist = new TokenBlacklistManager();

@@ -55,6 +55,7 @@ function MyProfileScreen() {
   };
 
   const showChatButton = userIdLoggedIn !== userId;
+  const showModifyProfileButton = userIdLoggedIn !== userId;
   const handleOpenChat = () => {
     setIsChatModalOpen(true);
   };
@@ -84,13 +85,15 @@ function MyProfileScreen() {
       <p>Adresse : {user.Address}</p>
       <p>Date de naissance : {user.BirthDate}</p>
       <p>Biographie : {user.Biography}</p>
-      <button
-        type="button"
-        onClick={handleEditProfile}
-        className="edit-profile-button"
-      >
-        Modifier le Profil
-      </button>
+      {showModifyProfileButton && (
+        <button
+          type="button"
+          onClick={handleEditProfile}
+          className="edit-profile-button"
+        >
+          Modifier le Profil
+        </button>
+      )}
       {showChatButton && (
         <button type="button" onClick={handleOpenChat}>
           Chat

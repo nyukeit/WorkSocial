@@ -7,30 +7,69 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Modal from "react-bootstrap/Modal";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import { Form as MyForm } from "react-bootstrap";
-import ImageWithJWT from "../../../utils/ImageWithJWT";
-import { hostname } from "../../../HostnameConnect/Hostname";
-import { useUser } from "../../../contexts/UserContext";
-import { useSurvey } from "../../../contexts/SurveyContext";
+import ImageWithJWT from "../../utils/ImageWithJWT";
+import { hostname } from "../../HostnameConnect/Hostname";
+import { useUser } from "../../contexts/UserContext";
+import { useSurvey } from "../../contexts/SurveyContext";
 
-export default function SurveyCard({ survey }) {
-  const { getSurveys } = useSurvey();
+export default function SurveyCard({
+  survey,
+  surveyVotes,
+  surveyLikes,
+  surveyComments,
+}) {
   const { users, loading } = useUser();
+  const { getSurveys, getVotes, getComments, getLikes } = useSurvey();
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [like, setLike] = useState(false);
-  const [totalLikes, setTotalLikes] = useState(0);
   const [comment, setComment] = useState(""); // Ecrire un commentaire
-  const [comments, setComments] = useState(""); // Afficher les commentaires
-  const currentUserID = localStorage.getItem("userId");
+  const [votedOption, setvotedOption] = useState(""); // Envoyer le Option choisi dans vote
+  const currentUserID = parseInt(localStorage.getItem("userId"), 10);
   const token = localStorage.getItem("userToken");
+
+  // Mapping Creators
+  const surveyCreator = users.find((user) => user.User_ID === survey.User_ID);
+
+  // const commentCreators = surveyComments.map((cmt) =>
+  //   users.find(
+  //     (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
+  //   )
+  // );
+
+  const commentUserPairs = surveyComments.map((cmt) => {
+    const commentCreator = users.find(
+      (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
+    );
+    return {
+      commnt: cmt,
+      user: commentCreator,
+    };
+  });
+  commentUserPairs.map((c) => console.info(c));
+  console.info(commentUserPairs);
+
+  // Check if user has liked
+  const userHasLiked = surveyLikes.some(
+    (sl) => parseInt(sl.User_ID, 10) === currentUserID
+  );
+
+  // Check if user has voted
+  const userHasVoted = surveyVotes.some(
+    (sv) => parseInt(sv.User_ID, 10) === currentUserID
+  );
+
+  useEffect(() => {
+    getVotes();
+    getComments();
+    getLikes();
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  const surveyCreator = users.find((user) => user.User_ID === survey.User_ID);
 
   if (!surveyCreator) {
     return <div>Loading...</div>;
@@ -49,71 +88,41 @@ export default function SurveyCard({ survey }) {
   const handleOpenCommentModal = () => setShowCommentModal(true);
   const handleCloseCommentModal = () => setShowCommentModal(false);
 
-  // Handle Fetch Likes & Comments
-  const getLikes = async () => {
-    try {
-      const response = await fetch(
-        `${hostname}/surveys/${survey.Survey_ID}/likes`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        if (data.length === 0) {
-          setLike(false);
-          setTotalLikes(0);
-        } else {
-          setTotalLikes(data.length);
-          const userHasLiked = data.some(
-            (l) => parseInt(l.User_ID, 10) === parseInt(currentUserID, 10)
-          );
-          if (userHasLiked) {
-            setLike(true);
-          }
-        }
-      } else {
-        console.error("Erreur lors de la requête:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
-  };
+  // Compter les Votes pour chaque option
+  const option1Votes =
+    surveyVotes.length > 0
+      ? Math.ceil(
+          (surveyVotes.filter((vote) => vote.Voted_For === "Option1").length /
+            surveyVotes.length) *
+            100
+        )
+      : 0;
+  const option2Votes =
+    surveyVotes.length > 0
+      ? Math.ceil(
+          (surveyVotes.filter((vote) => vote.Voted_For === "Option2").length /
+            surveyVotes.length) *
+            100
+        )
+      : 0;
+  const option3Votes =
+    surveyVotes.length > 0
+      ? Math.ceil(
+          (surveyVotes.filter((vote) => vote.Voted_For === "Option3").length /
+            surveyVotes.length) *
+            100
+        )
+      : 0;
+  const option4Votes =
+    surveyVotes.length > 0
+      ? Math.ceil(
+          (surveyVotes.filter((vote) => vote.Voted_For === "Option4").length /
+            surveyVotes.length) *
+            100
+        )
+      : 0;
 
-  const getComments = async () => {
-    try {
-      const response = await fetch(
-        `${hostname}/surveys/${survey.Survey_ID}/comments`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        if (data.length === 0) {
-          setComments([]);
-        } else {
-          setComments(data);
-        }
-      } else {
-        console.error("Erreur lors de la requête:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
-  };
-
-  useEffect(() => {
-    getLikes();
-    getComments();
-  }, []);
-
-  // Handle Post Like / Dislike
+  // Handle Survey Like / Dislike
   const handleSurveyLikeDislike = async (action, userId) => {
     if (action === "like") {
       try {
@@ -129,7 +138,6 @@ export default function SurveyCard({ survey }) {
           }
         );
         if (response.ok) {
-          setLike(true);
           getLikes();
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
@@ -151,7 +159,7 @@ export default function SurveyCard({ survey }) {
           }
         );
         if (response.ok) {
-          setLike(false);
+          // setUserHasLiked(false);
           getLikes();
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
@@ -188,6 +196,44 @@ export default function SurveyCard({ survey }) {
       getComments();
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
+    }
+  };
+
+  const handleOptionChange = (e) => setvotedOption(e.target.value);
+
+  // Handle Survey Voting
+  const handleVote = async (e) => {
+    e.preventDefault();
+
+    // Check if an option is selected
+    if (votedOption) {
+      try {
+        const response = await fetch(
+          `${hostname}/surveys/${survey.Survey_ID}/votes`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              votedOption,
+              userId: currentUserID,
+            }),
+          }
+        );
+
+        if (response.ok) {
+          // setUserHasVoted(true);
+          getVotes();
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    } else {
+      console.error("Please select an option before voting.");
     }
   };
 
@@ -291,7 +337,7 @@ export default function SurveyCard({ survey }) {
           <div className="card-img">
             <ImageWithJWT imageUrl={imageUrl[0]} />
           </div>
-          {!like ? (
+          {!userHasLiked ? (
             <button
               className="action-btn"
               name="like"
@@ -299,7 +345,7 @@ export default function SurveyCard({ survey }) {
               onClick={() => handleSurveyLikeDislike("like", currentUserID)}
             >
               <i className="fa-regular fa-heart" />
-              <span className="action-btn-text">{totalLikes}</span>
+              <span className="action-btn-text">{surveyLikes.length}</span>
             </button>
           ) : (
             <>
@@ -311,7 +357,7 @@ export default function SurveyCard({ survey }) {
               >
                 <i className="fa-solid fa-heart" />
               </button>
-              <span className="action-btn-text">{totalLikes}</span>
+              <span className="action-btn-text">{surveyLikes.length}</span>
             </>
           )}
           <button
@@ -321,40 +367,91 @@ export default function SurveyCard({ survey }) {
           >
             <i className="fa-regular fa-comment" />
           </button>
-          <div className="card-body">
-            <h5 className="card-title">{survey.Title}</h5>
-            <p className="card-text">{survey.Content}</p>
-          </div>
+          <h5 className="card-title">{survey.Title}</h5>
+          <p className="card-text">{survey.Content}</p>
           <div className="survey-options">
-            <form>
-              <div className="options-group">
-                <div className="surveyOption">
-                  <input name="Options" type="radio" />
-                  <label htmlFor="Option1">{survey.Option1}</label>
+            {userHasVoted ? (
+              <div className="voting-results">
+                <div className="vote-result">
+                  <ProgressBar now={option1Votes > 0 ? option1Votes : 0} />
+                  <span>{survey.Option1}</span>
                 </div>
-                <div className="surveyOption">
-                  <input name="Options" type="radio" />
-                  <label htmlFor="Option2">{survey.Option2}</label>
+                <div className="vote-result">
+                  <ProgressBar now={option2Votes > 0 ? option2Votes : 0} />
+                  <span>{survey.Option2}</span>
                 </div>
                 {survey.Option3 ? (
-                  <div className="surveyOption">
-                    <input name="Options" type="radio" />
-                    <label htmlFor="Option3">{survey.Option3}</label>
+                  <div className="vote-result">
+                    <ProgressBar now={option3Votes > 0 ? option3Votes : 0} />
+                    <span>{survey.Option3}</span>
                   </div>
                 ) : null}
                 {survey.Option4 ? (
-                  <div className="surveyOption">
-                    <input name="Options" type="radio" />
-                    <label htmlFor="Option4">{survey.Option4}</label>
+                  <div className="vote-result">
+                    <ProgressBar now={option4Votes > 0 ? option4Votes : 0} />
+                    <span>{survey.Option4}</span>
                   </div>
                 ) : null}
               </div>
-              <div className="submit-survey">
-                <button name="submit" type="submit">
-                  Vote
-                </button>
-              </div>
-            </form>
+            ) : (
+              <MyForm>
+                <div className="options-group">
+                  <div className="surveyOption">
+                    <input
+                      name="surveyOption"
+                      type="radio"
+                      className="form-check-input"
+                      value="Option1"
+                      checked={votedOption === "Option1"}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="Option1">{survey.Option1}</label>
+                  </div>
+                  <div className="surveyOption">
+                    <input
+                      name="surveyOption"
+                      type="radio"
+                      className="form-check-input"
+                      value="Option2"
+                      checked={votedOption === "Option2"}
+                      onChange={handleOptionChange}
+                    />
+                    <label htmlFor="Option2">{survey.Option2}</label>
+                  </div>
+                  {survey.Option3 ? (
+                    <div className="surveyOption">
+                      <input
+                        name="surveyOption"
+                        type="radio"
+                        className="form-check-input"
+                        value="Option3"
+                        checked={votedOption === "Option3"}
+                        onChange={handleOptionChange}
+                      />
+                      <label htmlFor="Option3">{survey.Option3}</label>
+                    </div>
+                  ) : null}
+                  {survey.Option4 ? (
+                    <div className="surveyOption">
+                      <input
+                        name="surveyOption"
+                        type="radio"
+                        className="form-check-input"
+                        value="Option4"
+                        checked={votedOption === "Option4"}
+                        onChange={handleOptionChange}
+                      />
+                      <label htmlFor="Option4">{survey.Option4}</label>
+                    </div>
+                  ) : null}
+                </div>
+                <div className="submit-survey">
+                  <button name="submit" type="submit" onClick={handleVote}>
+                    Vote
+                  </button>
+                </div>
+              </MyForm>
+            )}
           </div>
         </Card.Body>
       </Card>
@@ -387,11 +484,21 @@ export default function SurveyCard({ survey }) {
                 </div>
                 <div className="visibility-group">
                   <div className="radio-group">
-                    <Field name="Visibility" type="radio" value="Public" />
+                    <Field
+                      name="Visibility"
+                      type="radio"
+                      value="Public"
+                      className="form-check-input"
+                    />
                     <label htmlFor="Visibility">Public</label>
                   </div>
                   <div className="radio-group">
-                    <Field name="Visibility" type="radio" value="Private" />
+                    <Field
+                      name="Visibility"
+                      type="radio"
+                      value="Private"
+                      className="form-check-input"
+                    />
                     <label htmlFor="Visibility">Private</label>
                   </div>
                 </div>
@@ -471,15 +578,22 @@ export default function SurveyCard({ survey }) {
           <Modal.Title>Comments</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {comments.length === 0 ? (
+          {commentUserPairs.length === 0 ? (
             <p>No comments yet</p>
           ) : (
-            comments.map((ct) => (
-              <div className="comment" key={ct.Comment_ID}>
-                {/* <ImageWithJWT
-                  imageUrl={`${hostname}/upload/${commentCreator.ProfileImage}`}
-                /> */}
-                <p>{ct.Comment}</p>
+            commentUserPairs.map(({ commnt, user }) => (
+              <div className="comment" key={commnt.Comment_ID}>
+                {user && (
+                  <div className="profileImgDiv-comments">
+                    <ImageWithJWT
+                      imageUrl={`${hostname}/upload/${user.ProfileImage}`}
+                    />
+                  </div>
+                )}
+                <div className="commentData">
+                  <span className="username-comments">{user.Username}</span>
+                  <p id="comment-content">{commnt.Comment}</p>
+                </div>
               </div>
             ))
           )}
@@ -518,4 +632,30 @@ SurveyCard.propTypes = {
     Option3: PropTypes.string,
     Option4: PropTypes.string,
   }).isRequired,
+  surveyVotes: PropTypes.arrayOf(
+    PropTypes.shape({
+      Survey_ID: PropTypes.number.isRequired,
+      User_ID: PropTypes.number.isRequired,
+      Voted_For: PropTypes.string.isRequired,
+    })
+  ),
+  surveyLikes: PropTypes.arrayOf(
+    PropTypes.shape({
+      Survey_ID: PropTypes.number.isRequired,
+      User_ID: PropTypes.number.isRequired,
+    })
+  ),
+  surveyComments: PropTypes.arrayOf(
+    PropTypes.shape({
+      Survey_ID: PropTypes.number.isRequired,
+      User_ID: PropTypes.number.isRequired,
+      Comment: PropTypes.string.isRequired,
+    })
+  ),
+};
+
+SurveyCard.defaultProps = {
+  surveyVotes: [],
+  surveyLikes: [],
+  surveyComments: [],
 };
