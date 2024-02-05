@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 
 import Modal from "react-bootstrap/Modal";
-import PostList from "../../components/Posts/PostList/PostList";
+import Button from "react-bootstrap/Button";
+import PostCard from "../../components/Posts/PostCard";
 import "./PostScreen.css";
 import { usePost } from "../../contexts/PostContext";
 import { hostname } from "../../HostnameConnect/Hostname";
@@ -10,13 +11,20 @@ import { hostname } from "../../HostnameConnect/Hostname";
 export default function PostScreen() {
   const [showModal, setShowModal] = useState(false);
 
+  const { posts, getPosts, comments, getComments, likes, getLikes } = usePost();
+
+  useEffect(() => {
+    getPosts();
+    getComments();
+    getLikes();
+  }, []);
+
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
 
-  const { posts, getPosts } = usePost();
+  posts.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
 
   const handleOpenModal = () => setShowModal(true);
-
   const handleCloseModal = () => setShowModal(false);
 
   const initialValues = {
@@ -29,7 +37,6 @@ export default function PostScreen() {
 
   const handleCreatePost = async (values) => {
     const { Title, Content, Image, Visibility } = values;
-    console.info(values);
     try {
       const formData = new FormData();
       formData.append("Title", Title);
@@ -58,19 +65,30 @@ export default function PostScreen() {
     }
   };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
-
   return (
     <div className="posts-container">
       <div className="button">
-        <button id="createPost-btn" type="button" onClick={handleOpenModal}>
+        <Button type="button" onClick={handleOpenModal}>
           Create Post
-        </button>
+        </Button>
       </div>
-      <div className="posts">
-        <PostList posts={posts} />
+      <div className="post-list">
+        {posts.map((post) => {
+          const postLikes = likes.filter(
+            (like) => like.Post_ID === post.Post_ID
+          );
+          const postComments = comments.filter(
+            (comment) => comment.Post_ID === post.Post_ID
+          );
+          return (
+            <PostCard
+              key={post.Post_ID}
+              post={post}
+              postLikes={postLikes}
+              postComments={postComments}
+            />
+          );
+        })}
       </div>
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
         <Modal.Header closeButton>Create Post</Modal.Header>
@@ -116,11 +134,7 @@ export default function PostScreen() {
                     }
                   />
                 </div>
-                <button
-                  id="createPost-btn"
-                  type="submit"
-                  onClick={handleCreatePost}
-                >
+                <button id="createPost-btn" type="submit">
                   Create
                 </button>
               </Form>
