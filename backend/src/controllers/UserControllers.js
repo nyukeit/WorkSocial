@@ -168,6 +168,40 @@ const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
     });
 };
 
+const verifyUsernameAvailability = async (req, res) => {
+  const { username } = req.query;
+  try {
+    const isAvailable = await models.user.checkUsernameAvailability(username);
+    res.json({ isAvailable });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la vérification du nom d'utilisateur:",
+      error
+    );
+    res.status(500).send("Erreur interne du serveur");
+  }
+};
+
+const verifyEmailAvailability = async (req, res) => {
+  const { email } = req.query;
+  try {
+    const isAvailable = await models.user.checkEmailAvailability(email);
+    res.json({ isAvailable });
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'email:", error);
+    res.status(500).send("Erreur interne du serveur");
+  }
+};
+const verifyPhoneAvailability = async (req, res) => {
+  const { phone } = req.query;
+  try {
+    const isAvailable = await models.user.checkPhoneAvailability(phone);
+    res.json({ isAvailable });
+  } catch (error) {
+    console.error("Erreur lors de la vérification du téléphone:", error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
+  }
+};
 module.exports = {
   getUsers,
   getUserByID,
@@ -178,4 +212,7 @@ module.exports = {
   logout,
   getUserByEmailWithPasswordAndPassToNext,
   updatePassword,
+  verifyUsernameAvailability,
+  verifyEmailAvailability,
+  verifyPhoneAvailability,
 };

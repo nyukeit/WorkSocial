@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import InscriptionStep1 from './InscriptionStep1';
-import InscriptionStep2 from './InscriptionStep2';
+import InscriptionStep2 from './InscriptionStep3';
 import InscriptionStep3 from './InscriptionStep3';
 import {hostname} from '../../../components/HostnameConnect/Hostname';
 

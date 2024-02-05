@@ -89,6 +89,36 @@ class userManager extends AbstractManager {
       email,
     ]);
   }
+
+  checkUsernameAvailability(username) {
+    return this.database
+      .query(`SELECT COUNT(*) AS count FROM ${this.table} WHERE Username = ?`, [
+        username,
+      ])
+      .then(([results]) => {
+        return results[0].count === 0;
+      });
+  }
+
+  checkEmailAvailability(email) {
+    return this.database
+      .query(`SELECT COUNT(*) AS count FROM ${this.table} WHERE Email = ?`, [
+        email,
+      ])
+      .then(([results]) => {
+        return results[0].count === 0;
+      });
+  }
+
+  checkPhoneAvailability(phone) {
+    return this.database
+      .query(`SELECT COUNT(*) AS count FROM ${this.table} WHERE Phone = ?`, [
+        phone,
+      ])
+      .then(([results]) => {
+        return results[0].count === 0;
+      });
+  }
 }
 
 module.exports = userManager;
