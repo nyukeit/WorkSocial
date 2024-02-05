@@ -119,6 +119,31 @@ class userManager extends AbstractManager {
         return results[0].count === 0;
       });
   }
+
+  // Insérer un nouveau code de vérification pour un utilisateur
+  insertVerificationCode(userId, code, expiresAt) {
+    const query = `
+      INSERT INTO email_verification
+        (User_ID, verification_code, expires_at)
+      VALUES (?, ?, ?)`;
+    return this.database.query(query, [userId, code, expiresAt]);
+  }
+
+  // Trouver un code de vérification pour un utilisateur
+  findVerificationCode(userId, code) {
+    const query = `
+      SELECT * FROM email_verification
+      WHERE User_ID = ? AND verification_code = ? AND expires_at > NOW()`;
+    return this.database.query(query, [userId, code]);
+  }
+
+  // Optionnel: Supprimer un code de vérification expiré ou déjà utilisé
+  deleteVerificationCode(userId, code) {
+    const query = `
+      DELETE FROM email_verification
+      WHERE User_ID = ? AND verification_code = ?`;
+    return this.database.query(query, [userId, code]);
+  }
 }
 
 module.exports = userManager;

@@ -32,6 +32,12 @@ router.post(
   hashPassword,
   userControllers.createUser
 );
+// Verify email Code
+// Demander un code de vérification d'email
+router.post("/request-verification", userControllers.requestEmailVerification);
+
+// Valider le code de vérification d'email
+router.post("/verify-email-code", userControllers.verifyEmailCode);
 
 router.post(
   "/users/checkOldPassword",

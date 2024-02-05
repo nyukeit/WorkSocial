@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, Text } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, TextInput, ScrollView, Text, StyleSheet} from 'react-native';
 import {GOOGLE_MAPS_API_KEY} from '@env';
 
-const AddressAutoPicker = ({ onAddressSelect }) => {
+const AddressAutoPicker = ({onAddressSelect, selectedAddress}) => {
   const [query, setQuery] = useState('');
 
   const [suggestions, setSuggestions] = useState([]);
@@ -35,10 +35,12 @@ const AddressAutoPicker = ({ onAddressSelect }) => {
     }
   }, [query]);
 
-// Remplacez l'utilisation de l'API Google Places par une fonction qui simule la sélection d'une adresse et récupère ses coordonnées.
-const handleSuggestionSelect = async (selectedSuggestion) => {
+  // Remplacez l'utilisation de l'API Google Places par une fonction qui simule la sélection d'une adresse et récupère ses coordonnées.
+  const handleSuggestionSelect = async selectedSuggestion => {
     const query = selectedSuggestion.description;
-    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+      query,
+    )}`;
 
     try {
       const response = await fetch(nominatimUrl);
@@ -48,30 +50,39 @@ const handleSuggestionSelect = async (selectedSuggestion) => {
         // Mise à jour de query avec l'adresse sélectionnée pour l'afficher dans le TextInput
         setQuery(selectedSuggestion.description);
         // Informer le composant parent de la sélection
-        onAddressSelect(selectedSuggestion.description, selectedSuggestion, parseFloat(location.lat), parseFloat(location.lon));
+        onAddressSelect(
+          selectedSuggestion.description,
+          selectedSuggestion,
+          parseFloat(location.lat),
+          parseFloat(location.lon),
+        );
+
+        // Vider les suggestions pour qu'elles ne s'affichent plus
+        setSuggestions([]);
       } else {
-        console.log("No coordinates found for the address");
+        console.log('No coordinates found for the address');
       }
     } catch (error) {
-      console.error("Failed to fetch coordinates", error);
+      console.error('Failed to fetch coordinates', error);
     }
   };
-
-
+  useEffect(() => {
+    setQuery(selectedAddress || '');
+  }, [selectedAddress]);
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 10 }}
+        style={styles.input}
         onChangeText={setQuery}
         value={query}
         placeholder="Entrez une adresse"
       />
-      <ScrollView>
+      <ScrollView style={styles.suggestionsContainer}>
         {suggestions.map((suggestion, index) => (
           <Text
             key={index}
             onPress={() => handleSuggestionSelect(suggestion)}
-          >
+            style={styles.suggestion}>
             {suggestion.description}
           </Text>
         ))}
@@ -80,5 +91,33 @@ const handleSuggestionSelect = async (selectedSuggestion) => {
   );
 };
 
+// Définition des styles
+const styles = StyleSheet.create({
+  container: {
+    zIndex: 1,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingLeft: 10,
+    marginBottom: 5,
+    borderRadius: 10,
+  },
+  suggestionsContainer: {
+    maxHeight: 200,
+    backgroundColor: 'white',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    width: '100%',
+    position: 'absolute',
+    top: 45,
+  },
+  suggestion: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+  },
+});
 
 export default AddressAutoPicker;
