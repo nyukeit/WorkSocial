@@ -195,15 +195,13 @@ const verifyEmailAvailability = async (req, res) => {
 const verifyPhoneAvailability = async (req, res) => {
   const { phone } = req.query;
   try {
-    const isAvailable = await models.user.checkPhoneAvailability(phone); // Assurez-vous que la méthode s'appelle checkPhoneAvailability
+    const isAvailable = await models.user.checkPhoneAvailability(phone);
     res.json({ isAvailable });
   } catch (error) {
     console.error("Erreur lors de la vérification du téléphone:", error);
-    res.status(500).json({ message: "Erreur interne du serveur" }); // Renvoyer JSON même pour les erreurs
+    res.status(500).json({ message: "Erreur interne du serveur" });
   }
 };
-
-
 module.exports = {
   getUsers,
   getUserByID,
