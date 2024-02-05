@@ -41,6 +41,11 @@ router.post(
 // Login
 router.post("/login", userControllers.login, verifyPassword);
 
+// verify username
+router.get("/verify-username", userControllers.verifyUsernameAvailability);
+router.get("/verify-email", userControllers.verifyEmailAvailability);
+router.get("/verify-Phone", userControllers.verifyPhoneAvailability);
+
 // Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
 

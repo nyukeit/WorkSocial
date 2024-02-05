@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {
   View,
   Text,
@@ -7,49 +7,65 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
-import CheckBox from '@react-native-community/checkbox';
+import VerifyEmail from '../../../components/VerifyEmail';
+import VerifyPhone from '../../../components/VerifyPhone';
+import PhoneCodePicker from '../../../components/PhoneCodePicker';
 
-const InscriptionStep3 = ({ onFinalSubmit, onPreviousStep, formData }) => {
+const InscriptionStep3 = ({onNextStep, onPreviousStep,formData}) => {
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailVerificationMessage, setEmailVerificationMessage] = useState('');
+  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [phoneVerificationMessage, setPhoneVerificationMessage] = useState('');
+
+
+
   const initialValues = {
-    Password: formData.Password || '',
-    confirmPassword: formData.confirmPassword || '',
-    Gender: formData.Gender || '',
-    Biography: formData.Biography || '',
-    Role:"User",
+    Email: formData.Email || '',
+    Phone: formData.Phone || '',
   };
 
-const validationSchema = Yup.object().shape({
-    Password: Yup.string().required('Mot de passe requis'),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('Password'), null], 'Les mots de passe doivent correspondre')
-      .required('Confirmez le mot de passe'),
-    Gender: Yup.string().required('Genre requis'),
-    Biography: Yup.string().required('Biographie requise'),
-    // Ajoutez d'autres validations si nécessaire
+
+  const validationSchema = Yup.object().shape({
+
+    Email: Yup.string().email('Email invalide').required('Email requis'),
+    Phone: Yup.string().required('TéléPhone requis'),
   });
 
-
-const handleSubmit = values => {
-  console.log("Valeurs soumises:", values);
-
-  // Exclure confirmPassword des données à envoyer
-  const { confirmPassword, ...dataToSubmit } = values;
-  dataToSubmit.Role = "User";
-  console.log("Valeurs soumises pour l'inscription finale:", dataToSubmit);
-  onFinalSubmit(dataToSubmit);
+const handleEmailVerification = (isAvailable, message) => {
+  setEmailVerified(isAvailable);
+  setEmailVerificationMessage(message);
 };
+
+const handlePhoneVerification = (phoneNumber, isAvailable, message) => {
+  setPhoneVerified(isAvailable);
+  setPhoneVerificationMessage(message);
+};
+
+const handleSubmit = (values, {setSubmitting}) => {
+  if (emailVerified && phoneVerified) {
+    // Appeler onNextStep ici avec les valeurs du formulaire comme argument
+    onNextStep(values);
+  } else {
+    alert(
+      emailVerificationMessage ||
+        phoneVerificationMessage ||
+        'Vérification requise.',
+    );
+  }
+  setSubmitting(false);
+};
+
 
   return (
     <ScrollView style={styles.container}>
       <Formik
-        initialValues={formData}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {({
           handleChange,
           handleBlur,
@@ -57,75 +73,49 @@ const handleSubmit = values => {
           values,
           errors,
           touched,
-          dirty,
           isValid,
+          setFieldValue,
+          setFieldTouched,
         }) => (
           <View>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange('Password')}
-              onBlur={handleBlur('Password')}
-              value={values.Password}
-              secureTextEntry={true}
-              placeholder="Mot de passe"
-            />
-            {errors.Password && touched.Password && (
-              <Text>{errors.Password}</Text>
-            )}
+            <View style={styles.Email}>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleChange('Email')}
+                onBlur={handleBlur('Email')}
+                value={values.Email}
+                keyboardType="email-address"
+                placeholder="E-mail"
+              />
+              {errors.Email && touched.Email && <Text>{errors.Email}</Text>}
+              <VerifyEmail
+                email={values.Email}
+                onVerification={handleEmailVerification}
+              />
+              {!emailVerified && <Text>{emailVerificationMessage}</Text>}
+            </View>
+            <View style={styles.Phone}>
+              <PhoneCodePicker
+                onPhoneVerification={phoneNumber => {
+                  setFieldValue('Phone', phoneNumber);
+                }}
+              />
+              {errors.Phone && touched.Phone && <Text>{errors.Phone}</Text>}
+              <VerifyPhone
+                phone={values.Phone}
+                onVerification={(isAvailable, message) => {
+                  handlePhoneVerification(values.Phone, isAvailable, message);
+                }}
+              />
+            </View>
+            {!phoneVerified && <Text>{phoneVerificationMessage}</Text>}
 
-           <TextInput
-            style={styles.input}
-            onChangeText={handleChange('confirmPassword')}
-            onBlur={handleBlur('confirmPassword')}
-            value={values.confirmPassword}
-            secureTextEntry={true}
-            placeholder="Confirmez le mot de passe"
-          />
-          {errors.confirmPassword && touched.confirmPassword && (
-            <Text style={{ color: 'red' }}>{errors.confirmPassword}</Text>
-          )}
-
-            <View style={styles.checkboxContainer}>
-  <CheckBox
-    value={values.Gender === 'Male'}
-    onValueChange={() => handleChange('Gender')('Male')}
-  />
-  <Text>Homme</Text>
-
-  <CheckBox
-    value={values.Gender === 'Female'}
-    onValueChange={() => handleChange('Gender')('Female')}
-  />
-  <Text>Femme</Text>
-
-  <CheckBox
-    value={values.Gender === 'Other'}
-    onValueChange={() => handleChange('Gender')('Other')}
-  />
-  <Text>Autres</Text>
-</View>
-
-
-            {errors.Gender && touched.Gender && <Text>{errors.Gender}</Text>}
-
-            <TextInput
-              style={styles.BiographyInput}
-              onChangeText={handleChange('Biography')}
-              onBlur={handleBlur('Biography')}
-              value={values.Biography}
-              multiline={true}
-              placeholder="Biographie"
-            />
-            {errors.Biography && touched.Biography && (
-              <Text>{errors.Biography}</Text>
-            )}
-
-           <View style={styles.buttonContainer}>
+            <View style={styles.buttonContainer}>
               <Button onPress={onPreviousStep} title="Retour" />
               <Button
                 onPress={formikSubmit}
-                title="Terminer l'inscription"
-                disabled={!dirty || !isValid || !values.Password || !!errors.confirmPassword}
+                title="Suivant"
+                disabled={!emailVerified || !phoneVerified}
               />
             </View>
           </View>
@@ -134,9 +124,8 @@ const handleSubmit = values => {
     </ScrollView>
   );
 };
-
 InscriptionStep3.propTypes = {
-  onFinalSubmit: PropTypes.func.isRequired,
+  onNextStep: PropTypes.func.isRequired,
   onPreviousStep: PropTypes.func.isRequired,
 };
 
@@ -153,23 +142,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 15,
   },
-  BiographyInput: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    //paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 4,
-    marginBottom: 15,
-    height: 100,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20,
   },
 });
 
