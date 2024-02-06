@@ -12,6 +12,7 @@ export function useEvent() {
 export function EventProvider({ children }) {
   const [events, setEvents] = useState([]);
   const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState([]);
   const token = localStorage.getItem("userToken");
 
   const getEvents = async () => {
@@ -57,9 +58,34 @@ export function EventProvider({ children }) {
     }
   };
 
+  const getLikes = async () => {
+    try {
+      const likeRequests = events.map(async (event) => {
+        const response = await fetch(
+          `${hostname}/events/${event.Event_ID}/likes`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          return response.json();
+        }
+        return null;
+      });
+
+      const allLikes = await Promise.all(likeRequests);
+      const flattenedLikes = allLikes.flat();
+      setLikes(flattenedLikes);
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
+  };
+
   const value = useMemo(
-    () => ({ events, getEvents, comments, getComments }),
-    [events, comments]
+    () => ({ events, getEvents, comments, getComments, likes, getLikes }),
+    [events, comments, likes]
   );
   return (
     <EventContext.Provider value={value}>{children}</EventContext.Provider>

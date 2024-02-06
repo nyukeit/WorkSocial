@@ -19,10 +19,10 @@ import { hostname } from "../../../HostnameConnect/Hostname";
 import { useUser } from "../../../contexts/UserContext";
 import { useEvent } from "../../../contexts/EventContext";
 
-export default function EventCard({ event, eventComments }) {
+export default function EventCard({ event, eventComments, eventLikes }) {
   // Contexts
   const { users, loading } = useUser();
-  const { getEvents, getComments } = useEvent();
+  const { getEvents, getComments, getLikes } = useEvent();
 
   // // States
   const [showModal, setShowModal] = useState(false);
@@ -51,9 +51,12 @@ export default function EventCard({ event, eventComments }) {
       user: commentCreator,
     };
   });
-
+  // Check if user has liked
+  const userHasLiked = eventLikes.some(
+    (pl) => parseInt(pl.User_ID, 10) === currentUserID
+  );
   useEffect(() => {
-    // getLikes();
+    getLikes();
     getComments();
   }, []);
 
@@ -124,7 +127,7 @@ export default function EventCard({ event, eventComments }) {
         },
       });
       if (response.ok) {
-        // console.info("Post Edited");
+        console.info("Event Edit !!");
       } else {
         console.error("Erreur lors de la requête:", response.statusText);
       }
@@ -162,7 +165,7 @@ export default function EventCard({ event, eventComments }) {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${hostname}/posts/${event.Event_ID}/comments`,
+        `${hostname}/events/${event.Event_ID}/comments`,
         {
           method: "POST",
           headers: {
@@ -181,6 +184,50 @@ export default function EventCard({ event, eventComments }) {
       getComments();
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
+    }
+  };
+
+  // Handle Post Like / Dislike
+  const handleEventLikeDislike = async (action, userId) => {
+    if (action === "like") {
+      try {
+        const response = await fetch({
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        });
+        if (response.ok) {
+          getLikes();
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
+    } else if (action === "unlike") {
+      try {
+        const response = await fetch(
+          `${hostname}/events/${event.Event_ID}/likes`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
+        if (response.ok) {
+          getLikes();
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la requête:", error);
+      }
     }
   };
 
@@ -206,6 +253,29 @@ export default function EventCard({ event, eventComments }) {
           <div className="card-img">
             <ImageWithJWT className="post-img" imageUrl={imageUrl[0]} />
           </div>
+          {!userHasLiked ? (
+            <button
+              className="action-btn"
+              name="like"
+              type="button"
+              onClick={() => handleEventLikeDislike("like", currentUserID)}
+            >
+              <i className="fa-regular fa-heart" />
+              <span className="action-btn-text">{eventLikes.length}</span>
+            </button>
+          ) : (
+            <>
+              <button
+                className="action-btn"
+                name="unlike"
+                type="button"
+                onClick={() => handleEventLikeDislike("unlike", currentUserID)}
+              >
+                <i className="fa-solid fa-heart" />
+              </button>
+              <span className="action-btn-text">{eventLikes.length}</span>
+            </>
+          )}
           <Card.Text>
             Le {formattedStartDate} de {event.StartTime} à {event.EndTime}
           </Card.Text>
@@ -412,6 +482,12 @@ EventCard.propTypes = {
     Image: PropTypes.string,
     User_ID: PropTypes.number.isRequired,
   }).isRequired,
+  eventLikes: PropTypes.arrayOf(
+    PropTypes.shape({
+      Event_ID: PropTypes.number.isRequired,
+      User_ID: PropTypes.number.isRequired,
+    })
+  ),
 
   eventComments: PropTypes.arrayOf(
     PropTypes.shape({
@@ -424,4 +500,5 @@ EventCard.propTypes = {
 
 EventCard.defaultProps = {
   eventComments: [],
+  eventLikes: [],
 };

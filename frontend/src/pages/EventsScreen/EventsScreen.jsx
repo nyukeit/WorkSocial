@@ -10,9 +10,11 @@ import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function EventScreen() {
   const [showModal, setShowModal] = useState(false);
-  const { events, getEvents, comments, getComments } = useEvent();
+  const { events, getEvents, comments, getComments, likes, getLikes } =
+    useEvent();
 
   useEffect(() => {
+    getLikes();
     getEvents();
     getComments();
   }, []);
@@ -82,10 +84,6 @@ export default function EventScreen() {
     }
   };
 
-  useEffect(() => {
-    getEvents();
-  }, []);
-
   return (
     <div className="events-container">
       <div className="button">
@@ -95,6 +93,9 @@ export default function EventScreen() {
       </div>
       <div className="post-list">
         {events.map((event) => {
+          const eventLikes = likes.filter(
+            (like) => like.Event_ID === event.Event_ID
+          );
           const eventComments = comments.filter(
             (comment) => comment.Event_ID === event.Event_ID
           );
@@ -103,6 +104,7 @@ export default function EventScreen() {
               key={event.Event_ID}
               event={event}
               eventComments={eventComments}
+              eventLikes={eventLikes}
             />
           );
         })}
@@ -186,11 +188,7 @@ export default function EventScreen() {
                     }
                   />
                 </div>
-                <Button
-                  id="createEvent-btn"
-                  type="submit"
-                  // onClick={handleCreateEvent}
-                >
+                <Button id="createEvent-btn" type="submit">
                   Create
                 </Button>
               </Form>
