@@ -160,8 +160,9 @@ export default function EventScreen() {
                   <label htmlFor="Description">Description</label>
                   <Field
                     name="Description"
+                    component="textarea"
+                    rows="5"
                     placeholder="Description"
-                    type="text"
                     className="form-control"
                   />
 

@@ -298,8 +298,9 @@ export default function EventCard({ event, eventComments }) {
                 <label htmlFor="Description">Description</label>
                 <Field
                   name="Description"
+                  component="textarea"
+                  rows="5"
                   placeholder="Description"
-                  type="text"
                   className="form-control"
                 />
 
