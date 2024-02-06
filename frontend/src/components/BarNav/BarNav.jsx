@@ -8,9 +8,6 @@ import { hostname } from "../../HostnameConnect/Hostname";
 import DropdownMenu from "./DropdownMenu";
 
 function BarNav() {
-  // const [showLogoutModal, setShowLogoutModal] = useState(false);
-  // const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
   const { isLoggedIn, logout } = useAuth();
   const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const navigate = useNavigate();
@@ -23,11 +20,6 @@ function BarNav() {
   const imageUrl = user
     ? `${hostname}/upload/${imageName}`
     : "default-profile-image-url";
-
-  // const handleCloseModal = () => {
-  //   setShowLogoutModal(false);
-  //   setShowConfirmationModal(false);
-  // };
 
   const handleLogout = async () => {
     try {
@@ -42,114 +34,61 @@ function BarNav() {
     } catch (error) {
       console.error("Erreur lors de la déconnexion : ", error);
     }
-    //  finally {
-    //   handleCloseModal();
-    // }
   };
-
-  // const handleOpenLogoutModal = () => {
-  //   setShowLogoutModal(true);
-  // };
-
-  // const handleCloseLogoutModal = () => {
-  //   setShowLogoutModal(false);
-  // };
-
-  // const handleOpenConfirmationModal = () => {
-  //   setShowConfirmationModal(true);
-  // };
-
-  // const handleCloseConfirmationModal = () => {
-  //   setShowConfirmationModal(false);
-  // };
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Enter") {
-  //     handleOpenLogoutModal();
-  //   }
-  // };
 
   return (
     <nav className="BarNav">
       <div className="Logo">
         <img src={Logo} alt="logo" className="navbar_logo" />
       </div>
-      <ul className="NavLinks">
-        <li className="profileItem">
-          <div className="profile-image">
-            <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
-          </div>
-          <div className="salutation">
-            {isLoggedIn && (
-              <DropdownMenu userName={firstName} onLogout={handleLogout} />
-            )}
-          </div>
-        </li>
-        <li>
-          <Link to="/feed">Accueil</Link>
-        </li>
-        {!isLoggedIn && (
-          <>
-            <li>
-              <Link to="/connexion">Connexion</Link>
-            </li>
-            <li>
-              <Link to="/inscription">Inscription</Link>
-            </li>
-          </>
-        )}
-        {isLoggedIn && (
-          <>
-            <li>
-              <Link to="/members">Membres</Link>
-            </li>
-            <li>
-              <Link to="/surveys">Surveys</Link>
-            </li>
-            <li>
-              <Link to="/posts">Posts</Link>
-            </li>
-            <li>
-              <Link to="/events">Events</Link>
-            </li>
-            {/* <li className="welcome-message">
-              <button
-                type="button"
-                onClick={handleOpenLogoutModal}
-                onKeyDown={handleKeyDown}
-              >
-                Bonjour {firstName}
-                {isLoggedIn && <span className="logout-arrow">▼</span>}
-              </button>
-            </li> */}
-          </>
-        )}
-      </ul>
-      {/* {showLogoutModal && (
-        <div className="modal">
-          <div className="modal-content">
-            {firstName} 
-            <button type="button" onClick={handleCloseLogoutModal}>
-              <Link to="/myprofil">Modifier votre profil</Link>
-            </button>
-            <button type="button" onClick={handleOpenConfirmationModal}>
-              Déconnexion
-            </button>
-          </div>
-        </div>
+      {isLoggedIn ? (
+        <ul className="NavLinks">
+          <li>
+            <Link to="/feed">
+              <i className="fas fa-home" /> Feed
+            </Link>
+          </li>
+          <li>
+            <Link to="/members">
+              <i className="fas fa-users" /> Membres
+            </Link>
+          </li>
+          <li>
+            <Link to="/surveys">
+              <i className="fas fa-poll" /> Surveys
+            </Link>
+          </li>
+          <li>
+            <Link to="/posts">
+              <i className="fas fa-edit" /> Posts
+            </Link>
+          </li>
+          <li>
+            <Link to="/events">
+              <i className="fas fa-calendar-alt" /> Events
+            </Link>
+          </li>
+          <li className="profileItem">
+            <div className="profile-image">
+              <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
+            </div>
+            <div className="salutation">
+              {isLoggedIn && (
+                <DropdownMenu userName={firstName} onLogout={handleLogout} />
+              )}
+            </div>
+          </li>
+        </ul>
+      ) : (
+        <ul className="NavLinks">
+          <li>
+            <Link to="/connexion">Connexion</Link>
+          </li>
+          <li>
+            <Link to="/inscription">Inscription</Link>
+          </li>
+        </ul>
       )}
-      {showConfirmationModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Êtes-vous sûr de vouloir vous déconnecter ?</p>
-            <button type="button" onClick={handleLogout}>
-              Oui
-            </button>
-            <button type="button" onClick={handleCloseConfirmationModal}>
-              Annuler
-            </button>
-          </div>
-        </div>
-      )} */}
     </nav>
   );
 }

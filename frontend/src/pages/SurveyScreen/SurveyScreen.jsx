@@ -94,7 +94,7 @@ export default function SurveyScreen() {
   };
 
   return (
-    <div className="surveys-container">
+    <div className="container">
       <Button onClick={handleOpenModal}>Create Survey</Button>
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
         <Modal.Header closeButton>

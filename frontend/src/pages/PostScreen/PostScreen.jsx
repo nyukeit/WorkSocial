@@ -66,7 +66,7 @@ export default function PostScreen() {
   };
 
   return (
-    <div className="posts-container">
+    <div className="container">
       <div className="button">
         <Button type="button" onClick={handleOpenModal}>
           Create Post

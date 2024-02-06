@@ -85,7 +85,7 @@ export default function EventScreen() {
   };
 
   return (
-    <div className="events-container">
+    <div className="container">
       <div className="button">
         <Button id="createEvent-btn" onClick={handleOpenModal}>
           Create Event
