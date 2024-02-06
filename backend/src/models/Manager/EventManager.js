@@ -39,19 +39,9 @@ class EventManager extends AbstractManager {
     );
   }
 
-  delete(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE Event_ID = ?`, [
-      id,
-    ]);
-  }
-
   update(event) {
     return this.database.query(
-      `UPDATE ${this.table}
-       SET Image = ?, EventName = ?, StartDate = ?, EndDate = ?,
-           StartTime = ?, EndTime = ?, Description = ?, Visibility = ?,
-           ParticipantCount = ?
-       WHERE Event_ID = ?`,
+      `UPDATE ${this.table} SET Image = ?, EventName = ?, StartDate = ?, EndDate = ?,  StartTime = ?, EndTime = ?, Description = ?, Visibility = ? WHERE Event_ID = ?`,
       [
         event.Image,
         event.EventName,
@@ -61,10 +51,15 @@ class EventManager extends AbstractManager {
         event.EndTime,
         event.Description,
         event.Visibility,
-        event.ParticipantCount,
-        event.id,
+        event.Event_ID,
       ]
     );
+  }
+
+  delete(id) {
+    return this.database.query(`DELETE FROM ${this.table} WHERE Event_ID = ?`, [
+      id,
+    ]);
   }
 }
 

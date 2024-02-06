@@ -21,8 +21,8 @@ router.get("/events/:id", eventController.getEventByID);
 // Create a new event
 router.post("/events", upload.single("Image"), eventController.createEvent);
 
-// Update an existing event
-router.put("/events/:id", verifyOwner, eventController.updateEvent);
+// Update an existing post
+router.put("/events/:id", upload.single("Image"), eventController.updateEvent);
 
 // Delete an event
 router.delete("/events/:id", verifyOwner, eventController.deleteEvent);

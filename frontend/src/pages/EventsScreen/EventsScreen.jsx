@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
+
+import { Button, Modal } from "react-bootstrap";
+import EventCard from "../../components/Events/EventCard/EventCard";
+
 import { useEvent } from "../../contexts/EventContext";
 import { hostname } from "../../HostnameConnect/Hostname";
-import EventList from "../../components/Events/EventList/Eventlist";
+// import EventList from "../../components/Events/EventList/Eventlist";
 
 export default function EventScreen() {
+  const [showModal, setShowModal] = useState(false);
+  const { events, getEvents, comments, getComments } = useEvent();
+
+  useEffect(() => {
+    getEvents();
+    getComments();
+  }, []);
+
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
 
-  const [showModal, setShowModal] = useState(false);
-  const { events, getEvents } = useEvent();
+  events.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -28,7 +38,6 @@ export default function EventScreen() {
   };
 
   const handleCreateEvent = async (values) => {
-    console.info("Form values:", values);
     const {
       EventName,
       StartDate,
@@ -77,8 +86,6 @@ export default function EventScreen() {
     getEvents();
   }, []);
 
-  console.info("Events in EventScreen:", events);
-
   return (
     <div className="events-container">
       <div className="button">
@@ -86,9 +93,23 @@ export default function EventScreen() {
           Create Event
         </Button>
       </div>
-      <div className="events">
-        <EventList events={events} />
+      <div className="post-list">
+        {events.map((event) => {
+          const eventComments = comments.filter(
+            (comment) => comment.Event_ID === event.Event_ID
+          );
+          return (
+            <EventCard
+              key={event.Event_ID}
+              event={event}
+              eventComments={eventComments}
+            />
+          );
+        })}
       </div>
+      {/* <div className="events">
+        <EventList events={events} />
+      </div> */}
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
         <Modal.Header closeButton>Create Event</Modal.Header>
         <Modal.Body>
