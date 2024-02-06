@@ -5,9 +5,10 @@ import * as Yup from 'yup';
 import AddressAutoPicker from '../../../components/AddressAutoPicker';
 import GeoMapPicker from '../../../components/GeoMapPicker';
 
-const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
+const InscriptionScreenStep2 = ({onNextStep, onPreviousStep, formData}) => {
   const [selectedLatitude, setSelectedLatitude] = useState(null);
   const [selectedLongitude, setSelectedLongitude] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState('');
 
   const initialValues = {
     Address: formData.Address || '',
@@ -17,18 +18,18 @@ const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
     Address: Yup.string().required('Adresse requise'),
   });
 
-  const handleSubmit = (values) => {
+  const handleSubmit = values => {
     console.log(values);
     onNextStep(values);
   };
+
   return (
     <View style={styles.container}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {({
           handleChange,
           handleSubmit: formikSubmit,
@@ -39,10 +40,11 @@ const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
           isValid,
         }) => {
           // Définissez handleAddressSelect ici pour avoir accès à setFieldValue
-          const handleAddressSelect = (address, _, lat, lng) => {
-            setFieldValue('Address', address);
+          const handleAddressSelect = (address, lat, lng) => {
+            setSelectedAddress(address);
             setSelectedLatitude(lat);
             setSelectedLongitude(lng);
+            setFieldValue('Address', address);
           };
 
           return (
@@ -55,13 +57,15 @@ const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
                     latitude,
                     longitude,
                   ) => {
-                    handleChange('Address')(selectedAddress);
+                    handleChange('Address')(selectedAddress); // Met à jour Formik
                     setSelectedLatitude(latitude);
                     setSelectedLongitude(longitude);
                   }}
+                  selectedAddress={values.Address} // Utilisez values.Address pour garder Formik et l'input synchronisés
                   selectedLatitude={selectedLatitude}
                   selectedLongitude={selectedLongitude}
                 />
+
                 {errors.Address && touched.Address && (
                   <Text>{errors.Address}</Text>
                 )}
@@ -75,14 +79,14 @@ const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
               </View>
 
               <View style={styles.buttonContainer}>
-              <Button onPress={onPreviousStep} title="Retour" />
-              <Button
-                onPress={formikSubmit}
-                title="Suivant"
-                disabled={!isValid}
-              />
+                <Button onPress={onPreviousStep} title="Retour" />
+                <Button
+                  onPress={formikSubmit}
+                  title="Suivant"
+                  disabled={!isValid}
+                />
               </View>
-          </View>
+            </View>
           );
         }}
       </Formik>
@@ -90,14 +94,20 @@ const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  Address: {
+    width: '90%',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
   GeoMapPicker: {
     marginVertical: 10,
     height: '70%',
+    width: '90%',
+    alignSelf: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',

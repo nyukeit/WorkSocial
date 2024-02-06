@@ -1,4 +1,6 @@
+const { sendEmail } = require("../../utils/emailSender");
 const models = require("../models");
+const { generateVerificationCode } = require("../../utils/helperFunctions");
 
 const login = async (req, res, next) => {
   const Email = req.body;
@@ -202,6 +204,63 @@ const verifyPhoneAvailability = async (req, res) => {
     res.status(500).json({ message: "Erreur interne du serveur" });
   }
 };
+const requestEmailVerification = async (req, res) => {
+  const { userId, email } = req.body;
+
+  // Vérifier si l'utilisateur existe
+  try {
+    const [user] = await models.user.findByPK(userId);
+    if (!user || user.length === 0) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const code = generateVerificationCode();
+    const expiresAt = new Date();
+    expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+
+    await models.user.insertVerificationCode(userId, code, expiresAt);
+
+    // Préparation et envoi de l'email
+    const emailSent = await sendEmail({
+      to: email,
+      subject: "Code de vérification",
+      text: `Bonjour et bienvenue, vous trouverez ici votre code de vérification : ${code}. Vous avez 15 minutes pour valider votre inscription.`,
+      html: `<b>Bonjour et bienvenue, vous trouverez ici votre code de vérification : ${code}. Vous avez 15 minutes pour valider votre inscription.</b>`,
+    });
+
+    if (emailSent) {
+      res.status(200).send({ message: "Verification code sent to email." });
+    } else {
+      throw new Error("Failed to send verification email.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error requesting email verification" });
+  }
+  return null;
+};
+
+const verifyEmailCode = async (req, res) => {
+  const { userId, code } = req.body;
+
+  try {
+    const [results] = await models.user.findVerificationCode(userId, code);
+    if (results.length > 0) {
+      // Le code est valide
+      // Vous pouvez ici marquer l'email de l'utilisateur comme vérifié dans votre base de données
+      await models.user.deleteVerificationCode(userId, code); // Supprimer le code de sélection
+      res.status(200).send({ message: "Email verified successfully." });
+    } else {
+      // Le code est invalide ou a expiré
+      res
+        .status(400)
+        .send({ message: "Invalid or expired verification code." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error verifying email code" });
+  }
+};
 module.exports = {
   getUsers,
   getUserByID,
@@ -215,4 +274,6 @@ module.exports = {
   verifyUsernameAvailability,
   verifyEmailAvailability,
   verifyPhoneAvailability,
+  requestEmailVerification,
+  verifyEmailCode,
 };
