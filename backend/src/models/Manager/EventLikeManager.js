@@ -6,6 +6,13 @@ class EventLikeManager extends AbstractManager {
     super({ table: "event_likes" });
   }
 
+  getLikesByEventId(eventId) {
+    return this.database.query(
+      `SELECT * FROM ${this.table} WHERE Event_ID = ?`,
+      [eventId]
+    );
+  }
+
   like(eventId, userId) {
     return this.database.query(
       `INSERT INTO ${this.table} (Event_ID, User_ID) VALUES (?, ?)`,

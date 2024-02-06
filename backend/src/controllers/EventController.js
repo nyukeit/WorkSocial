@@ -31,7 +31,10 @@ const getEventByID = (req, res) => {
 const createEvent = (req, res) => {
   const event = req.body;
   const userID = req.User_ID;
-
+  if (req.file) {
+    event.Image = req.file.filename;
+  }
+  console.info("creation evennement", event);
   models.event
     .insert(event, userID)
     .then(([result]) => {

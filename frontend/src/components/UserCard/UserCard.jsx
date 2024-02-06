@@ -38,6 +38,7 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   };
   // const imageName = user.ProfileImage.split("\\").pop();
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
+  console.info("mon image", imageUrl);
   return (
     <div>
       <div

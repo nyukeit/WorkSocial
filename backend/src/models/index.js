@@ -58,6 +58,11 @@ const EventCommentsManager = require("./Manager/EventCommentsManager");
 models.eventComments = new EventCommentsManager();
 models.eventComments.setDatabase(pool);
 
+const EventLikeManager = require("./Manager/EventLikeManager");
+
+models.eventLike = new EventLikeManager();
+models.eventLike.setDatabase(pool);
+
 const EventCommentsLikesManager = require("./Manager/EventCommentsLikesManager");
 
 models.eventCommentsLikes = new EventCommentsLikesManager();
