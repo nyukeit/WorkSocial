@@ -108,6 +108,9 @@ function BarNav() {
             <li>
               <Link to="/posts">Posts</Link>
             </li>
+            <li>
+              <Link to="/events">Events</Link>
+            </li>
             {/* <li className="welcome-message">
               <button
                 type="button"
