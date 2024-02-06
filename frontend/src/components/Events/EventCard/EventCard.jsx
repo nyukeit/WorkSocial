@@ -191,14 +191,17 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   const handleEventLikeDislike = async (action, userId) => {
     if (action === "like") {
       try {
-        const response = await fetch({
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId }),
-        });
+        const response = await fetch(
+          `${hostname}/events/${event.Event_ID}/likes`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+          }
+        );
         if (response.ok) {
           getLikes();
         } else {

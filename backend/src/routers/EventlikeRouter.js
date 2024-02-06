@@ -8,7 +8,7 @@ const { verifyToken } = require("../middleware/auth");
 // Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
 
-router.get("/events/:eventId/likes", EventLikeController.getlikes);
+router.get("/events/:eventId/likes", EventLikeController.getLikesByEventId);
 router.post("/events/:eventId/likes", EventLikeController.likeEvent);
 router.delete("/events/:eventId/likes", EventLikeController.unlikeEvent);
 
