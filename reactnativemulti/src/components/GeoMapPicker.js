@@ -54,7 +54,7 @@ const GeoMapPicker = ({ selectedLatitude, selectedLongitude }) => {
   return (
     <View style={styles.container}>
       <MapView
-        key={mapKey} // Clé dynamique basée sur la localisation
+        key={mapKey}
         style={styles.map}
         region={location}
       >

@@ -1,120 +1,109 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, Button, StyleSheet} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import PropTypes from 'prop-types';
+import AddressAutoPicker from '../../../components/AddressAutoPicker';
+import GeoMapPicker from '../../../components/GeoMapPicker';
 
-const InscriptionStep2 = ({onNextStep, onPreviousStep,formData}) => {
+const InscriptionScreenStep2 = ({ onNextStep, onPreviousStep, formData }) => {
+  const [selectedLatitude, setSelectedLatitude] = useState(null);
+  const [selectedLongitude, setSelectedLongitude] = useState(null);
+
   const initialValues = {
-    Address:formData.Address || '',
-    Email: formData.Email || '',
-    Phone: formData.Phone || '',
+    Address: formData.Address || '',
   };
-
 
   const validationSchema = Yup.object().shape({
     Address: Yup.string().required('Adresse requise'),
-    Email: Yup.string().email('Email invalide').required('Email requis'),
-    Phone: Yup.string().required('TéléPhone requis'),
   });
 
-  const handleSubmit = values => {
-    console.error(values);
+  const handleSubmit = (values) => {
+    console.log(values);
     onNextStep(values);
   };
-
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Formik
-        initialValues={formData}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
-           enableReinitialize={true}
-        >
+        enableReinitialize={true}
+      >
         {({
           handleChange,
-          handleBlur,
           handleSubmit: formikSubmit,
+          setFieldValue, // Ajoutez setFieldValue ici
           values,
           errors,
           touched,
-          dirty,
           isValid,
-        }) => (
-          <View>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange('Address')}
-              onBlur={handleBlur('Address')}
-              value={values.Address}
-              placeholder="Adresse"
-            />
-            {errors.Address && touched.Address && <Text>{errors.Address}</Text>}
+        }) => {
+          // Définissez handleAddressSelect ici pour avoir accès à setFieldValue
+          const handleAddressSelect = (address, _, lat, lng) => {
+            setFieldValue('Address', address);
+            setSelectedLatitude(lat);
+            setSelectedLongitude(lng);
+          };
 
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange('Email')}
-              onBlur={handleBlur('Email')}
-              value={values.Email}
-              keyboardType="email-address"
-              placeholder="E-mail"
-            />
-            {errors.Email && touched.Email && <Text>{errors.Email}</Text>}
+          return (
+            <View>
+              <View style={styles.Address}>
+                <AddressAutoPicker
+                  onAddressSelect={(
+                    selectedAddress,
+                    suggestion,
+                    latitude,
+                    longitude,
+                  ) => {
+                    handleChange('Address')(selectedAddress);
+                    setSelectedLatitude(latitude);
+                    setSelectedLongitude(longitude);
+                  }}
+                  selectedLatitude={selectedLatitude}
+                  selectedLongitude={selectedLongitude}
+                />
+                {errors.Address && touched.Address && (
+                  <Text>{errors.Address}</Text>
+                )}
+              </View>
+              <View style={styles.GeoMapPicker}>
+                <GeoMapPicker
+                  onAddressSelect={handleAddressSelect}
+                  selectedLatitude={selectedLatitude}
+                  selectedLongitude={selectedLongitude}
+                />
+              </View>
 
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChange('Phone')}
-              onBlur={handleBlur('Phone')}
-              value={values.Phone}
-              keyboardType="phone-pad"
-              placeholder="TéléPhone"
-            />
-            {errors.Phone && touched.Phone && <Text>{errors.Phone}</Text>}
-
-            <View style={styles.buttonContainer}>
+              <View style={styles.buttonContainer}>
               <Button onPress={onPreviousStep} title="Retour" />
               <Button
                 onPress={formikSubmit}
                 title="Suivant"
                 disabled={!isValid}
               />
-            </View>
+              </View>
           </View>
-        )}
+          );
+        }}
       </Formik>
-    </ScrollView>
+    </View>
   );
 };
-InscriptionStep2.propTypes = {
-  onNextStep: PropTypes.func.isRequired,
-  onPreviousStep: PropTypes.func.isRequired,
-};
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderRadius: 4,
-    marginBottom: 15,
+  GeoMapPicker: {
+    marginVertical: 10,
+    height: '70%',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginVertical: 20,
   },
 });
 
-export default InscriptionStep2;
+export default InscriptionScreenStep2;
