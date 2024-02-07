@@ -15,9 +15,9 @@ function DropdownMenu({ userName, onLogout }) {
         <LinkContainer to="/myprofil">
           <Dropdown.Item>Profile</Dropdown.Item>
         </LinkContainer>
-        <LinkContainer to="/posts">
+        {/* <LinkContainer to="/posts">
           <Dropdown.Item>Posts</Dropdown.Item>
-        </LinkContainer>
+        </LinkContainer> */}
         <Dropdown.Item onClick={onLogout}>Déconnexion</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

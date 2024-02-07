@@ -7,7 +7,7 @@ import ImageWithJWT from "../../utils/ImageWithJWT";
 import { hostname } from "../../HostnameConnect/Hostname";
 import DropdownMenu from "./DropdownMenu";
 
-function BarNav() {
+export default function BarNav() {
   const { isLoggedIn, logout } = useAuth();
   const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const navigate = useNavigate();
@@ -30,67 +30,45 @@ function BarNav() {
         },
       });
       logout();
-      navigate("/feed");
+      navigate("/");
     } catch (error) {
       console.error("Erreur lors de la déconnexion : ", error);
     }
   };
 
   return (
-    <nav className="BarNav">
-      <div className="Logo">
-        <img src={Logo} alt="logo" className="navbar_logo" />
-      </div>
+    <div>
       {isLoggedIn ? (
-        <ul className="NavLinks">
-          <li>
-            <Link to="/feed">
-              <i className="fas fa-home" /> Feed
-            </Link>
-          </li>
-          <li>
-            <Link to="/members">
-              <i className="fas fa-users" /> Membres
-            </Link>
-          </li>
-          <li>
-            <Link to="/surveys">
-              <i className="fas fa-poll" /> Surveys
-            </Link>
-          </li>
-          <li>
-            <Link to="/posts">
-              <i className="fas fa-edit" /> Posts
-            </Link>
-          </li>
-          <li>
-            <Link to="/events">
-              <i className="fas fa-calendar-alt" /> Events
-            </Link>
-          </li>
-          <li className="profileItem">
-            <div className="profile-image">
-              <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
-            </div>
-            <div className="salutation">
-              {isLoggedIn && (
+        <nav className="BarNav-loggedIn">
+          <div className="logo">
+            <img src={Logo} alt="logo" className="navbar_logo" />
+          </div>
+          <ul className="NavLinks-BarNav">
+            <li className="profileItem">
+              <div className="profile-image">
+                <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
+              </div>
+              <div className="salutation">
                 <DropdownMenu userName={firstName} onLogout={handleLogout} />
-              )}
-            </div>
-          </li>
-        </ul>
+              </div>
+            </li>
+          </ul>
+        </nav>
       ) : (
-        <ul className="NavLinks">
-          <li>
-            <Link to="/connexion">Connexion</Link>
-          </li>
-          <li>
-            <Link to="/inscription">Inscription</Link>
-          </li>
-        </ul>
+        <nav className="BarNav-loggedOut">
+          <div className="logo">
+            <img src={Logo} alt="logo" className="navbar_logo" />
+          </div>
+          <ul className="NavLinks-BarNav">
+            <li>
+              <Link to="/connexion">Connexion</Link>
+            </li>
+            <li>
+              <Link to="/inscription">Inscription</Link>
+            </li>
+          </ul>
+        </nav>
       )}
-    </nav>
+    </div>
   );
 }
-
-export default BarNav;

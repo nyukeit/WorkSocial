@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+/* form {
+  margin: 0 2em;
+} */
+
 .App {
   text-align: center;
 }
