@@ -1,13 +1,13 @@
 /* Style de la barre de navigation */
 .UserBar {
   display: flex;
-  width: 150px;
+  width: 200px;
   height: 100vh;
   position: fixed;
   flex-direction: column;
   align-items: center;
   padding-top: 6em;
-  background-color: #4a4e69;
+  /* background-color: #4a4e69; */
   z-index: 100;
   /* padding: 0 20px; */
 }
@@ -25,7 +25,8 @@
 
 /* Style des liens */
 .NavLinks li a {
-  color: white;
+  /* color: white; */
+  color: #4a4e69;
   text-decoration: none;
   transition: color 0.3s ease;
 }

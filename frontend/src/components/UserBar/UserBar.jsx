@@ -14,8 +14,8 @@ export default function UserBar() {
           </Link>
         </li>
         <li>
-          <Link to="/members">
-            <i className="fas fa-users" /> Membres
+          <Link to="/posts">
+            <i className="fas fa-edit" /> Posts
           </Link>
         </li>
         <li>
@@ -24,13 +24,13 @@ export default function UserBar() {
           </Link>
         </li>
         <li>
-          <Link to="/posts">
-            <i className="fas fa-edit" /> Posts
+          <Link to="/events">
+            <i className="fas fa-calendar-alt" /> Events
           </Link>
         </li>
         <li>
-          <Link to="/events">
-            <i className="fas fa-calendar-alt" /> Events
+          <Link to="/members">
+            <i className="fas fa-users" /> Membres
           </Link>
         </li>
       </ul>

@@ -10,12 +10,3 @@
 .radio-group input {
   margin-right: 0.5em;
 }
-
-.img-upload input[type="file"] {
-  display: none;
-}
-
-.img-upload label {
-  margin: 1em 0;
-  cursor: pointer;
-}

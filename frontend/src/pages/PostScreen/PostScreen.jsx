@@ -70,11 +70,9 @@ export default function PostScreen() {
     <>
       <UserBar />
       <div className="container">
-        <div className="button">
-          <Button type="button" onClick={handleOpenModal}>
-            Create Post
-          </Button>
-        </div>
+        <Button className="create-btn" type="button" onClick={handleOpenModal}>
+          <i className="fas fa-plus" /> Create Post
+        </Button>
         <div className="post-list">
           {posts.map((post) => {
             const postLikes = likes.filter(

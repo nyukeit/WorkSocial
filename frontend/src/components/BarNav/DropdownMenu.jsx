@@ -6,18 +6,14 @@ import PropTypes from "prop-types";
 import "./DropdownMenu.css";
 
 function DropdownMenu({ userName, onLogout }) {
-  // const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   return (
     <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic">Bonjour {userName}</Dropdown.Toggle>
-
+      <Dropdown.Toggle id="dropdown-basic">{userName}</Dropdown.Toggle>
       <Dropdown.Menu className="custom-dropdown-menu">
-        <LinkContainer to="/myprofil">
+        <LinkContainer to={`/profile/${userId}`}>
           <Dropdown.Item>Profile</Dropdown.Item>
         </LinkContainer>
-        {/* <LinkContainer to="/posts">
-          <Dropdown.Item>Posts</Dropdown.Item>
-        </LinkContainer> */}
         <Dropdown.Item onClick={onLogout}>Déconnexion</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

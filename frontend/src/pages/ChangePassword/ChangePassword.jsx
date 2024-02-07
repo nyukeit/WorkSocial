@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import Button from "react-bootstrap/Button";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./ChangePassword.css";
+import UserBar from "../../components/UserBar/UserBar";
 
 import { hostname } from "../../HostnameConnect/Hostname";
 
@@ -161,47 +162,50 @@ function ChangePassword() {
     return <div>Chargement...</div>;
   }
   return (
-    <div className="inscription-screen">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form>
-          <h2>Changer votre mot de passe</h2>
-          <div className="form-group">
-            <label htmlFor="oldPassword">Mot de Passe Actuel</label>
-            <Field name="oldPassword" type="password" />
-            <ErrorMessage
-              name="oldPassword"
-              component="div"
-              className="error"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="newPassword">Nouveau Mot de Passe</label>
-            <Field name="newPassword" type="password" />
-            <ErrorMessage
-              name="newPassword"
-              component="div"
-              className="error"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="confirmNewPassword">
-              Confirmer le Nouveau Mot de Passe
-            </label>
-            <Field name="confirmNewPassword" type="password" />
-            <ErrorMessage
-              name="confirmNewPassword"
-              component="div"
-              className="error"
-            />
-          </div>
-          <button type="submit">Changer le Mot de Passe</button>
-        </Form>
-      </Formik>
-    </div>
+    <>
+      <UserBar />
+      <div className="container">
+        <h2 className="page-title">Changer votre mot de passe</h2>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          <Form>
+            <div className="form-group">
+              <label htmlFor="oldPassword">Mot de Passe Actuel</label>
+              <Field name="oldPassword" type="password" />
+              <ErrorMessage
+                name="oldPassword"
+                component="div"
+                className="error"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPassword">Nouveau Mot de Passe</label>
+              <Field name="newPassword" type="password" />
+              <ErrorMessage
+                name="newPassword"
+                component="div"
+                className="error"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmNewPassword">
+                Confirmer le Nouveau Mot de Passe
+              </label>
+              <Field name="confirmNewPassword" type="password" />
+              <ErrorMessage
+                name="confirmNewPassword"
+                component="div"
+                className="error"
+              />
+            </div>
+            <Button type="submit">Changer le Mot de Passe</Button>
+          </Form>
+        </Formik>
+      </div>
+    </>
   );
 }
 

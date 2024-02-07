@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 
 import { Button, Modal } from "react-bootstrap";
-import EventCard from "../../components/Events/EventCard/EventCard";
+import EventCard from "../../components/Events/EventCard";
 import UserBar from "../../components/UserBar/UserBar";
 
 import { useEvent } from "../../contexts/EventContext";
@@ -89,11 +89,9 @@ export default function EventScreen() {
     <>
       <UserBar />
       <div className="container">
-        <div className="button">
-          <Button id="createEvent-btn" onClick={handleOpenModal}>
-            Create Event
-          </Button>
-        </div>
+        <Button className="create-btn" onClick={handleOpenModal}>
+          <i className="fas fa-plus" /> Create Event
+        </Button>
         <div className="post-list">
           {events.map((event) => {
             const eventLikes = likes.filter(
@@ -112,9 +110,6 @@ export default function EventScreen() {
             );
           })}
         </div>
-        {/* <div className="events">
-          <EventList events={events} />
-        </div> */}
         <Modal show={showModal} onHide={handleCloseModal} className="modals">
           <Modal.Header closeButton>Create Event</Modal.Header>
           <Modal.Body>
@@ -182,14 +177,19 @@ export default function EventScreen() {
                       </div>
                     </div>
 
-                    <label htmlFor="Image">Image</label>
-                    <input
-                      name="Image"
-                      type="file"
-                      onChange={(event) =>
-                        setFieldValue("Image", event.currentTarget.files[0])
-                      }
-                    />
+                    <div className="img-upload">
+                      <label htmlFor="Image">
+                        <i className="fa-solid fa-image" /> Attach Image
+                      </label>
+                      <input
+                        id="Image"
+                        name="Image"
+                        type="file"
+                        onChange={(event) =>
+                          setFieldValue("Image", event.currentTarget.files[0])
+                        }
+                      />
+                    </div>
                   </div>
                   <Button id="createEvent-btn" type="submit">
                     Create

@@ -97,7 +97,9 @@ export default function SurveyScreen() {
     <>
       <UserBar />
       <div className="container">
-        <Button onClick={handleOpenModal}>Create Survey</Button>
+        <Button className="create-btn" onClick={handleOpenModal}>
+          <i className="fas fa-plus" /> Create Survey
+        </Button>
         <Modal show={showModal} onHide={handleCloseModal} className="modals">
           <Modal.Header closeButton>
             <Modal.Title>Create Survey</Modal.Title>

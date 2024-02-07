@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import UserBar from "../../components/UserBar/UserBar";
 import "./MyUserProfilScreen.css";
 import { hostname } from "../../HostnameConnect/Hostname";
@@ -53,8 +54,8 @@ function MyUserProfilScreen() {
   return (
     <>
       <UserBar />
-      <div className="my-profile-container">
-        <h1>Profil de l'utilisateur</h1>
+      <div className="container">
+        <h2 className="page-title">Profil de l'utilisateur</h2>
         <div className="profile-image">
           <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
         </div>
@@ -95,9 +96,9 @@ function MyUserProfilScreen() {
           </tbody>
         </table>
         {showModifyProfileButton && (
-          <button type="button" id="editProfil-btn">
+          <Button type="button" id="editProfil-btn">
             <Link to="/editprofil">Modifier votre profil</Link>
-          </button>
+          </Button>
         )}
       </div>
     </>

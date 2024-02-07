@@ -32,11 +32,9 @@ function App() {
       <AuthProvider>
         <Router>
           <BarNav />
-          <Routes>
-            <Route path="/" element={<LandingScreen />} />
-          </Routes>
           <UserProvider>
             <Routes>
+              <Route path="/" element={<LandingScreen />} />
               <Route path="/feed" element={<Feed />} />
               <Route
                 path="/posts"
