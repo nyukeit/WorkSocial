@@ -20,8 +20,12 @@ code {
 
 .container {
   display: flex;
-  gap: 5em;
+  /* gap: 5em; */
   padding: 6em 0;
+}
+
+.card {
+  margin-bottom: 1.5em;
 }
 
 .create-btn {
@@ -95,12 +99,17 @@ code {
   color: #61dafb;
 }
 
-.card {
+/* .card {
   width: 50%;
   margin: 1em 1em 1em 0;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
     rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+} */
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-text {

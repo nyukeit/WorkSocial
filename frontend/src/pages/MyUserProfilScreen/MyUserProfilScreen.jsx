@@ -52,9 +52,9 @@ function MyUserProfilScreen() {
 
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
-    <>
+    <div className="container">
       <UserBar />
-      <div className="container">
+      <div>
         <h2 className="page-title">Profil de l'utilisateur</h2>
         <div className="profile-image">
           <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
@@ -101,7 +101,7 @@ function MyUserProfilScreen() {
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

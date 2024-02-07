@@ -33,12 +33,6 @@ export default function SurveyCard({
   // Mapping Creators
   const surveyCreator = users.find((user) => user.User_ID === survey.User_ID);
 
-  // const commentCreators = surveyComments.map((cmt) =>
-  //   users.find(
-  //     (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
-  //   )
-  // );
-
   const commentUserPairs = surveyComments.map((cmt) => {
     const commentCreator = users.find(
       (user) => parseInt(user.User_ID, 10) === parseInt(cmt.User_ID, 10)
@@ -48,8 +42,6 @@ export default function SurveyCard({
       user: commentCreator,
     };
   });
-  commentUserPairs.map((c) => console.info(c));
-  console.info(commentUserPairs);
 
   // Check if user has liked
   const userHasLiked = surveyLikes.some(
