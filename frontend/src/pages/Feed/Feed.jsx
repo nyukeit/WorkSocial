@@ -13,13 +13,13 @@ function Feed() {
   };
   const today = newDay.toLocaleDateString("fr-FR", options);
   return (
-    <>
+    <div className="container">
       <UserBar />
-      <div className="container">
+      <div>
         <h5 className="salutation">Bonjour, {currentUser.FirstName}</h5>
         <h2 className="today">{today}</h2>
       </div>
-    </>
+    </div>
   );
 }
 
