@@ -184,9 +184,10 @@ function EditUserProfilScreen() {
   }
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
-    <>
+    <div className="container">
       <UserBar />
-      <div className="inscription-screen">
+      <div>
+        <h2 className="page-title">Modifier votre Profil</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -194,7 +195,6 @@ function EditUserProfilScreen() {
         >
           {({ setFieldValue }) => (
             <Form>
-              <h2>Modifier votre Profil</h2>
               <div className="form-group">
                 <label htmlFor="username">Pseudo</label>
                 <Field
@@ -300,7 +300,7 @@ function EditUserProfilScreen() {
                   required
                 />
               </div>
-              <div className="profile-image-container">
+              <div className="profileImgDiv">
                 <ImageWithJWT
                   imageUrl={imageUrl}
                   token={localStorage.getItem("userToken")}
@@ -333,7 +333,7 @@ function EditUserProfilScreen() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
