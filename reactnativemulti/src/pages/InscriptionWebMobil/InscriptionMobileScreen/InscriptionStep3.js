@@ -46,7 +46,7 @@ const handlePhoneVerification = (phoneNumber, isAvailable, message) => {
 
 const handleSubmit = (values, {setSubmitting}) => {
   if (emailVerified && phoneVerified) {
-    // Appeler onNextStep ici avec les valeurs du formulaire comme argument
+    console.log('Valeurs soumises:', values);
     onNextStep(values);
   } else {
     alert(

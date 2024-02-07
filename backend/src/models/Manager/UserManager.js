@@ -137,6 +137,15 @@ class userManager extends AbstractManager {
     return this.database.query(query, [userId, code]);
   }
 
+  // Marquer l'email de l'utilisateur comme vérifié
+  markEmailAsVerified(userId) {
+    const query = `
+    UPDATE user
+    SET emailVerified = TRUE
+    WHERE User_ID = ?`;
+    return this.database.query(query, [userId]);
+  }
+
   // Optionnel: Supprimer un code de vérification expiré ou déjà utilisé
   deleteVerificationCode(userId, code) {
     const query = `

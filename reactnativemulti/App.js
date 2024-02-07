@@ -12,6 +12,9 @@ import MyProfileScreen from './src/pages/DrawerPages/ProfileScreen/MyProfileScre
 import { AuthProvider, useAuth } from "./src/utils/useConnecte";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Import de InscriptionStep5 uniquement pour la version mobile
+import InscriptionStep5 from './src/pages/InscriptionWebMobil/InscriptionMobileScreen/InscriptionStep5';
+
 const Stack = createStackNavigator();
 
 // Configuration de linking pour le web
@@ -48,7 +51,7 @@ const AppContent = () => {
     return () => clearInterval(interval);
   }, [logout]);
 
- return (
+  return (
     <NavigationContainer linking={Platform.OS === 'web' ? linking : undefined}>
       {Platform.OS === 'web' && <BarNav />}
 
@@ -59,12 +62,14 @@ const AppContent = () => {
             <Stack.Screen name="ConnexionScreen" component={ConnexionScreen} />
             <Stack.Screen name="InscriptionScreen" component={InscriptionWebScreen} />
             <Stack.Screen name="MembersScreen" component={MembersScreen} />
-             {isLoggedIn && <Stack.Screen name="MyProfileScreen" component={MyProfileScreen} />}
+            {isLoggedIn && <Stack.Screen name="MyProfileScreen" component={MyProfileScreen} />}
           </>
         ) : isLoggedIn ? (
           <>
             <Stack.Screen name="Drawer" component={DrawerNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="MyProfileScreen" component={MyProfileScreen} />
+            {/* Inclure InscriptionStep5 uniquement pour la plateforme mobile */}
+            <Stack.Screen name="InscriptionStep5" component={InscriptionStep5} />
           </>
         ) : (
           <>

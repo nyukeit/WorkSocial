@@ -5,10 +5,9 @@
  * @param {number} length - La longueur du code de vérification.
  * @returns {string} - Le code de vérification généré.
  */
-function generateVerificationCode(length = 8) {
+function generateVerificationCode(length = 4) {
   // Définissez les caractères possibles pour le code. Inclut les lettres majuscules et minuscules et les chiffres.
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "0123456789";
   let result = "";
 
   // Générez un code de la longueur spécifiée.

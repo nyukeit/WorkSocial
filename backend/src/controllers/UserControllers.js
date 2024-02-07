@@ -246,9 +246,10 @@ const verifyEmailCode = async (req, res) => {
   try {
     const [results] = await models.user.findVerificationCode(userId, code);
     if (results.length > 0) {
-      // Le code est valide
-      // Vous pouvez ici marquer l'email de l'utilisateur comme vérifié dans votre base de données
-      await models.user.deleteVerificationCode(userId, code); // Supprimer le code de sélection
+      // Le code est valide, marquer l'email comme vérifié
+      await models.user.markEmailAsVerified(userId);
+      // Supprimer le code de vérification pour éviter sa réutilisation
+      await models.user.deleteVerificationCode(userId, code);
       res.status(200).send({ message: "Email verified successfully." });
     } else {
       // Le code est invalide ou a expiré
@@ -258,9 +259,10 @@ const verifyEmailCode = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).send({ message: "Error verifying email code" });
+    res.status(500).send({ message: "Error verifying email code." });
   }
 };
+
 module.exports = {
   getUsers,
   getUserByID,
