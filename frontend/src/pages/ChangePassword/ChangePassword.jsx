@@ -162,9 +162,9 @@ function ChangePassword() {
     return <div>Chargement...</div>;
   }
   return (
-    <>
+    <div className="container">
       <UserBar />
-      <div className="container">
+      <div>
         <h2 className="page-title">Changer votre mot de passe</h2>
         <Formik
           initialValues={initialValues}
@@ -205,7 +205,7 @@ function ChangePassword() {
           </Form>
         </Formik>
       </div>
-    </>
+    </div>
   );
 }
 

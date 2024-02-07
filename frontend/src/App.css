@@ -18,6 +18,12 @@ code {
     line-height: 0.8;
 }
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .container {
   display: flex;
   /* gap: 5em; */
@@ -25,6 +31,7 @@ code {
 }
 
 .card {
+  width: 500px;
   margin-bottom: 1.5em;
 }
 
@@ -219,6 +226,11 @@ code {
 
 #comment-content {
   font-size: 0.8em;
+}
+
+.linkButton {
+  color: white;
+  text-decoration: none;
 }
 
 @keyframes App-logo-spin {

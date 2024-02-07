@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./EditUserProfilScreen.css";
+import Button from "react-bootstrap/Button";
 import UserBar from "../../components/UserBar/UserBar";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 
@@ -12,7 +13,7 @@ function EditUserProfilScreen() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const userIdLoggedIn = localStorage.getItem("userId");
-  console.info(userIdLoggedIn);
+
   const navigate = useNavigate();
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -48,7 +49,7 @@ function EditUserProfilScreen() {
 
     fetchUser();
   }, [userId]);
-  console.info(user);
+
   const initialValues = {
     username: "",
     lastName: "",
@@ -320,17 +321,15 @@ function EditUserProfilScreen() {
                   className="error"
                 />
               </div>
-              <button type="submit" id="editProfile-btn">
-                Modifier
-              </button>
+              <Button type="submit">Modifier</Button>
             </Form>
           )}
         </Formik>
         <div className="mdp">
           Changer le mot de passe
-          <button type="button">
-            <NavLink to="/changepassword">Changer</NavLink>
-          </button>
+          <NavLink to="/changepassword" className="linkButton">
+            <Button type="button">Changer</Button>
+          </NavLink>
         </div>
       </div>
     </div>
