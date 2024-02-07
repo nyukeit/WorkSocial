@@ -1,36 +1,5 @@
-.surveys-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  height: 100vh;
-  padding: 2em;
-  margin: 2em;
-}
-
 .visibility-group {
   display: flex;
   margin: 1em 0;
 }
 
-.img-upload {
-  margin-bottom: 1em;
-}
-
-.img-upload input[type="file"] {
-  display: none;
-  margin-bottom: 1em;
-}
-
-.img-upload label {
-  margin: 1em 0;
-  cursor: pointer;
-}
-
-.modals {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  height: auto;
-  width: auto;
-  transform: translate(-50%, -50%);
-}

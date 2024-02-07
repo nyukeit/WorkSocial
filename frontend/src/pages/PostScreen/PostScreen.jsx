@@ -67,83 +67,81 @@ export default function PostScreen() {
   };
 
   return (
-    <>
+    <div className="container">
       <UserBar />
-      <div className="container">
+      <div>
         <Button className="create-btn" type="button" onClick={handleOpenModal}>
           <i className="fas fa-plus" /> Create Post
         </Button>
-        <div className="post-list">
-          {posts.map((post) => {
-            const postLikes = likes.filter(
-              (like) => like.Post_ID === post.Post_ID
-            );
-            const postComments = comments.filter(
-              (comment) => comment.Post_ID === post.Post_ID
-            );
-            return (
-              <PostCard
-                key={post.Post_ID}
-                post={post}
-                postLikes={postLikes}
-                postComments={postComments}
-              />
-            );
-          })}
-        </div>
-        <Modal show={showModal} onHide={handleCloseModal} className="modals">
-          <Modal.Header closeButton>Create Post</Modal.Header>
-          <Modal.Body>
-            <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
-              {({ setFieldValue }) => (
-                <Form>
-                  <div className="title-content">
-                    <Field
-                      name="Title"
-                      placeholder="Title"
-                      type="text"
-                      className="form-control"
-                    />
-                    <Field
-                      name="Content"
-                      component="textarea"
-                      rows="3"
-                      placeholder="Write Post"
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="visibility-group">
-                    <div className="radio-group">
-                      <Field name="Visibility" type="radio" value="Public" />
-                      <label htmlFor="Visibility">Public</label>
-                    </div>
-                    <div className="radio-group">
-                      <Field name="Visibility" type="radio" value="Private" />
-                      <label htmlFor="Visibility">Private</label>
-                    </div>
-                  </div>
-                  <div className="img-upload">
-                    <label htmlFor="Image">
-                      <i className="fa-solid fa-image" /> Attach Image
-                    </label>
-                    <input
-                      id="Image"
-                      name="Image"
-                      type="file"
-                      onChange={(event) =>
-                        setFieldValue("Image", event.currentTarget.files[0])
-                      }
-                    />
-                  </div>
-                  <button id="createPost-btn" type="submit">
-                    Create
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </Modal.Body>
-        </Modal>
+        {posts.map((post) => {
+          const postLikes = likes.filter(
+            (like) => like.Post_ID === post.Post_ID
+          );
+          const postComments = comments.filter(
+            (comment) => comment.Post_ID === post.Post_ID
+          );
+          return (
+            <PostCard
+              key={post.Post_ID}
+              post={post}
+              postLikes={postLikes}
+              postComments={postComments}
+            />
+          );
+        })}
       </div>
-    </>
+      <Modal show={showModal} onHide={handleCloseModal} className="modals">
+        <Modal.Header closeButton>Create Post</Modal.Header>
+        <Modal.Body>
+          <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="title-content">
+                  <Field
+                    name="Title"
+                    placeholder="Title"
+                    type="text"
+                    className="form-control"
+                  />
+                  <Field
+                    name="Content"
+                    component="textarea"
+                    rows="3"
+                    placeholder="Write Post"
+                    className="form-control"
+                  />
+                </div>
+                <div className="visibility-group">
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Public" />
+                    <label htmlFor="Visibility">Public</label>
+                  </div>
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Private" />
+                    <label htmlFor="Visibility">Private</label>
+                  </div>
+                </div>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" /> Attach Image
+                  </label>
+                  <input
+                    id="Image"
+                    name="Image"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("Image", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <button id="createPost-btn" type="submit">
+                  Create
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </Modal.Body>
+      </Modal>
+    </div>
   );
 }

@@ -235,7 +235,7 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   };
 
   return (
-    <div>
+    <>
       <Card>
         <div className="card-header">
           <div className="profile">
@@ -286,9 +286,9 @@ export default function EventCard({ event, eventComments, eventLikes }) {
           >
             <i className="fa-regular fa-comment" />
           </button>
-          <Card.Text>
+          <p>
             Le {formattedStartDate} de {event.StartTime} à {event.EndTime}
-          </Card.Text>
+          </p>
 
           <Card.Title>{event.EventName}</Card.Title>
           <Card.Text>{event.Description}</Card.Text>
@@ -468,7 +468,7 @@ export default function EventCard({ event, eventComments, eventLikes }) {
           </MyForm>
         </Modal.Body>
       </Modal>
-    </div>
+    </>
   );
 }
 

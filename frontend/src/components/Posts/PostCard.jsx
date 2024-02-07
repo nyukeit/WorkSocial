@@ -4,7 +4,7 @@ import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
 
 // Import Styles
-import "./PostCard.css";
+// import "./PostCard.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -218,7 +218,7 @@ export default function PostCard({ post, postLikes, postComments }) {
 
   // Handle HTML
   return (
-    <div>
+    <>
       <Card>
         <div className="card-header">
           <div className="profile">
@@ -417,7 +417,7 @@ export default function PostCard({ post, postLikes, postComments }) {
           </MyForm>
         </Modal.Body>
       </Modal>
-    </div>
+    </>
   );
 }
 

@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import Logo from "../../assets/images/logo.png";
-// import { useAuth } from "../../utils/useConnecte";
 import "./UserBar.css";
 
 export default function UserBar() {
