@@ -1,5 +1,6 @@
 import React from "react";
 import "./Feed.css";
+import UserBar from "../../components/UserBar/UserBar";
 // import Button from "react-bootstrap/Button";
 
 function Feed() {
@@ -12,10 +13,13 @@ function Feed() {
   };
   const today = newDay.toLocaleDateString("fr-FR", options);
   return (
-    <div className="container">
-      <h5 className="salutation">Bonjour, {currentUser.FirstName}</h5>
-      <h2 className="today">{today}</h2>
-    </div>
+    <>
+      <UserBar />
+      <div className="container">
+        <h5 className="salutation">Bonjour, {currentUser.FirstName}</h5>
+        <h2 className="today">{today}</h2>
+      </div>
+    </>
   );
 }
 

@@ -3,6 +3,7 @@ import { Formik, Form, Field } from "formik";
 
 import { Button, Modal } from "react-bootstrap";
 import EventCard from "../../components/Events/EventCard/EventCard";
+import UserBar from "../../components/UserBar/UserBar";
 
 import { useEvent } from "../../contexts/EventContext";
 import { hostname } from "../../HostnameConnect/Hostname";
@@ -85,117 +86,120 @@ export default function EventScreen() {
   };
 
   return (
-    <div className="container">
-      <div className="button">
-        <Button id="createEvent-btn" onClick={handleOpenModal}>
-          Create Event
-        </Button>
-      </div>
-      <div className="post-list">
-        {events.map((event) => {
-          const eventLikes = likes.filter(
-            (like) => like.Event_ID === event.Event_ID
-          );
-          const eventComments = comments.filter(
-            (comment) => comment.Event_ID === event.Event_ID
-          );
-          return (
-            <EventCard
-              key={event.Event_ID}
-              event={event}
-              eventComments={eventComments}
-              eventLikes={eventLikes}
-            />
-          );
-        })}
-      </div>
-      {/* <div className="events">
-        <EventList events={events} />
-      </div> */}
-      <Modal show={showModal} onHide={handleCloseModal} className="modals">
-        <Modal.Header closeButton>Create Event</Modal.Header>
-        <Modal.Body>
-          <Formik initialValues={initialValues} onSubmit={handleCreateEvent}>
-            {({ setFieldValue }) => (
-              <Form>
-                <div className="title-content">
-                  <label htmlFor="EventName">Event Name</label>
-                  <Field
-                    name="EventName"
-                    placeholder="Event Name"
-                    type="text"
-                    className="form-control"
-                  />
+    <>
+      <UserBar />
+      <div className="container">
+        <div className="button">
+          <Button id="createEvent-btn" onClick={handleOpenModal}>
+            Create Event
+          </Button>
+        </div>
+        <div className="post-list">
+          {events.map((event) => {
+            const eventLikes = likes.filter(
+              (like) => like.Event_ID === event.Event_ID
+            );
+            const eventComments = comments.filter(
+              (comment) => comment.Event_ID === event.Event_ID
+            );
+            return (
+              <EventCard
+                key={event.Event_ID}
+                event={event}
+                eventComments={eventComments}
+                eventLikes={eventLikes}
+              />
+            );
+          })}
+        </div>
+        {/* <div className="events">
+          <EventList events={events} />
+        </div> */}
+        <Modal show={showModal} onHide={handleCloseModal} className="modals">
+          <Modal.Header closeButton>Create Event</Modal.Header>
+          <Modal.Body>
+            <Formik initialValues={initialValues} onSubmit={handleCreateEvent}>
+              {({ setFieldValue }) => (
+                <Form>
+                  <div className="title-content">
+                    <label htmlFor="EventName">Event Name</label>
+                    <Field
+                      name="EventName"
+                      placeholder="Event Name"
+                      type="text"
+                      className="form-control"
+                    />
 
-                  <label htmlFor="StartDate">Start Date</label>
-                  <Field
-                    name="StartDate"
-                    placeholder="Start Date"
-                    type="date"
-                    className="form-control"
-                  />
+                    <label htmlFor="StartDate">Start Date</label>
+                    <Field
+                      name="StartDate"
+                      placeholder="Start Date"
+                      type="date"
+                      className="form-control"
+                    />
 
-                  <label htmlFor="EndDate">End Date</label>
-                  <Field
-                    name="EndDate"
-                    placeholder="End Date"
-                    type="date"
-                    className="form-control"
-                  />
+                    <label htmlFor="EndDate">End Date</label>
+                    <Field
+                      name="EndDate"
+                      placeholder="End Date"
+                      type="date"
+                      className="form-control"
+                    />
 
-                  <label htmlFor="StartTime">Start Time</label>
-                  <Field
-                    name="StartTime"
-                    placeholder="Start Time"
-                    type="time"
-                    className="form-control"
-                  />
+                    <label htmlFor="StartTime">Start Time</label>
+                    <Field
+                      name="StartTime"
+                      placeholder="Start Time"
+                      type="time"
+                      className="form-control"
+                    />
 
-                  <label htmlFor="EndTime">End Time</label>
-                  <Field
-                    name="EndTime"
-                    placeholder="End Time"
-                    type="time"
-                    className="form-control"
-                  />
+                    <label htmlFor="EndTime">End Time</label>
+                    <Field
+                      name="EndTime"
+                      placeholder="End Time"
+                      type="time"
+                      className="form-control"
+                    />
 
-                  <label htmlFor="Description">Description</label>
-                  <Field
-                    name="Description"
-                    component="textarea"
-                    rows="5"
-                    placeholder="Description"
-                    className="form-control"
-                  />
+                    <label htmlFor="Description">Description</label>
+                    <Field
+                      name="Description"
+                      component="textarea"
+                      rows="5"
+                      placeholder="Description"
+                      className="form-control"
+                    />
 
-                  <div className="visibility-group">
-                    <div className="radio-group">
-                      <Field name="Visibility" type="radio" value="Public" />
-                      <label htmlFor="Visibility">Public</label>
+                    <div className="visibility-group">
+                      <div className="radio-group">
+                        <Field name="Visibility" type="radio" value="Public" />
+                        <label htmlFor="Visibility">Public</label>
+                      </div>
+                      <div className="radio-group">
+                        <Field name="Visibility" type="radio" value="Private" />
+                        <label htmlFor="Visibility">Private</label>
+                      </div>
                     </div>
-                    <div className="radio-group">
-                      <Field name="Visibility" type="radio" value="Private" />
-                      <label htmlFor="Visibility">Private</label>
-                    </div>
+
+                    <label htmlFor="Image">Image</label>
+                    <input
+                      name="Image"
+                      type="file"
+                      onChange={(event) =>
+                        setFieldValue("Image", event.currentTarget.files[0])
+                      }
+                    />
                   </div>
-
-                  <label htmlFor="Image">Image</label>
-                  <input
-                    name="Image"
-                    type="file"
-                    onChange={(event) =>
-                      setFieldValue("Image", event.currentTarget.files[0])
-                    }
-                  />
-                </div>
-                <Button id="createEvent-btn" type="submit">
-                  Create
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </Modal.Body>
-      </Modal>
-    </div>
+                  <Button id="createEvent-btn" type="submit">
+                    Create
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Modal.Body>
+        </Modal>
+      </div>
+    </>
   );
 }

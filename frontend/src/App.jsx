@@ -1,7 +1,6 @@
 // Import des Modules
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import UserBar from "./components/UserBar/UserBar";
 import BarNav from "./components/BarNav/BarNav";
 
 // Import des Pages
@@ -30,14 +29,13 @@ import "./App.css";
 function App() {
   return (
     <React.StrictMode>
-      <Router>
-        <AuthProvider>
+      <AuthProvider>
+        <Router>
           <BarNav />
           <Routes>
             <Route path="/" element={<LandingScreen />} />
           </Routes>
           <UserProvider>
-            <UserBar />
             <Routes>
               <Route path="/feed" element={<Feed />} />
               <Route
@@ -73,8 +71,8 @@ function App() {
               <Route path="/changepassword" element={<ChangePassword />} />
             </Routes>
           </UserProvider>
-        </AuthProvider>
-      </Router>
+        </Router>
+      </AuthProvider>
     </React.StrictMode>
   );
 }

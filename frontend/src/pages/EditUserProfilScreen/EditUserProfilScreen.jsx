@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./EditUserProfilScreen.css";
+import UserBar from "../../components/UserBar/UserBar";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 
 import { hostname } from "../../HostnameConnect/Hostname";
@@ -183,131 +184,156 @@ function EditUserProfilScreen() {
   }
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
-    <div className="inscription-screen">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ setFieldValue }) => (
-          <Form>
-            <h2>Modifier votre Profil</h2>
-            <div className="form-group">
-              <label htmlFor="username">Pseudo</label>
-              <Field name="username" type="text" placeholder={user.Username} />
-              <ErrorMessage name="username" component="div" className="error" />
-              {usernameError && (
-                <div className="error-message">{usernameError}</div>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="lastName">Nom</label>
-              <Field name="lastName" type="text" placeholder={user.LastName} />
-              <ErrorMessage name="lastName" component="div" className="error" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="firstName">Prénom</label>
-              <Field
-                name="firstName"
-                type="text"
-                placeholder={user.FirstName}
-              />
-              <ErrorMessage
-                name="firstName"
-                component="div"
-                className="error"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="birthDate">Date de Naissance</label>
-              <Field
-                name="birthDate"
-                type="date"
-                placeholder={
-                  user.BirthDate
-                    ? new Date(user.BirthDate).toISOString().split("T")[0]
-                    : ""
-                }
-              />
-              <ErrorMessage
-                name="birthDate"
-                component="div"
-                className="error"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="address">Adresse</label>
-              <Field name="address" type="text" placeholder={user.Address} />
-              <ErrorMessage name="address" component="div" className="error" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">E-mail</label>
-              <Field name="email" type="email" placeholder={user.Email} />
-              <ErrorMessage name="email" component="div" className="error" />
-              {emailError && <div className="error-message">{emailError}</div>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="phone">Téléphone</label>
-              <Field name="phone" type="text" placeholder={user.Phone} />
-              <ErrorMessage name="phone" component="div" className="error" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="gender">Genre</label>
-              <Field name="gender" as="select" placeholder={user.Gender}>
-                <option value="">Sélectionnez un genre</option>
-                <option value="Male">Homme</option>
-                <option value="Female">Femme</option>
-                <option value="Other">Autre</option>
-              </Field>
+    <>
+      <UserBar />
+      <div className="inscription-screen">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ setFieldValue }) => (
+            <Form>
+              <h2>Modifier votre Profil</h2>
+              <div className="form-group">
+                <label htmlFor="username">Pseudo</label>
+                <Field
+                  name="username"
+                  type="text"
+                  placeholder={user.Username}
+                />
+                <ErrorMessage
+                  name="username"
+                  component="div"
+                  className="error"
+                />
+                {usernameError && (
+                  <div className="error-message">{usernameError}</div>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="lastName">Nom</label>
+                <Field
+                  name="lastName"
+                  type="text"
+                  placeholder={user.LastName}
+                />
+                <ErrorMessage
+                  name="lastName"
+                  component="div"
+                  className="error"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="firstName">Prénom</label>
+                <Field
+                  name="firstName"
+                  type="text"
+                  placeholder={user.FirstName}
+                />
+                <ErrorMessage
+                  name="firstName"
+                  component="div"
+                  className="error"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="birthDate">Date de Naissance</label>
+                <Field
+                  name="birthDate"
+                  type="date"
+                  placeholder={
+                    user.BirthDate
+                      ? new Date(user.BirthDate).toISOString().split("T")[0]
+                      : ""
+                  }
+                />
+                <ErrorMessage
+                  name="birthDate"
+                  component="div"
+                  className="error"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="address">Adresse</label>
+                <Field name="address" type="text" placeholder={user.Address} />
+                <ErrorMessage
+                  name="address"
+                  component="div"
+                  className="error"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">E-mail</label>
+                <Field name="email" type="email" placeholder={user.Email} />
+                <ErrorMessage name="email" component="div" className="error" />
+                {emailError && (
+                  <div className="error-message">{emailError}</div>
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="phone">Téléphone</label>
+                <Field name="phone" type="text" placeholder={user.Phone} />
+                <ErrorMessage name="phone" component="div" className="error" />
+              </div>
+              <div className="form-group">
+                <label htmlFor="gender">Genre</label>
+                <Field name="gender" as="select" placeholder={user.Gender}>
+                  <option value="">Sélectionnez un genre</option>
+                  <option value="Male">Homme</option>
+                  <option value="Female">Femme</option>
+                  <option value="Other">Autre</option>
+                </Field>
 
-              <ErrorMessage name="gender" component="div" className="error" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="ProfileImage">Image de Profil</label>
-              <input
-                id="ProfileImage"
-                name="ProfileImage"
-                type="file"
-                placeholder={user.ProfilImage}
-                onChange={(event) =>
-                  setFieldValue("ProfileImage", event.currentTarget.files[0])
-                }
-                required
-              />
-            </div>
-            <div className="profile-image-container">
-              <ImageWithJWT
-                imageUrl={imageUrl}
-                token={localStorage.getItem("userToken")}
-                alt="Image de Profil"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="biography">Biographie</label>
-              <Field
-                name="biography"
-                as="textarea"
-                placeholder={user.Biography}
-              />
-              <ErrorMessage
-                name="biography"
-                component="div"
-                className="error"
-              />
-            </div>
-            <button type="submit" id="editProfile-btn">
-              Modifier
-            </button>
-          </Form>
-        )}
-      </Formik>
-      <div className="mdp">
-        Changer le mot de passe
-        <button type="button">
-          <NavLink to="/changepassword">Changer</NavLink>
-        </button>
+                <ErrorMessage name="gender" component="div" className="error" />
+              </div>
+              <div className="form-group">
+                <label htmlFor="ProfileImage">Image de Profil</label>
+                <input
+                  id="ProfileImage"
+                  name="ProfileImage"
+                  type="file"
+                  placeholder={user.ProfilImage}
+                  onChange={(event) =>
+                    setFieldValue("ProfileImage", event.currentTarget.files[0])
+                  }
+                  required
+                />
+              </div>
+              <div className="profile-image-container">
+                <ImageWithJWT
+                  imageUrl={imageUrl}
+                  token={localStorage.getItem("userToken")}
+                  alt="Image de Profil"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="biography">Biographie</label>
+                <Field
+                  name="biography"
+                  as="textarea"
+                  placeholder={user.Biography}
+                />
+                <ErrorMessage
+                  name="biography"
+                  component="div"
+                  className="error"
+                />
+              </div>
+              <button type="submit" id="editProfile-btn">
+                Modifier
+              </button>
+            </Form>
+          )}
+        </Formik>
+        <div className="mdp">
+          Changer le mot de passe
+          <button type="button">
+            <NavLink to="/changepassword">Changer</NavLink>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

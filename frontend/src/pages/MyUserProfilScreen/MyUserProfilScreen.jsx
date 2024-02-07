@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import UserBar from "../../components/UserBar/UserBar";
 import "./MyUserProfilScreen.css";
 import { hostname } from "../../HostnameConnect/Hostname";
 import ImageWithJWT from "../../utils/ImageWithJWT";
@@ -50,53 +51,56 @@ function MyUserProfilScreen() {
 
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
-    <div className="my-profile-container">
-      <h1>Profil de l'utilisateur</h1>
-      <div className="profile-image">
-        <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+    <>
+      <UserBar />
+      <div className="my-profile-container">
+        <h1>Profil de l'utilisateur</h1>
+        <div className="profile-image">
+          <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <td>Nom :</td>
+              <td>{user.FirstName}</td>
+            </tr>
+            <tr>
+              <td>Prénom :</td>
+              <td>{user.LastName}</td>
+            </tr>
+            <tr>
+              <td>Age :</td>
+              <td>{user.Age}</td>
+            </tr>
+            <tr>
+              <td>Genre :</td>
+              <td>{user.Gender}</td>
+            </tr>
+            <tr>
+              <td>Email :</td>
+              <td>{user.Email}</td>
+            </tr>
+            <tr>
+              <td>Adresse :</td>
+              <td>{user.Address}</td>
+            </tr>
+            <tr>
+              <td>Date de naissance :</td>
+              <td>{user.BirthDate}</td>
+            </tr>
+            <tr>
+              <td>Biographie :</td>
+              <td>{user.Biography}</td>
+            </tr>
+          </tbody>
+        </table>
+        {showModifyProfileButton && (
+          <button type="button" id="editProfil-btn">
+            <Link to="/editprofil">Modifier votre profil</Link>
+          </button>
+        )}
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <td>Nom :</td>
-            <td>{user.FirstName}</td>
-          </tr>
-          <tr>
-            <td>Prénom :</td>
-            <td>{user.LastName}</td>
-          </tr>
-          <tr>
-            <td>Age :</td>
-            <td>{user.Age}</td>
-          </tr>
-          <tr>
-            <td>Genre :</td>
-            <td>{user.Gender}</td>
-          </tr>
-          <tr>
-            <td>Email :</td>
-            <td>{user.Email}</td>
-          </tr>
-          <tr>
-            <td>Adresse :</td>
-            <td>{user.Address}</td>
-          </tr>
-          <tr>
-            <td>Date de naissance :</td>
-            <td>{user.BirthDate}</td>
-          </tr>
-          <tr>
-            <td>Biographie :</td>
-            <td>{user.Biography}</td>
-          </tr>
-        </tbody>
-      </table>
-      {showModifyProfileButton && (
-        <button type="button" id="editProfil-btn">
-          <Link to="/editprofil">Modifier votre profil</Link>
-        </button>
-      )}
-    </div>
+    </>
   );
 }
 
