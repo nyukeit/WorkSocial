@@ -7,9 +7,8 @@ const companiesController = require("../controllers/CompaniesController");
 
 const {
   hashPass,
-  //   verifyPassword,
-  //   verifyToken,
-  //   blacklistToken,
+  verifyPassword,
+  verifyToken,
 } = require("../middleware/authCompany");
 
 // const verifyOwner = require("../middleware/verifyOwner");
@@ -32,6 +31,11 @@ router.post(
   hashPass,
   companiesController.createCompany
 );
+
+// Login
+router.post("/login/company", companiesController.login, verifyPassword);
+// Authentication Wall - Everything after this requires an authenticated user
+router.use(verifyToken);
 
 // Get all companies
 router.get("/companies", companiesController.getCompanies);

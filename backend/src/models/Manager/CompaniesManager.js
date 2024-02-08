@@ -16,12 +16,12 @@ class companiesManager extends AbstractManager {
     );
   }
 
-  //   login(company) {
-  //     return this.database.query(
-  //       `SELECT * FROM  ${this.table} WHERE CompanyMail = ?`,
-  //       [company.CompanyMail]
-  //     );
-  //   }
+  login(company) {
+    return this.database.query(
+      `SELECT * FROM  ${this.table} WHERE CompanyMail = ?`,
+      [company.CompanyMail]
+    );
+  }
 
   insert(company) {
     const query = `
