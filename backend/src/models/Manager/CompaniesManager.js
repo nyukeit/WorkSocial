@@ -44,6 +44,28 @@ class companiesManager extends AbstractManager {
     ];
     return this.database.query(query, values);
   }
+
+  update(company) {
+    return this.database.query(
+      `UPDATE ${this.table}
+         SET CompanyName = ?, CompanySlogan = ?, CompanyActivity = ?, CompanyAddress = ?,
+             CompanyUrl = ?, CompanyMail = ?, CompanyPhone = ?, CompanyLogo = ?,
+             CompanyDescription = ?
+         WHERE Company_ID = ?`,
+      [
+        company.CompanyName,
+        company.CompanySlogan,
+        company.CompanyActivity,
+        company.CompanyAddress,
+        company.CompanyUrl,
+        company.CompanyMail,
+        company.CompanyPhone,
+        company.CompanyLogo,
+        company.CompanyDescription,
+        company.id,
+      ]
+    );
+  }
 }
 
 module.exports = companiesManager;

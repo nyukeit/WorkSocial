@@ -11,7 +11,7 @@ const {
   verifyToken,
 } = require("../middleware/authCompany");
 
-// const verifyOwner = require("../middleware/verifyOwner");
+const verifyCompany = require("../middleware/verifyCompany");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -42,5 +42,8 @@ router.get("/companies", companiesController.getCompanies);
 
 // Get a specific event by ID
 router.get("/companies/:id", companiesController.getCompanyByID);
+
+// Update an existing company
+router.put("/companies/:id", verifyCompany, companiesController.updateCompany);
 
 module.exports = router;

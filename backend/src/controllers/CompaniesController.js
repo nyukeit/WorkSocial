@@ -68,6 +68,27 @@ const createCompany = (req, res) => {
     });
 };
 
+const updateCompany = (req, res) => {
+  const company = req.body;
+  const companyID = req.Company_ID;
+
+  company.id = parseInt(req.params.id, 10);
+
+  models.company
+    .update(company, companyID)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 const deleteCompany = async (req, res, next) => {
   const emailInput = req.body.CompanyMail;
 
@@ -114,6 +135,7 @@ module.exports = {
   getCompanies,
   getCompanyByID,
   createCompany,
+  updateCompany,
   deleteCompany,
   login,
   logout,
