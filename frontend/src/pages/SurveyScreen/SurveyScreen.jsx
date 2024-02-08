@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field /* useField, useFormikContext */ } from "formik";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-// import SurveyList from "../../components/Surveys/SurveyList/SurveyList";
+import UserBar from "../../components/UserBar/UserBar";
 import SurveyCard from "../../components/Surveys/SurveyCard";
 import "./SurveyScreen.css";
 import { useSurvey } from "../../contexts/SurveyContext";
@@ -94,8 +94,33 @@ export default function SurveyScreen() {
   };
 
   return (
-    <div className="surveys-container">
-      <Button onClick={handleOpenModal}>Create Survey</Button>
+    <div className="container">
+      <UserBar />
+      <div>
+        <Button className="create-btn" onClick={handleOpenModal}>
+          <i className="fas fa-plus" /> Create Survey
+        </Button>
+        {surveys.map((survey) => {
+          const surveyVotes = votes.filter(
+            (vote) => vote.Survey_ID === survey.Survey_ID
+          );
+          const surveyLikes = likes.filter(
+            (like) => like.Survey_ID === survey.Survey_ID
+          );
+          const surveyComments = comments.filter(
+            (comment) => comment.Survey_ID === survey.Survey_ID
+          );
+          return (
+            <SurveyCard
+              key={survey.Survey_ID}
+              survey={survey}
+              surveyVotes={surveyVotes}
+              surveyLikes={surveyLikes}
+              surveyComments={surveyComments}
+            />
+          );
+        })}
+      </div>
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
         <Modal.Header closeButton>
           <Modal.Title>Create Survey</Modal.Title>
@@ -166,28 +191,6 @@ export default function SurveyScreen() {
           </Formik>
         </Modal.Body>
       </Modal>
-      <div className="survey-list">
-        {surveys.map((survey) => {
-          const surveyVotes = votes.filter(
-            (vote) => vote.Survey_ID === survey.Survey_ID
-          );
-          const surveyLikes = likes.filter(
-            (like) => like.Survey_ID === survey.Survey_ID
-          );
-          const surveyComments = comments.filter(
-            (comment) => comment.Survey_ID === survey.Survey_ID
-          );
-          return (
-            <SurveyCard
-              key={survey.Survey_ID}
-              survey={survey}
-              surveyVotes={surveyVotes}
-              surveyLikes={surveyLikes}
-              surveyComments={surveyComments}
-            />
-          );
-        })}
-      </div>
     </div>
   );
 }

@@ -1,32 +1,26 @@
-/* Style de la barre de navigation */
-.BarNav {
+.BarNav-loggedIn {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #4a4e69;
-  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 101;
 }
 
-/* Style du logo */
-.navbar_logo {
-  height: 60px;
-}
-
-/* Style de la liste de liens */
-.NavLinks {
+.BarNav-loggedOut {
   display: flex;
-  flex-direction: row;
-  list-style: none;
-  gap: 20px;
-  margin: 0;
+  justify-content: space-between;
   align-items: center;
+  padding: 0.5em;
 }
 
 /* Style de l'élément de profil */
 .profileItem {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
 }
 
@@ -36,104 +30,40 @@
   height: 35px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid white;
+}
+
+.navbar_logo {
+  width: 60px;
+}
+
+/* Style de la liste de liens */
+.NavLinks-BarNav {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  align-items: left;
 }
 
 /* Style des liens */
-.NavLinks li a {
-  color: white;
+.NavLinks-BarNav li a {
+  color: #4a4e69;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.NavLinks li a:hover {
+.NavLinks-BarNav li a:hover {
   color: #9b4110;
 }
 
 /* Style des boutons */
-.NavLinks button {
+.NavLinks-BarNav button {
   background: none;
   border: none;
   color: white;
   cursor: pointer;
   transition: color 0.3s ease;
   font-size: 18px;
-}
-
-.NavLinks button:hover {
-  color: #f2e9e4;
-}
-
-/* Styles pour la modal */
-.modal {
-  position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  z-index: 1000;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.modal-content {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-content p {
-  margin-bottom: 20px;
-  font-size: 18px;
-  color: #333;
-}
-
-.modal-content button {
-  background-color: #4a4e69;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 0 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.modal-content button:hover {
-  background-color: #22223b;
-}
-/* CSS pour la modal */
-.modal {
-  position: fixed;
-  top: 150px; /* Ajustez la position verticale selon votre mise en page */
-  right: 20px; /* Ajustez la position horizontale selon votre mise en page */
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-content button {
-  background-color: #2867b2; /* Couleur de fond */
-  color: white; /* Couleur du texte */
-  border: none;
-  padding: 8px 12px;
-  margin-top: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.modal-content button:hover {
-  background-color: #1e4f8e; /* Couleur de fond au survol */
-}
-
-/* Style pour le lien dans le bouton */
-.modal-content button a {
-  text-decoration: none;
-  color: white;
 }

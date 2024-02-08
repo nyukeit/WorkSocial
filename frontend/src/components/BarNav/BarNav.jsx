@@ -7,10 +7,7 @@ import ImageWithJWT from "../../utils/ImageWithJWT";
 import { hostname } from "../../HostnameConnect/Hostname";
 import DropdownMenu from "./DropdownMenu";
 
-function BarNav() {
-  // const [showLogoutModal, setShowLogoutModal] = useState(false);
-  // const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
+export default function BarNav() {
   const { isLoggedIn, logout } = useAuth();
   const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const navigate = useNavigate();
@@ -24,11 +21,6 @@ function BarNav() {
     ? `${hostname}/upload/${imageName}`
     : "default-profile-image-url";
 
-  // const handleCloseModal = () => {
-  //   setShowLogoutModal(false);
-  //   setShowConfirmationModal(false);
-  // };
-
   const handleLogout = async () => {
     try {
       await fetch("http://localhost:5000/logout", {
@@ -38,120 +30,45 @@ function BarNav() {
         },
       });
       logout();
-      navigate("/feed");
+      navigate("/");
     } catch (error) {
       console.error("Erreur lors de la déconnexion : ", error);
     }
-    //  finally {
-    //   handleCloseModal();
-    // }
   };
 
-  // const handleOpenLogoutModal = () => {
-  //   setShowLogoutModal(true);
-  // };
-
-  // const handleCloseLogoutModal = () => {
-  //   setShowLogoutModal(false);
-  // };
-
-  // const handleOpenConfirmationModal = () => {
-  //   setShowConfirmationModal(true);
-  // };
-
-  // const handleCloseConfirmationModal = () => {
-  //   setShowConfirmationModal(false);
-  // };
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Enter") {
-  //     handleOpenLogoutModal();
-  //   }
-  // };
-
   return (
-    <nav className="BarNav">
-      <div className="Logo">
-        <img src={Logo} alt="logo" className="navbar_logo" />
-      </div>
-      <ul className="NavLinks">
-        <li className="profileItem">
-          <div className="profile-image">
-            <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
+    <div>
+      {isLoggedIn ? (
+        <nav className="BarNav-loggedIn">
+          <div className="logo">
+            <img src={Logo} alt="logo" className="navbar_logo" />
           </div>
-          <div className="salutation">
-            {isLoggedIn && (
-              <DropdownMenu userName={firstName} onLogout={handleLogout} />
-            )}
+          <ul className="NavLinks-BarNav">
+            <li className="profileItem">
+              <div className="profile-image">
+                <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
+              </div>
+              <div className="salutation">
+                <DropdownMenu userName={firstName} onLogout={handleLogout} />
+              </div>
+            </li>
+          </ul>
+        </nav>
+      ) : (
+        <nav className="BarNav-loggedOut">
+          <div className="logo">
+            <img src={Logo} alt="logo" className="navbar_logo" />
           </div>
-        </li>
-        <li>
-          <Link to="/feed">Accueil</Link>
-        </li>
-        {!isLoggedIn && (
-          <>
+          <ul className="NavLinks-BarNav">
             <li>
               <Link to="/connexion">Connexion</Link>
             </li>
             <li>
               <Link to="/inscription">Inscription</Link>
             </li>
-          </>
-        )}
-        {isLoggedIn && (
-          <>
-            <li>
-              <Link to="/members">Membres</Link>
-            </li>
-            <li>
-              <Link to="/surveys">Surveys</Link>
-            </li>
-            <li>
-              <Link to="/posts">Posts</Link>
-            </li>
-            <li>
-              <Link to="/events">Events</Link>
-            </li>
-            {/* <li className="welcome-message">
-              <button
-                type="button"
-                onClick={handleOpenLogoutModal}
-                onKeyDown={handleKeyDown}
-              >
-                Bonjour {firstName}
-                {isLoggedIn && <span className="logout-arrow">▼</span>}
-              </button>
-            </li> */}
-          </>
-        )}
-      </ul>
-      {/* {showLogoutModal && (
-        <div className="modal">
-          <div className="modal-content">
-            {firstName} 
-            <button type="button" onClick={handleCloseLogoutModal}>
-              <Link to="/myprofil">Modifier votre profil</Link>
-            </button>
-            <button type="button" onClick={handleOpenConfirmationModal}>
-              Déconnexion
-            </button>
-          </div>
-        </div>
+          </ul>
+        </nav>
       )}
-      {showConfirmationModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>Êtes-vous sûr de vouloir vous déconnecter ?</p>
-            <button type="button" onClick={handleLogout}>
-              Oui
-            </button>
-            <button type="button" onClick={handleCloseConfirmationModal}>
-              Annuler
-            </button>
-          </div>
-        </div>
-      )} */}
-    </nav>
+    </div>
   );
 }
-
-export default BarNav;
