@@ -98,6 +98,11 @@ const TokenBlacklistManager = require("./Manager/TokenBlacklistManager");
 models.tokenBlacklist = new TokenBlacklistManager();
 models.tokenBlacklist.setDatabase(pool);
 
+const CompaniesManager = require("./Manager/CompaniesManager");
+
+models.company = new CompaniesManager();
+models.company.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
