@@ -89,33 +89,6 @@ const updateCompany = (req, res) => {
     });
 };
 
-const deleteCompany = async (req, res, next) => {
-  const emailInput = req.body.CompanyMail;
-
-  const [company] = await models.company.findByPK(req.params.id);
-  const companyEmail = company[0].CompanyMail;
-
-  if (emailInput === companyEmail) {
-    next();
-  } else {
-    res.sendStatus(403);
-  }
-
-  models.user
-    .delete(emailInput)
-    .then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(204);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-};
-
 const logout = async (req, res) => {
   try {
     const token = req.headers.authorization.replace(/^Bearer\s+/, "");
@@ -136,7 +109,6 @@ module.exports = {
   getCompanyByID,
   createCompany,
   updateCompany,
-  deleteCompany,
   login,
   logout,
 };

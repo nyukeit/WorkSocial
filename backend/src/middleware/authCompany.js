@@ -103,9 +103,27 @@ const verifyToken = async (req, res, next) => {
   }
   return null;
 };
+const blacklistToken = async (req, res) => {
+  const token = req.headers.authorization.replace(/^Bearer\s+/, "");
+  await models.tokenBlacklist
+    .insert(token)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+  return null;
+};
 
 module.exports = {
   hashPass,
   verifyPassword,
   verifyToken,
+  blacklistToken,
 };

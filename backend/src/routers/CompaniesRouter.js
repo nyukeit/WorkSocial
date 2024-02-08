@@ -9,6 +9,7 @@ const {
   hashPass,
   verifyPassword,
   verifyToken,
+  blacklistToken,
 } = require("../middleware/authCompany");
 
 const verifyCompany = require("../middleware/verifyCompany");
@@ -45,5 +46,8 @@ router.get("/companies/:id", companiesController.getCompanyByID);
 
 // Update an existing company
 router.put("/companies/:id", verifyCompany, companiesController.updateCompany);
+
+// Logout
+router.get("/logout", companiesController.logout, blacklistToken);
 
 module.exports = router;
