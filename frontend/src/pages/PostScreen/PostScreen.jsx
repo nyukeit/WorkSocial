@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import PostCard from "../../components/Posts/PostCard";
 import "./PostScreen.css";
+import UserBar from "../../components/UserBar/UserBar";
 import { usePost } from "../../contexts/PostContext";
 import { hostname } from "../../HostnameConnect/Hostname";
 
@@ -66,13 +67,12 @@ export default function PostScreen() {
   };
 
   return (
-    <div className="posts-container">
-      <div className="button">
-        <Button type="button" onClick={handleOpenModal}>
-          Create Post
+    <div className="container">
+      <UserBar />
+      <div>
+        <Button className="create-btn" type="button" onClick={handleOpenModal}>
+          <i className="fas fa-plus" /> Create Post
         </Button>
-      </div>
-      <div className="post-list">
         {posts.map((post) => {
           const postLikes = likes.filter(
             (like) => like.Post_ID === post.Post_ID

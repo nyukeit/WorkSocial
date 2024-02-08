@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import UserBar from "../../components/UserBar/UserBar";
 import "./MyUserProfilScreen.css";
 import { hostname } from "../../HostnameConnect/Hostname";
 import ImageWithJWT from "../../utils/ImageWithJWT";
@@ -7,7 +11,6 @@ import ImageWithJWT from "../../utils/ImageWithJWT";
 function MyUserProfilScreen() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
-  // const ChatWebSocketRef = useRef();
   const userIdLoggedIn = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -50,52 +53,41 @@ function MyUserProfilScreen() {
 
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
-    <div className="my-profile-container">
-      <h1>Profil de l'utilisateur</h1>
-      <div className="profile-image">
-        <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+    <div className="container">
+      <UserBar />
+      <div className="innerContainer">
+        {/* <h2 className="page-title">User Profile</h2> */}
+        <div className="profilePage-leftSection">
+          <div className="profilePage-image">
+            <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+          </div>
+          <div className="profilePage-userInfo">
+            <h4>
+              {user.FirstName} {user.LastName}
+            </h4>
+            <p>{user.Email}</p>
+            <p>{user.Biography}</p>
+            {showModifyProfileButton && (
+              <Link to="/editprofil" className="linkButton">
+                <Button type="button">Modifier</Button>
+              </Link>
+            )}
+          </div>
+        </div>
+        <div className="profilePage-rightSection">
+          <Tabs defaultActiveKey="posts" className="mb-3">
+            <Tab eventKey="posts" title="Posts">
+              {/* Afficher les posts de l'utilisateur ici */}
+            </Tab>
+            <Tab eventKey="events" title="Events">
+              {/* Afficher les événements de l'utilisateur ici */}
+            </Tab>
+            <Tab eventKey="surveys" title="Surveys">
+              {/* Afficher les sondages de l'utilisateur ici */}
+            </Tab>
+          </Tabs>
+        </div>
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <td>Nom :</td>
-            <td>{user.FirstName}</td>
-          </tr>
-          <tr>
-            <td>Prénom :</td>
-            <td>{user.LastName}</td>
-          </tr>
-          <tr>
-            <td>Age :</td>
-            <td>{user.Age}</td>
-          </tr>
-          <tr>
-            <td>Genre :</td>
-            <td>{user.Gender}</td>
-          </tr>
-          <tr>
-            <td>Email :</td>
-            <td>{user.Email}</td>
-          </tr>
-          <tr>
-            <td>Adresse :</td>
-            <td>{user.Address}</td>
-          </tr>
-          <tr>
-            <td>Date de naissance :</td>
-            <td>{user.BirthDate}</td>
-          </tr>
-          <tr>
-            <td>Biographie :</td>
-            <td>{user.Biography}</td>
-          </tr>
-        </tbody>
-      </table>
-      {showModifyProfileButton && (
-        <button type="button" id="editProfil-btn">
-          <Link to="/editprofil">Modifier votre profil</Link>
-        </button>
-      )}
     </div>
   );
 }

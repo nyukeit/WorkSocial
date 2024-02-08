@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import BarNav from "./components/BarNav/BarNav";
 
 // Import des Pages
-import HomeScreen from "./pages/HomeScreen/HomeScreen";
+import LandingScreen from "./pages/LandingScreen/LandingScreen";
+import Feed from "./pages/Feed/Feed";
 import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
@@ -20,7 +21,6 @@ import { AuthProvider } from "./utils/useConnecte";
 import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
 import { SurveyProvider } from "./contexts/SurveyContext";
-
 import { EventProvider } from "./contexts/EventContext";
 
 // Import des CSS
@@ -34,8 +34,8 @@ function App() {
           <BarNav />
           <UserProvider>
             <Routes>
-              <Route path="/" element={<HomeScreen />} />
-              <Route path="/feed" element={<HomeScreen />} />
+              <Route path="/" element={<LandingScreen />} />
+              <Route path="/feed" element={<Feed />} />
               <Route
                 path="/posts"
                 element={

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 
 import { Button, Modal } from "react-bootstrap";
-import EventCard from "../../components/Events/EventCard/EventCard";
+import EventCard from "../../components/Events/EventCard";
+import UserBar from "../../components/UserBar/UserBar";
 
 import { useEvent } from "../../contexts/EventContext";
 import { hostname } from "../../HostnameConnect/Hostname";
@@ -85,13 +86,12 @@ export default function EventScreen() {
   };
 
   return (
-    <div className="events-container">
-      <div className="button">
-        <Button id="createEvent-btn" onClick={handleOpenModal}>
-          Create Event
+    <div className="container">
+      <UserBar />
+      <div>
+        <Button className="create-btn" onClick={handleOpenModal}>
+          <i className="fas fa-plus" /> Create Event
         </Button>
-      </div>
-      <div className="post-list">
         {events.map((event) => {
           const eventLikes = likes.filter(
             (like) => like.Event_ID === event.Event_ID
@@ -109,9 +109,6 @@ export default function EventScreen() {
           );
         })}
       </div>
-      {/* <div className="events">
-        <EventList events={events} />
-      </div> */}
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
         <Modal.Header closeButton>Create Event</Modal.Header>
         <Modal.Body>
@@ -167,20 +164,24 @@ export default function EventScreen() {
                     placeholder="Description"
                     className="form-control"
                   />
-
-                  <div className="visibility-group">
-                    <div className="radio-group">
-                      <Field name="Visibility" type="radio" value="Public" />
-                      <label htmlFor="Visibility">Public</label>
-                    </div>
-                    <div className="radio-group">
-                      <Field name="Visibility" type="radio" value="Private" />
-                      <label htmlFor="Visibility">Private</label>
-                    </div>
+                </div>
+                <div className="visibility-group">
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Public" />
+                    <label htmlFor="Visibility">Public</label>
                   </div>
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Private" />
+                    <label htmlFor="Visibility">Private</label>
+                  </div>
+                </div>
 
-                  <label htmlFor="Image">Image</label>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" /> Attach Image
+                  </label>
                   <input
+                    id="Image"
                     name="Image"
                     type="file"
                     onChange={(event) =>

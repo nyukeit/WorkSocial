@@ -11,20 +11,20 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Modal from "react-bootstrap/Modal";
 import { Form as MyForm } from "react-bootstrap";
 
-// // Import Utils
-import ImageWithJWT from "../../../utils/ImageWithJWT";
-import { hostname } from "../../../HostnameConnect/Hostname";
+// Import Utils
+import ImageWithJWT from "../../utils/ImageWithJWT";
+import { hostname } from "../../HostnameConnect/Hostname";
 
-// // // Import Contexts
-import { useUser } from "../../../contexts/UserContext";
-import { useEvent } from "../../../contexts/EventContext";
+// Import Contexts
+import { useUser } from "../../contexts/UserContext";
+import { useEvent } from "../../contexts/EventContext";
 
 export default function EventCard({ event, eventComments, eventLikes }) {
   // Contexts
   const { users, loading } = useUser();
   const { getEvents, getComments, getLikes } = useEvent();
 
-  // // States
+  // States
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -235,7 +235,7 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   };
 
   return (
-    <div>
+    <>
       <Card>
         <div className="card-header">
           <div className="profile">
@@ -279,10 +279,6 @@ export default function EventCard({ event, eventComments, eventLikes }) {
               <span className="action-btn-text">{eventLikes.length}</span>
             </>
           )}
-          <Card.Text>
-            Le {formattedStartDate} de {event.StartTime} à {event.EndTime}
-          </Card.Text>
-
           <button
             className="action-btn"
             type="button"
@@ -290,6 +286,10 @@ export default function EventCard({ event, eventComments, eventLikes }) {
           >
             <i className="fa-regular fa-comment" />
           </button>
+          <p>
+            Le {formattedStartDate} de {event.StartTime} à {event.EndTime}
+          </p>
+
           <Card.Title>{event.EventName}</Card.Title>
           <Card.Text>{event.Description}</Card.Text>
 
@@ -468,7 +468,7 @@ export default function EventCard({ event, eventComments, eventLikes }) {
           </MyForm>
         </Modal.Body>
       </Modal>
-    </div>
+    </>
   );
 }
 

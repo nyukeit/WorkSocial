@@ -38,9 +38,8 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   };
   // const imageName = user.ProfileImage.split("\\").pop();
   const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
-  console.info("mon image", imageUrl);
   return (
-    <div>
+    <>
       <div
         className="user-card"
         onClick={handleCardClick}
@@ -48,16 +47,23 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
         role="button"
         tabIndex={0}
       >
-        <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+        <div>
+          <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+        </div>
         <div className="user-info">
           <h2>
             {user.FirstName} {user.LastName}
           </h2>
-          <p>Age: {user.Age}</p>
-          <p>{translateGender(user.Gender)}</p>
+          <p>
+            {translateGender(user.Gender)}, {user.Age}
+          </p>
           {userIdLoggedIn && userIdLoggedIn !== String(user.User_ID) && (
-            <button type="button" onClick={handleChatClick}>
-              Chat
+            <button
+              className="chat-button"
+              type="button"
+              onClick={handleChatClick}
+            >
+              <i className="fa-regular fa-comments" /> Chat
             </button>
           )}
         </div>
@@ -75,7 +81,7 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
           position={chatPosition}
         />
       )}
-    </div>
+    </>
   );
 }
 
