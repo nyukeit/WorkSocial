@@ -71,6 +71,7 @@ function App() {
               <Route path="/changepassword" element={<ChangePassword />} />
               <Route path="/verify-user" element={<VerifyUser />} />
               <Route path="/resetpassword/:key" element={<ResetPassword />} />
+              <Route path="/resetpassword" element={<ResetPassword />} />
             </Routes>
           </UserProvider>
         </Router>
