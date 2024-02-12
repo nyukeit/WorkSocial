@@ -27,14 +27,14 @@ const upload = multer({ storage });
 
 // Create a new company
 router.post(
-  "/companies",
+  "/company",
   upload.single("CompanyLogo"),
   hashPass,
   companiesController.createCompany
 );
 
 // Login
-router.post("/login/company", companiesController.login, verifyPassword);
+router.post("/company/login", companiesController.login, verifyPassword);
 // Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
 
@@ -42,10 +42,10 @@ router.use(verifyToken);
 router.get("/companies", companiesController.getCompanies);
 
 // Get a specific event by ID
-router.get("/companies/:id", companiesController.getCompanyByID);
+router.get("/company/:id", companiesController.getCompanyByID);
 
 // Update an existing company
-router.put("/companies/:id", verifyCompany, companiesController.updateCompany);
+router.put("/company/:id", verifyCompany, companiesController.updateCompany);
 
 // Logout
 router.get("/logout", companiesController.logout, blacklistToken);
