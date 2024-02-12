@@ -102,6 +102,10 @@ const CompaniesManager = require("./Manager/CompaniesManager");
 
 models.company = new CompaniesManager();
 models.company.setDatabase(pool);
+const ResetPasswordKeyManager = require("./Manager/ResetPasswordKeyManager");
+
+models.resetPasswordKey = new ResetPasswordKeyManager();
+models.resetPasswordKey.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
