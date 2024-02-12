@@ -181,6 +181,26 @@ const getUserByEmail = async (req, res) => {
   }
 };
 
+const verifyKey = async (req, res) => {
+  const { key } = req.body;
+  console.info(key);
+  const [result] = await models.resetPasswordKey.getResetPasswordKey(key);
+  if (result[0].unique_key === key) {
+    const currentTime = new Date();
+    const expirationTime = new Date(result[0].expires_at);
+    let keyExpired = false;
+    try {
+      if (currentTime > expirationTime) {
+        keyExpired = true;
+        res.status(400).send(keyExpired);
+      }
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  }
+};
+
 const resetPassword = async (req, res) => {
   const { hashedPassword, key } = req.body;
   console.info(hashedPassword, key);
@@ -337,4 +357,5 @@ module.exports = {
   verifyEmailCode,
   getUserByEmail,
   resetPassword,
+  verifyKey,
 };
