@@ -11,11 +11,11 @@ code {
 }
 
 .page-title {
-    font-size: 3em;
-    font-weight: 300;
-    margin-bottom: 1em;
-    padding: 0;
-    line-height: 0.8;
+  font-size: 3em;
+  font-weight: 300;
+  margin-bottom: 1em;
+  padding: 0;
+  line-height: 0.8;
 }
 
 .page-header {
@@ -100,7 +100,6 @@ code {
   border-radius: 50%;
   object-fit: cover;
 }
-
 
 .App-link {
   color: #61dafb;
