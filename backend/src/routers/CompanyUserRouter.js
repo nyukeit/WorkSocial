@@ -3,7 +3,8 @@ const express = require("express");
 
 const router = express.Router();
 const companyUserControllers = require("../controllers/CompanyUserController");
-const { verifyToken, verifyOwner } = require("../middleware/auth");
+const { verifyToken } = require("../middleware/auth");
+// const { verifyOwner } = require("../middleware/auth");
 
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
