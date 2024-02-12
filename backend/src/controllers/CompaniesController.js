@@ -1,25 +1,25 @@
 const models = require("../models");
 
-const login = async (req, res, next) => {
-  const Email = req.body;
-  await models.company
-    .login(Email)
-    .then(([result]) => {
-      if (result.length === 0) {
-        // User not found
-        res.status(401).json({ message: "Email not found" });
-      } else {
-        const company = result[0];
-        // Pass the entire user object to auth.js for password verification
-        req.company = company;
-        next(); // Proceed to password verification in the auth middleware
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error retrieving data from database");
-    });
-};
+// const login = async (req, res, next) => {
+//   const Email = req.body;
+//   await models.company
+//     .login(Email)
+//     .then(([result]) => {
+//       if (result.length === 0) {
+//         // User not found
+//         res.status(401).json({ message: "Email not found" });
+//       } else {
+//         const company = result[0];
+//         // Pass the entire user object to auth.js for password verification
+//         req.company = company;
+//         next(); // Proceed to password verification in the auth middleware
+//       }
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send("Error retrieving data from database");
+//     });
+// };
 
 const getCompanies = (req, res) => {
   models.company
@@ -89,26 +89,26 @@ const updateCompany = (req, res) => {
     });
 };
 
-const logout = async (req, res) => {
-  try {
-    const token = req.headers.authorization.replace(/^Bearer\s+/, "");
-    models.tokenBlacklist.insert(token).then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(204);
-      }
-    });
-  } catch (error) {
-    res.status(500).send({ message: "Error logging out" });
-  }
-};
+// const logout = async (req, res) => {
+//   try {
+//     const token = req.headers.authorization.replace(/^Bearer\s+/, "");
+//     models.tokenBlacklist.insert(token).then(([result]) => {
+//       if (result.affectedRows === 0) {
+//         res.sendStatus(404);
+//       } else {
+//         res.sendStatus(204);
+//       }
+//     });
+//   } catch (error) {
+//     res.status(500).send({ message: "Error logging out" });
+//   }
+// };
 
 module.exports = {
   getCompanies,
   getCompanyByID,
   createCompany,
   updateCompany,
-  login,
-  logout,
+  // login,
+  // logout,
 };

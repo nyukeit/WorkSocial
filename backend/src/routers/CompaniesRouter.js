@@ -5,14 +5,9 @@ const router = express.Router();
 
 const companiesController = require("../controllers/CompaniesController");
 
-const {
-  hashPass,
-  verifyPassword,
-  verifyToken,
-  blacklistToken,
-} = require("../middleware/authCompany");
+const { verifyToken } = require("../middleware/auth");
 
-const verifyCompany = require("../middleware/verifyCompany");
+// const verifyCompany = require("../middleware/verifyOwner");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -25,18 +20,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+router.use(verifyToken);
 // Create a new company
 router.post(
   "/company",
   upload.single("CompanyLogo"),
-  hashPass,
   companiesController.createCompany
 );
 
 // Login
-router.post("/company/login", companiesController.login, verifyPassword);
+// router.post("/company/login", companiesController.login, verifyPassword);
 // Authentication Wall - Everything after this requires an authenticated user
-router.use(verifyToken);
+// router.use(verifyToken);
 
 // Get all companies
 router.get("/companies", companiesController.getCompanies);
@@ -45,9 +40,9 @@ router.get("/companies", companiesController.getCompanies);
 router.get("/company/:id", companiesController.getCompanyByID);
 
 // Update an existing company
-router.put("/company/:id", verifyCompany, companiesController.updateCompany);
+router.put("/company/:id", companiesController.updateCompany);
 
 // Logout
-router.get("/logout", companiesController.logout, blacklistToken);
+// router.get("/logout", companiesController.logout, blacklistToken);
 
 module.exports = router;
