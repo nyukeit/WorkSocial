@@ -35,6 +35,7 @@ const individualchatRouter = require("./routers/IndividualchatRouter");
 const PostLikeDislikeRouter = require("./routers/PostLikeDislikeRoutes");
 const SurveyLikesRouter = require("./routers/SurveyLikesRouter");
 const SurveyVoteRouter = require("./routers/SurveyVoteRouter");
+const CompanyUserRouter = require("./routers/CompanyUserRouter");
 const CompaniesRouter = require("./routers/CompaniesRouter");
 
 app.use(userRouter);
@@ -50,6 +51,7 @@ app.use(individualchatRouter);
 app.use(PostLikeDislikeRouter);
 app.use(SurveyLikesRouter);
 app.use(SurveyVoteRouter);
+app.use(CompanyUserRouter);
 app.use(CompaniesRouter);
 
 // serve the `backend/public` folder for public resources
