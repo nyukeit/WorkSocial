@@ -5,10 +5,6 @@ class companiesManager extends AbstractManager {
     super({ table: "companies" });
   }
 
-  findAll() {
-    return this.database.query(`SELECT * FROM ${this.table}`);
-  }
-
   findByPK(id) {
     return this.database.query(
       `SELECT * FROM ${this.table} WHERE Company_ID = ?`,
