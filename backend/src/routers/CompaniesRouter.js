@@ -5,7 +5,7 @@ const router = express.Router();
 
 const companiesController = require("../controllers/CompaniesController");
 
-const { verifyToken } = require("../middleware/auth");
+// const { verifyToken } = require("../middleware/auth");
 
 // const verifyCompany = require("../middleware/verifyOwner");
 
@@ -20,14 +20,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.use(verifyToken);
 // Create a new company
 router.post(
   "/company",
   upload.single("CompanyLogo"),
   companiesController.createCompany
 );
-
+// router.use(verifyToken);
 // Login
 // router.post("/company/login", companiesController.login, verifyPassword);
 // Authentication Wall - Everything after this requires an authenticated user

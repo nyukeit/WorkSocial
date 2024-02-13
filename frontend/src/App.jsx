@@ -27,6 +27,7 @@ import { EventProvider } from "./contexts/EventContext";
 
 // Import des CSS
 import "./App.css";
+import { CompanyProvider } from "./contexts/CompanyContext";
 
 function App() {
   return (
@@ -47,7 +48,14 @@ function App() {
                 }
               />
               <Route path="/connexion" element={<ConnexionScreen />} />
-              <Route path="/inscription" element={<InscriptionScreen />} />
+              <Route
+                path="/inscription"
+                element={
+                  <CompanyProvider>
+                    <InscriptionScreen />
+                  </CompanyProvider>
+                }
+              />
               <Route
                 path="/events"
                 element={

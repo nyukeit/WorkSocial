@@ -22,6 +22,7 @@ app.use(cors());
 // app.use(express.urlencoded({ extended: true }));
 // import and mount the API routes
 
+const CompaniesRouter = require("./routers/CompaniesRouter");
 const userRouter = require("./routers/UserRouter");
 const postRouter = require("./routers/PostRouter");
 const eventRouter = require("./routers/EventRouter");
@@ -36,8 +37,8 @@ const PostLikeDislikeRouter = require("./routers/PostLikeDislikeRoutes");
 const SurveyLikesRouter = require("./routers/SurveyLikesRouter");
 const SurveyVoteRouter = require("./routers/SurveyVoteRouter");
 const CompanyUserRouter = require("./routers/CompanyUserRouter");
-const CompaniesRouter = require("./routers/CompaniesRouter");
 
+app.use(CompaniesRouter);
 app.use(userRouter);
 app.use(postRouter);
 app.use(eventRouter);
@@ -52,7 +53,6 @@ app.use(PostLikeDislikeRouter);
 app.use(SurveyLikesRouter);
 app.use(SurveyVoteRouter);
 app.use(CompanyUserRouter);
-app.use(CompaniesRouter);
 
 // serve the `backend/public` folder for public resources
 app.use("/upload", express.static(path.join(__dirname, "../assets/upload")));

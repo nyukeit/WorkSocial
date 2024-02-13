@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useCompany } from "../../contexts/CompanyContext";
 
 import "./InscriptionScreen.css";
 
 function InscriptionScreen() {
   const navigate = useNavigate();
+  const { companies } = useCompany();
+  console.info(companies);
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const initialValues = {
@@ -147,6 +150,11 @@ function InscriptionScreen() {
     }
   };
 
+  // Fonction pour gérer le changement de la société sélectionnée
+  // const handleCompanyChange = (event) => {
+  //   setSelectedCompany(event.target.value);
+  // };
+
   return (
     <div className="inscription-screen">
       <Formik
@@ -154,7 +162,9 @@ function InscriptionScreen() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue }) => (
+        {(
+          { setFieldValue } // ajouter values //
+        ) => (
           <Form>
             <h2>Inscription</h2>
             <div className="form-group">
@@ -252,6 +262,102 @@ function InscriptionScreen() {
                 className="error"
               />
             </div>
+            <div className="form-group">
+              <label htmlFor="company">Société</label>
+              <select
+                id="company"
+                name="company"
+                // value={selectedCompany}
+                // onChange={handleCompanyChange}
+              >
+                <option value="">Sélectionnez une société</option>
+                {companies.map((company) => (
+                  <option key={company.Company_ID} value={company.Company_ID}>
+                    {company.Name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* <button
+              type="button"
+              onClick={() => setFieldValue("showCompanyForm", true)}
+              id="signup-btn"
+            >
+              Ajouter une société
+            </button> */}
+
+            {/* Formulaire pour ajouter une société */}
+            {/* {values.showCompanyForm && (
+              <div>
+                <div className="form-group">
+                  <label htmlFor="companyName">Nom de la société</label>
+                  <Field name="companyName" type="text" />
+                  <ErrorMessage
+                    name="companyName"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyURL">URL de la société</label>
+                  <Field name="companyURL" type="text" />
+                  <ErrorMessage
+                    name="companyURL"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyLogo">Logo de la société</label>
+                  <input
+                    id="companyLogo"
+                    name="companyLogo"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("companyLogo", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyPhone">Téléphone de la société</label>
+                  <Field name="companyPhone" type="text" />
+                  <ErrorMessage
+                    name="companyPhone"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyEmail">E-mail de la société</label>
+                  <Field name="companyEmail" type="email" />
+                  <ErrorMessage
+                    name="companyEmail"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyActivity">
+                    Activité de la société
+                  </label>
+                  <Field name="companyActivity" as="textarea" />
+                  <ErrorMessage
+                    name="companyActivity"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyAddress">Adresse de la société</label>
+                  <Field name="companyAddress" as="textarea" />
+                  <ErrorMessage
+                    name="companyAddress"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+              </div>
+            )} */}
             <button type="submit" id="signup-btn">
               S'inscrire
             </button>

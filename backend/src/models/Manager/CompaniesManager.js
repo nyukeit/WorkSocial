@@ -2,7 +2,7 @@ const AbstractManager = require("../AbstractManager/AbstractManager");
 
 class companiesManager extends AbstractManager {
   constructor() {
-    super({ table: "companies" });
+    super({ table: "company" });
   }
 
   findByPK(id) {

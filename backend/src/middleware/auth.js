@@ -61,45 +61,6 @@ const verifyPassword = async (req, res) => {
   return null;
 };
 
-// const verifyToken = async (req, res, next) => {
-//   try {
-//     const authHeader = req.headers.authorization;
-//     if (!authHeader) {
-//       res
-//         .status(401)
-//         .send("Vous n'avez pas d'authorisation de voir cette ressource");
-//     }
-//     // Check if the token starts with "Bearer "
-//     const isBearerToken = authHeader.startsWith("Bearer ");
-//     if (!isBearerToken) {
-//       res
-//         .status(401)
-//         .send({ message: "Authorisation Header is not of the type 'Bearer'" });
-//     }
-//     const token = authHeader.replace(/^Bearer\s+/, "");
-
-//     // Check for blacklisted tokens
-//     const [result] = await models.tokenBlacklist.findByToken(token);
-//     if (result.length > 0) {
-//       res.status(401).send("Session Expired. Please log in again.");
-//     }
-//     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-//       if (err) {
-//         console.error("JWT verification error:", err);
-//         res.sendStatus(401);
-//       } else {
-//         // Token is valid, proceed with the next middleware
-//         req.User_ID = decoded.sub;
-//         next();
-//       }
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     res.sendStatus(401);
-//   }
-// };
-// sera igniorer par eslint
-
 const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
