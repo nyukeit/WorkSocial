@@ -36,7 +36,11 @@ export default function EventMiniCard({ event, daysRemaining }) {
         </span>
         <span>
           <span className="subtext">created by</span>{" "}
-          <strong>{eventCreator.FirstName}</strong>
+          {eventCreator ? (
+            <strong>{eventCreator.FirstName}</strong>
+          ) : (
+            <strong>Unknown</strong>
+          )}
         </span>
       </Card.Header>
       <Card.Body className="minicard-body">

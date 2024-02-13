@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./ConnexionScreen.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/useConnecte";
+import { hostname } from "../../HostnameConnect/Hostname";
 
 function ConnexionScreen() {
   // React States
@@ -17,7 +18,7 @@ function ConnexionScreen() {
     const passwordValue = pass.value;
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch(`${hostname}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +42,7 @@ function ConnexionScreen() {
         localStorage.setItem("user", JSON.stringify(user));
         console.info("user", user);
         setIsSubmitted(true);
-        navigate("/feed");
+        navigate("/dashboard");
       } else {
         setErrorMessages({
           name: "pass",
