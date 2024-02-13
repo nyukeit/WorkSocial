@@ -35,7 +35,7 @@ export default function BarNav() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:5000/logout", {
+      await fetch(`${hostname}/logout`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
