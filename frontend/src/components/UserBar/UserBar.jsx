@@ -7,8 +7,8 @@ export default function UserBar() {
     <nav className="UserBar">
       <ul className="NavLinks">
         <li>
-          <Link to="/feed">
-            <i className="fas fa-home" /> Feed
+          <Link to="/dashboard">
+            <i className="fas fa-home" /> Dashboard
           </Link>
         </li>
         <li>

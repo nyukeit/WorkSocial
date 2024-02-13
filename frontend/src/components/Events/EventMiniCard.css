@@ -1,0 +1,20 @@
+.minicard-img {
+  width: 25%;
+  margin-right: 1em;
+}
+
+.minicard-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.minicard-body {
+  display: flex;
+}
+
+.subtext {
+  color: #999;
+  font-size: 0.8em;
+  margin-left: 0.5em;
+}

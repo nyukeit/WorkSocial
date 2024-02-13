@@ -67,3 +67,10 @@
   transition: color 0.3s ease;
   font-size: 18px;
 }
+
+.today {
+  font-size: 2em;
+  font-weight: 300;
+  margin-right: 1em;
+  color: white;
+}

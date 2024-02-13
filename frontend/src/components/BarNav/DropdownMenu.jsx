@@ -9,7 +9,7 @@ function DropdownMenu({ userName, onLogout }) {
   const userId = localStorage.getItem("userId");
   return (
     <Dropdown>
-      <Dropdown.Toggle id="dropdown-basic">{userName}</Dropdown.Toggle>
+      <Dropdown.Toggle id="dropdown-basic">👋 {userName}</Dropdown.Toggle>
       <Dropdown.Menu className="custom-dropdown-menu">
         <LinkContainer to={`/profile/${userId}`}>
           <Dropdown.Item>Profile</Dropdown.Item>

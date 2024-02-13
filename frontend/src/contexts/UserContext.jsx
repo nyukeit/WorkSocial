@@ -29,7 +29,6 @@ export function UserProvider({ children }) {
           setUsers(data);
           setLoading(false);
         }
-        console.info(data);
       } catch (error) {
         console.error("Erreur lors de la requête:", error);
         setLoading(false);
