@@ -26,12 +26,13 @@ code {
 
 .container {
   display: flex;
-  /* gap: 5em; */
+  justify-content: stretch;
+  gap: 1.5em;
   padding: 6em 0;
 }
 
 .card {
-  width: 500px;
+  /* width: 500px; */
   margin-bottom: 1.5em;
 }
 
@@ -105,14 +106,6 @@ code {
 .App-link {
   color: #61dafb;
 }
-
-/* .card {
-  width: 50%;
-  margin: 1em 1em 1em 0;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
-    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
-} */
 
 .card:hover {
   transform: translateY(-5px);
@@ -231,6 +224,44 @@ code {
 .linkButton {
   color: white;
   text-decoration: none;
+}
+
+.content-area {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  flex-grow: 2;
+}
+
+.sidebar {
+  width: 25%;
+  flex-grow: 1;
+  position: sticky;
+  top: 6em;
+}
+
+.react-calendar__tile {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.react-calendar__tile:hover {
+  background-color: #282c34;
+  color: white;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin: 1em 0;
+}
+
+[class*="react-calendar__navigation"] {
+  background-color: transparent;
+  border: none;
+  text-align: center;
 }
 
 @keyframes App-logo-spin {
