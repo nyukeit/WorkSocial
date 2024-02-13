@@ -5,38 +5,20 @@ class companiesManager extends AbstractManager {
     super({ table: "company" });
   }
 
-  findByPK(id) {
-    return this.database.query(
-      `SELECT * FROM ${this.table} WHERE Company_ID = ?`,
-      [id]
-    );
-  }
-
-  login(company) {
-    return this.database.query(
-      `SELECT * FROM  ${this.table} WHERE CompanyMail = ?`,
-      [company.CompanyMail]
-    );
-  }
-
   insert(company) {
     const query = `
         INSERT INTO ${this.table}
-          (Company_ID, CompanyName, CompanySlogan, CompanyActivity, CompanyAddress, CompanyUrl, CompanyMail, CompanyPhone, CompanyLogo, HashedPassword, CompanyDescription, Effectif)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
+          (Company_ID, Name, URL, Logo, Phone, Email, Activity, Address)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?) `;
     const values = [
       company.Company_ID,
-      company.CompanyName,
-      company.CompanySlogan,
-      company.CompanyActivity,
-      company.CompanyAddress,
-      company.CompanyUrl,
-      company.CompanyMail,
-      company.CompanyPhone,
-      company.CompanyLogo,
-      company.HashedPassword,
-      company.CompanyDescription,
-      company.Effectif,
+      company.Name,
+      company.URL,
+      company.Logo,
+      company.Phone,
+      company.Email,
+      company.Activity,
+      company.Address,
     ];
     return this.database.query(query, values);
   }
@@ -44,20 +26,16 @@ class companiesManager extends AbstractManager {
   update(company) {
     return this.database.query(
       `UPDATE ${this.table}
-         SET CompanyName = ?, CompanySlogan = ?, CompanyActivity = ?, CompanyAddress = ?,
-             CompanyUrl = ?, CompanyMail = ?, CompanyPhone = ?, CompanyLogo = ?,
-             CompanyDescription = ?
+         SET Name = ?, URL = ?, Logo = ?, Phone = ?, Email = ?, Activity = ?, Address = ? 
          WHERE Company_ID = ?`,
       [
-        company.CompanyName,
-        company.CompanySlogan,
-        company.CompanyActivity,
-        company.CompanyAddress,
-        company.CompanyUrl,
-        company.CompanyMail,
-        company.CompanyPhone,
-        company.CompanyLogo,
-        company.CompanyDescription,
+        company.Name,
+        company.URL,
+        company.Logo,
+        company.Phone,
+        company.Email,
+        company.Activity,
+        company.Address,
         company.id,
       ]
     );
