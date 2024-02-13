@@ -4,6 +4,7 @@ import "./UserCard.css";
 import { useNavigate } from "react-router-dom";
 import ChatWebSocket from "../ChatPrivate/ChatWebSocket/ChatWebSocket";
 import { hostname } from "../../HostnameConnect/Hostname";
+import ImageWithJWT from "../../utils/ImageWithJWT";
 
 function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   const [isChatWebSocketOpen, setIsChatWebSocketOpen] = useState(false);
@@ -35,10 +36,10 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
     onOpenChat();
     setIsChatWebSocketOpen(true);
   };
-  const imageName = user.ProfileImage.split("\\").pop();
-  const imageUrl = `${hostname}/upload/${imageName}`;
+  // const imageName = user.ProfileImage.split("\\").pop();
+  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
   return (
-    <div>
+    <>
       <div
         className="user-card"
         onClick={handleCardClick}
@@ -46,16 +47,23 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
         role="button"
         tabIndex={0}
       >
-        <img src={imageUrl} alt={user.FirstName} />
+        <div>
+          <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+        </div>
         <div className="user-info">
           <h2>
             {user.FirstName} {user.LastName}
           </h2>
-          <p>Age: {user.Age}</p>
-          <p>{translateGender(user.Gender)}</p>
+          <p>
+            {translateGender(user.Gender)}, {user.Age}
+          </p>
           {userIdLoggedIn && userIdLoggedIn !== String(user.User_ID) && (
-            <button type="button" onClick={handleChatClick}>
-              Chat
+            <button
+              className="chat-button"
+              type="button"
+              onClick={handleChatClick}
+            >
+              <i className="fa-regular fa-comments" /> Chat
             </button>
           )}
         </div>
@@ -73,7 +81,7 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
           position={chatPosition}
         />
       )}
-    </div>
+    </>
   );
 }
 
@@ -92,6 +100,7 @@ UserCard.propTypes = {
   onOpenChat: PropTypes.func.isRequired,
   onCloseChat: PropTypes.func.isRequired,
   chatPosition: PropTypes.number.isRequired,
+  // token: PropTypes.string.isRequired,
 };
 
 export default UserCard;

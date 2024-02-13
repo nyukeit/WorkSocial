@@ -1,0 +1,22 @@
+.surveyOption {
+  display: flex;
+  margin: 0.8em 0.8em 1em 0;
+}
+
+.vote-result {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.progress {
+  width: 60%;
+  margin: 0.7em 0.7em 0.7em 0;
+}
+
+.voting-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1em 0;
+}

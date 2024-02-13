@@ -32,6 +32,11 @@ const createSurvey = (req, res) => {
   const survey = req.body;
   const userID = req.User_ID;
 
+  if (req.file) {
+    survey.Image = req.file.filename;
+  }
+
+  console.info(survey);
   models.survey
     .insert(survey, userID)
     .then(([result]) => {
@@ -45,8 +50,6 @@ const createSurvey = (req, res) => {
 
 const updateSurvey = (req, res) => {
   const survey = req.body;
-  survey.id = parseInt(req.params.id, 10);
-
   models.survey
     .update(survey)
     .then(() => {

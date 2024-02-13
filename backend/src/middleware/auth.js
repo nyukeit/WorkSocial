@@ -26,6 +26,13 @@ const hashPassword = async (req, res, next) => {
 
 const verifyPassword = async (req, res) => {
   try {
+    // Vérifier si req.user est défini
+    if (!req.user || !req.user.hashedPassword) {
+      console.error(
+        "Erreur: req.user non défini ou ne contient pas hashedPassword"
+      );
+      return res.sendStatus(500);
+    }
     const isVerified = await argon2.verify(
       req.user.hashedPassword,
       req.body.Password

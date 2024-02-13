@@ -58,6 +58,11 @@ const EventCommentsManager = require("./Manager/EventCommentsManager");
 models.eventComments = new EventCommentsManager();
 models.eventComments.setDatabase(pool);
 
+const EventLikeManager = require("./Manager/EventLikeManager");
+
+models.eventLike = new EventLikeManager();
+models.eventLike.setDatabase(pool);
+
 const EventCommentsLikesManager = require("./Manager/EventCommentsLikesManager");
 
 models.eventCommentsLikes = new EventCommentsLikesManager();
@@ -73,10 +78,30 @@ const IndividualchatManager = require("./Manager/IndividualchatManager");
 models.individualchat = new IndividualchatManager();
 models.individualchat.setDatabase(pool);
 
+const PostLikeManager = require("./Manager/PostLikeManager");
+
+models.postLike = new PostLikeManager();
+models.postLike.setDatabase(pool);
+
+const SurveyLikeManager = require("./Manager/SurveyLikesManager");
+
+models.surveyLike = new SurveyLikeManager();
+models.surveyLike.setDatabase(pool);
+
+const SurveyVoteManager = require("./Manager/SurveyVoteManager");
+
+models.surveyVote = new SurveyVoteManager();
+models.surveyVote.setDatabase(pool);
+
 const TokenBlacklistManager = require("./Manager/TokenBlacklistManager");
 
 models.tokenBlacklist = new TokenBlacklistManager();
 models.tokenBlacklist.setDatabase(pool);
+
+const ResetPasswordKeyManager = require("./Manager/ResetPasswordKeyManager");
+
+models.resetPasswordKey = new ResetPasswordKeyManager();
+models.resetPasswordKey.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model

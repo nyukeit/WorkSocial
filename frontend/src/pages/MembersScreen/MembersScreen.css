@@ -1,8 +1,11 @@
-.users-list {
+.userlist {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); /* 5 colonnes sur les ecrans plus grands */
+  grid-gap: 1em;
+  margin-bottom: 1em;
 }
 
 @media (max-width: 1200px) {

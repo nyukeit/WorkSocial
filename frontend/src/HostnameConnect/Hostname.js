@@ -1,11 +1,11 @@
 // frontend/src/config/config.js
-const LOCALHOST_IP = "http://localhost";
+// const LOCALHOST_IP = "https://worksocial.onrender.com";
 
-let settings = {
+const settings = {
   devRunMode: 100,
   withConsole: true,
 };
-let hostname = `${LOCALHOST_IP}:5000`;
+const hostname = `https://worksocial.onrender.com`;
 
 // function localImageServerUrl() {
 //   // URL pour votre serveur d'images local

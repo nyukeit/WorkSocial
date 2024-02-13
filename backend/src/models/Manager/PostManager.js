@@ -26,7 +26,14 @@ class PostManager extends AbstractManager {
   update(post) {
     return this.database.query(
       `UPDATE ${this.table} SET Image = ?, Title = ?, Content = ?, Visibility = ? WHERE Post_ID = ?`,
-      [post.Image, post.Title, post.Content, post.Visibility, post.id]
+      [post.Image, post.Title, post.Content, post.Visibility, post.Post_ID]
+    );
+  }
+
+  updateWOImage(post) {
+    return this.database.query(
+      `UPDATE ${this.table} SET Title = ?, Content = ?, Visibility = ? WHERE Post_ID = ?`,
+      [post.Title, post.Content, post.Visibility, post.Post_ID]
     );
   }
 

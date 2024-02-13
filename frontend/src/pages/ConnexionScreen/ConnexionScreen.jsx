@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./ConnexionScreen.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/useConnecte";
+import { hostname } from "../../HostnameConnect/Hostname";
 
-console.info();
 function ConnexionScreen() {
   // React States
   const [errorMessages, setErrorMessages] = useState({});
@@ -18,7 +18,7 @@ function ConnexionScreen() {
     const passwordValue = pass.value;
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch(`${hostname}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,7 @@ function ConnexionScreen() {
         localStorage.setItem("user", JSON.stringify(user));
         console.info("user", user);
         setIsSubmitted(true);
-        navigate("/HomeScreen");
+        navigate("/dashboard");
       } else {
         setErrorMessages({
           name: "pass",
@@ -72,6 +72,7 @@ function ConnexionScreen() {
           <input type="password" id="pass" name="pass" required />
           {renderErrorMessage("pass")}
         </div>
+        <a href="/verify-user">Mot de passe oublie ?</a>
         <button type="submit" className="submit-button">
           Soumettre
         </button>

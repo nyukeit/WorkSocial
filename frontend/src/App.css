@@ -1,8 +1,5 @@
 body {
   margin: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif; */
   font-family: "Work Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -11,6 +8,36 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.page-title {
+    font-size: 3em;
+    font-weight: 300;
+    margin-bottom: 1em;
+    padding: 0;
+    line-height: 0.8;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  justify-content: stretch;
+  gap: 1.5em;
+  padding: 6em 0;
+}
+
+.card {
+  /* width: 500px; */
+  margin-bottom: 1.5em;
+}
+
+.create-btn {
+  margin-bottom: 1em;
 }
 
 .App {
@@ -39,8 +66,202 @@ code {
   color: white;
 }
 
+.img-upload input[type="file"] {
+  display: none;
+}
+
+.img-upload label {
+  margin: 1em 0;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+/* To be replaced by actual Profile Image */
+.profileImgDiv {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 0.5em;
+}
+
+.profileImgDiv img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
 .App-link {
   color: #61dafb;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-text {
+  font-size: 0.9em;
+}
+
+.card-img img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  /* border-radius: 5px 5px 0 0; */
+}
+
+.action-btn {
+  margin-right: 0.5em;
+  border: none;
+  background-color: transparent;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 1em 0;
+  padding: none;
+}
+
+.action-btn-text {
+  margin: 0 0.3em;
+  font-size: 1.1em;
+}
+
+.username {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+}
+
+/* To be replaced by actual Profile Image */
+.profileImgDiv {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 0.5em;
+}
+
+.profileImgDiv img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8em 1em;
+}
+
+.view-comments-btn {
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+  margin-top: none;
+  padding: 5px;
+}
+
+#submit-comment-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: black;
+  width: 20%;
+  margin: 0;
+  padding: 5px;
+  font-size: 1.2em;
+}
+
+.submit-comment-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em 0;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+}
+
+.profileImgDiv-comments img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5em;
+}
+
+.username-comments {
+  font-weight: 600;
+  font-size: 0.8em;
+}
+
+#comment-content {
+  font-size: 0.8em;
+}
+
+.linkButton {
+  color: white;
+  text-decoration: none;
+}
+
+.content-area {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  flex-grow: 2;
+}
+
+.sidebar {
+  width: 25%;
+  flex-grow: 1;
+  position: sticky;
+  top: 6em;
+}
+
+.react-calendar__tile {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.react-calendar__tile:hover {
+  background-color: #282c34;
+  color: white;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin: 1em 0;
+}
+
+[class*="react-calendar__navigation"] {
+  background-color: transparent;
+  border: none;
+  text-align: center;
 }
 
 @keyframes App-logo-spin {
@@ -50,8 +271,4 @@ code {
   to {
     transform: rotate(360deg);
   }
-}
-
-button {
-  font-size: calc(10px + 2vmin);
 }

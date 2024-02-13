@@ -1,0 +1,16 @@
+.profilePage-image img {
+  width: 150px; /* Ajustez la largeur de l'image selon vos besoins */
+  height: 150px; /* Ajustez la hauteur de l'image selon vos besoins */
+  object-fit: cover;
+  border-radius: 50%; /* Pour rendre l'image circulaire */
+  margin-bottom: 20px; /* Espacement en bas de l'image */
+}
+
+.my-profile-container p {
+  margin: 5px 0; /* Espacement entre les paragraphes */
+  text-align: center;
+}
+
+.innerContainer {
+  display: flex;
+}

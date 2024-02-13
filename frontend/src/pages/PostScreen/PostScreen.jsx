@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-// import { authHeader, token, userID } from "../../utils/auth";
-import PostList from "../../components/Posts/PostList/PostList";
+import React, { useEffect } from "react";
+import { Formik, Form, Field } from "formik";
+
+// import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import PostCard from "../../components/Posts/PostCard";
 import "./PostScreen.css";
+import UserBar from "../../components/UserBar/UserBar";
+import { usePost } from "../../contexts/PostContext";
+import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function PostScreen() {
-  const url = import.meta.env.VITE_BACKEND_URL;
-  const [posts, setPosts] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  // const [isSubmitted, setIsSubmitted] = useState(false);
+  const { posts, getPosts, comments, getComments, likes, getLikes } = usePost();
+
+  useEffect(() => {
+    getPosts();
+    getComments();
+    getLikes();
+  }, []);
+
   const token = localStorage.getItem("userToken");
   const userID = localStorage.getItem("userId");
 
-  const getPosts = async () => {
-    try {
-      await fetch(`${url}/posts`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => res.json().then((data) => setPosts(data)));
-      // setPosts(response.data);
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error);
-    }
-  };
+  posts.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
 
   const initialValues = {
     Title: "",
@@ -35,7 +33,6 @@ export default function PostScreen() {
 
   const handleCreatePost = async (values) => {
     const { Title, Content, Image, Visibility } = values;
-    console.info(values);
     try {
       const formData = new FormData();
       formData.append("Title", Title);
@@ -45,7 +42,7 @@ export default function PostScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      await fetch(`${url}/posts`, {
+      await fetch(`${hostname}/posts`, {
         method: "POST",
         body: formData,
         headers: {
@@ -63,85 +60,83 @@ export default function PostScreen() {
     }
   };
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const renderModal = showModal && (
-    <div className="createPostmodal">
-      <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
-        {({ setFieldValue }) => (
-          <Form>
-            <h4>Create Poste</h4>
-            <div className="title-content">
-              {/* <label htmlFor="Title">Title</label> */}
-              <Field name="Title" placeholder="Title" type="text" />
-              <ErrorMessage name="Title" component="div" className="error" />
-
-              {/* <label htmlFor="Content">Content</label> */}
-              <Field name="Content" type="text" placeholder="Write Post" />
-              <ErrorMessage name="Content" component="div" className="error" />
-            </div>
-            <div className="visibility-group">
-              <div className="radio-group">
-                <label htmlFor="Visibility">Public</label>
-                <Field name="Visibility" type="radio" value="Public" />
-                <ErrorMessage name="Public" component="div" className="error" />
-              </div>
-              <div className="radio-group">
-                <label htmlFor="Visibility">Private</label>
-                <Field name="Visibility" type="radio" value="Private" />
-                <ErrorMessage
-                  name="Private"
-                  component="div"
-                  className="error"
-                />
-              </div>
-            </div>
-            <div className="img-upload">
-              <label htmlFor="Image">📎 Attach Image</label>
-              <input
-                id="Image"
-                name="Image"
-                type="file"
-                onChange={(event) =>
-                  setFieldValue("Image", event.currentTarget.files[0])
-                }
-              />
-            </div>
-            <button
-              id="createPost-btn"
-              type="submit"
-              onClick={handleCloseModal}
-            >
-              Create
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-
-  useEffect(() => {
-    getPosts();
-    console.info(token);
-  }, []);
-
   return (
     <div className="container">
-      <div className="button">
-        <button id="createPost-btn" type="button" onClick={handleOpenModal}>
-          Create Post
-        </button>
+      <UserBar />
+      <div className="content-area">
+        {posts.map((post) => {
+          const postLikes = likes.filter(
+            (like) => like.Post_ID === post.Post_ID
+          );
+          const postComments = comments.filter(
+            (comment) => comment.Post_ID === post.Post_ID
+          );
+          return (
+            <PostCard
+              key={post.Post_ID}
+              post={post}
+              postLikes={postLikes}
+              postComments={postComments}
+            />
+          );
+        })}
       </div>
-      <div className="posts">
-        <PostList posts={posts} />
+      <div className="sidebar">
+        <div className="sidebar-item">
+          <h3>Create Post</h3>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleCreatePost}
+            className="sidebar-form"
+          >
+            {({ setFieldValue }) => (
+              <Form>
+                <div className="title-content">
+                  <Field
+                    name="Title"
+                    placeholder="Title"
+                    type="text"
+                    className="form-control"
+                  />
+                  <Field
+                    name="Content"
+                    component="textarea"
+                    rows="3"
+                    placeholder="Write Post"
+                    className="form-control"
+                  />
+                </div>
+                <div className="visibility-group">
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Public" />
+                    <label htmlFor="Visibility">Public</label>
+                  </div>
+                  <div className="radio-group">
+                    <Field name="Visibility" type="radio" value="Private" />
+                    <label htmlFor="Visibility">Private</label>
+                  </div>
+                </div>
+                <div className="img-upload">
+                  <label htmlFor="Image">
+                    <i className="fa-solid fa-image" /> Attach Image
+                  </label>
+                  <input
+                    id="Image"
+                    name="Image"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("Image", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <Button id="createPost-btn" type="submit">
+                  Create
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </div>
       </div>
-      {renderModal}
     </div>
   );
 }

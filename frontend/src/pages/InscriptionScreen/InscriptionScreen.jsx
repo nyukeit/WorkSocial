@@ -252,7 +252,9 @@ function InscriptionScreen() {
                 className="error"
               />
             </div>
-            <button type="submit">S'inscrire</button>
+            <button type="submit" id="signup-btn">
+              S'inscrire
+            </button>
           </Form>
         )}
       </Formik>

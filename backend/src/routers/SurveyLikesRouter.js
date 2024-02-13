@@ -6,15 +6,16 @@ const surveyLikesController = require("../controllers/SurveyLikesController");
 
 const { verifyToken } = require("../middleware/auth");
 
+// Authentication Wall - Everything after this requires an authenticated user
 router.use(verifyToken);
-router.get("/surveyLikes", surveyLikesController.getSurveyLikes);
 
-router.get("/surveyLikes/:id", surveyLikesController.getSurveyLikesByID);
+router.get(
+  "/surveys/:surveyId/likes",
+  surveyLikesController.getLikesBySurveyId
+);
 
-router.post("/surveyLikes", surveyLikesController.createSurveyLikes);
+router.post("/surveys/:surveyId/likes", surveyLikesController.likeSurvey);
 
-router.put("/surveyLikes/:id", surveyLikesController.updateSurveyLikes);
-
-router.delete("/surveyLikes/:id", surveyLikesController.deleteSurveyLikes);
+router.delete("/surveys/:surveyId/likes", surveyLikesController.unlikeSurvey);
 
 module.exports = router;
