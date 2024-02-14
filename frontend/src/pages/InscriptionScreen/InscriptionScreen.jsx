@@ -1,14 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { hostname } from "../../HostnameConnect/Hostname";
 
 import "./InscriptionScreen.css";
 
+const fetchCompanies = async () => {
+  try {
+    const response = await fetch(`${hostname}/companies`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+    throw new Error("Erreur lors de la récupération des sociétés");
+  } catch (error) {
+    console.error("Erreur:", error);
+    return [];
+  }
+};
 function InscriptionScreen() {
   const navigate = useNavigate();
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [companies, setCompanies] = useState([]);
+
+  // Charger la liste des sociétés au chargement du composant
+  useEffect(() => {
+    const fetchData = async () => {
+      const companiesData = await fetchCompanies();
+      setCompanies(companiesData);
+      console.info(companiesData);
+    };
+    fetchData();
+  }, []);
   const initialValues = {
     username: "",
     lastName: "",
@@ -22,6 +47,7 @@ function InscriptionScreen() {
     phone: "",
     biography: "",
     ProfileImage: null,
+    company: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -71,6 +97,7 @@ function InscriptionScreen() {
       ProfileImage,
       biography,
       phone,
+      company,
     } = values;
 
     const age = calculateAge(birthDate);
@@ -94,6 +121,9 @@ function InscriptionScreen() {
     formData.append("Gender", gender);
     formData.append("Phone", phone);
     formData.append("Biography", biography);
+    formData.append("Company_Id", company);
+
+    console.info(company);
     if (values.password !== values.passwordConfirmation) {
       // Affichez un message d'erreur ou effectuez une action appropriée
       console.error("Les mots de passe ne correspondent pas");
@@ -111,7 +141,7 @@ function InscriptionScreen() {
       // Check if the response is OK (status code 200-299)
       if (response.ok) {
         // Navigate to ConnexionScreen on successful response
-        navigate("/ConnexionScreen");
+        navigate("/connexion");
       } else {
         // If the response status is not OK, handle errors
         const contentType = response.headers.get("content-type");
@@ -154,7 +184,9 @@ function InscriptionScreen() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue }) => (
+        {(
+          { setFieldValue } // ajouter values //
+        ) => (
           <Form>
             <h2>Inscription</h2>
             <div className="form-group">
@@ -252,6 +284,103 @@ function InscriptionScreen() {
                 className="error"
               />
             </div>
+            <div className="form-group">
+              <label htmlFor="company">Société</label>
+              <select
+                id="company"
+                name="company"
+                onChange={(event) =>
+                  setFieldValue("company", event.target.value)
+                }
+              >
+                <option value="">Sélectionnez une société</option>
+                {companies.map((company) => (
+                  <option key={company.Company_ID} value={company.Company_ID}>
+                    {company.Name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* <button
+              type="button"
+              onClick={() => setFieldValue("showCompanyForm", true)}
+              id="signup-btn"
+            >
+              Ajouter une société
+            </button> */}
+
+            {/* Formulaire pour ajouter une société */}
+            {/* {values.showCompanyForm && (
+              <div>
+                <div className="form-group">
+                  <label htmlFor="companyName">Nom de la société</label>
+                  <Field name="companyName" type="text" />
+                  <ErrorMessage
+                    name="companyName"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyURL">URL de la société</label>
+                  <Field name="companyURL" type="text" />
+                  <ErrorMessage
+                    name="companyURL"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyLogo">Logo de la société</label>
+                  <input
+                    id="companyLogo"
+                    name="companyLogo"
+                    type="file"
+                    onChange={(event) =>
+                      setFieldValue("companyLogo", event.currentTarget.files[0])
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyPhone">Téléphone de la société</label>
+                  <Field name="companyPhone" type="text" />
+                  <ErrorMessage
+                    name="companyPhone"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyEmail">E-mail de la société</label>
+                  <Field name="companyEmail" type="email" />
+                  <ErrorMessage
+                    name="companyEmail"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyActivity">
+                    Activité de la société
+                  </label>
+                  <Field name="companyActivity" as="textarea" />
+                  <ErrorMessage
+                    name="companyActivity"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="companyAddress">Adresse de la société</label>
+                  <Field name="companyAddress" as="textarea" />
+                  <ErrorMessage
+                    name="companyAddress"
+                    component="div"
+                    className="error"
+                  />
+                </div>
+              </div>
+            )} */}
             <button type="submit" id="signup-btn">
               S'inscrire
             </button>
