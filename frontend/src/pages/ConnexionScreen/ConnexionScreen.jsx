@@ -30,7 +30,6 @@ function ConnexionScreen() {
       });
 
       const data = await response.json();
-      console.info("Réponse du serveur:", data);
 
       if (response.ok) {
         const { authToken, user } = data;
@@ -40,7 +39,6 @@ function ConnexionScreen() {
         localStorage.setItem("firstName", data.user.FirstName);
         auth.login(authToken, user.User_ID);
         localStorage.setItem("user", JSON.stringify(user));
-        console.info("user", user);
         setIsSubmitted(true);
         navigate("/dashboard");
       } else {
