@@ -11,11 +11,11 @@ const hashingOptions = {
   parallelism: 1,
 };
 
-const hashPassword = async (req, res, next) => {
+const hashPass = async (req, res, next) => {
   // hash the password using argon2 then call next()
   try {
     const hash = await argon2.hash(req.body.Password, hashingOptions);
-    req.body.hashedPassword = hash;
+    req.body.HashedPassword = hash;
     delete req.body.Password;
     next();
   } catch (err) {
@@ -26,29 +26,26 @@ const hashPassword = async (req, res, next) => {
 
 const verifyPassword = async (req, res) => {
   try {
-    // Vérifier si req.user est défini
-    if (!req.user || !req.user.hashedPassword) {
+    // Vérifier si req.company est défini
+    if (!req.company || !req.company.HashedPassword) {
       console.error(
-        "Erreur: req.user non défini ou ne contient pas hashedPassword"
+        "Erreur: req.company non défini ou ne contient pas hashedPassword"
       );
       return res.sendStatus(500);
     }
     const isVerified = await argon2.verify(
-      req.user.hashedPassword,
+      req.company.HashedPassword,
       req.body.Password
     );
     if (isVerified) {
-      const payload = { sub: req.user.User_ID };
+      const payload = { sub: req.company.Company_ID };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "4h",
       });
-      // res.cookie("token", token, {
-      //   httpOnly: true,
-      //   maxAge: 4 * 60 * 60 * 1000,
-      // });
+
       res.status(200).send({
         authToken: token,
-        user: req.user,
+        company: req.company,
         message: "Login successful",
       });
     } else {
@@ -94,7 +91,7 @@ const verifyToken = async (req, res, next) => {
 
           return reject(new Error("Unauthorized"));
         }
-        req.User_ID = decoded.sub;
+        req.Company_ID = decoded.sub;
         resolve();
       });
     });
@@ -106,7 +103,6 @@ const verifyToken = async (req, res, next) => {
   }
   return null;
 };
-
 const blacklistToken = async (req, res) => {
   const token = req.headers.authorization.replace(/^Bearer\s+/, "");
   await models.tokenBlacklist
@@ -126,7 +122,7 @@ const blacklistToken = async (req, res) => {
 };
 
 module.exports = {
-  hashPassword,
+  hashPass,
   verifyPassword,
   verifyToken,
   blacklistToken,
