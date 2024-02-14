@@ -433,13 +433,13 @@ PostCard.propTypes = {
   }).isRequired,
   postLikes: PropTypes.arrayOf(
     PropTypes.shape({
-      Survey_ID: PropTypes.number.isRequired,
+      Post_ID: PropTypes.number.isRequired,
       User_ID: PropTypes.number.isRequired,
     })
   ),
   postComments: PropTypes.arrayOf(
     PropTypes.shape({
-      Survey_ID: PropTypes.number.isRequired,
+      Post_ID: PropTypes.number.isRequired,
       User_ID: PropTypes.number.isRequired,
       Comment: PropTypes.string.isRequired,
     })

@@ -21,8 +21,8 @@ class userManager extends AbstractManager {
   insert(user) {
     const query = `
       INSERT INTO ${this.table}
-        (Username, LastName, FirstName, BirthDate, Age, Address, Email, Phone, Biography, hashedPassword, Role, Gender, ProfileImage)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
+        (Username, LastName, FirstName, BirthDate, Age, Address, Email, Phone, Biography, hashedPassword, Role, Gender, ProfileImage, Company_Id)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `;
     const values = [
       user.Username,
       user.LastName,
@@ -37,6 +37,7 @@ class userManager extends AbstractManager {
       user.Role,
       user.Gender,
       user.ProfileImage,
+      user.Company_Id,
     ];
     return this.database.query(query, values);
   }

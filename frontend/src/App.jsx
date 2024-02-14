@@ -5,7 +5,7 @@ import BarNav from "./components/BarNav/BarNav";
 
 // Import des Pages
 import LandingScreen from "./pages/LandingScreen/LandingScreen";
-import Feed from "./pages/Feed/Feed";
+import Dashboard from "./pages/Feed/Dashboard";
 import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
@@ -25,10 +25,10 @@ import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
 import { SurveyProvider } from "./contexts/SurveyContext";
 import { EventProvider } from "./contexts/EventContext";
+import { CompanyProvider } from "./contexts/CompanyContext";
 
 // Import des CSS
 import "./App.css";
-import { CompanyProvider } from "./contexts/CompanyContext";
 
 function App() {
   return (
@@ -39,7 +39,14 @@ function App() {
           <UserProvider>
             <Routes>
               <Route path="/" element={<LandingScreen />} />
-              <Route path="/feed" element={<Feed />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <EventProvider>
+                    <Dashboard />
+                  </EventProvider>
+                }
+              />
               <Route
                 path="/posts"
                 element={
@@ -49,14 +56,7 @@ function App() {
                 }
               />
               <Route path="/connexion" element={<ConnexionScreen />} />
-              <Route
-                path="/inscription"
-                element={
-                  <CompanyProvider>
-                    <InscriptionScreen />
-                  </CompanyProvider>
-                }
-              />
+              <Route path="/inscription" element={<InscriptionScreen />} />
               <Route
                 path="/events"
                 element={

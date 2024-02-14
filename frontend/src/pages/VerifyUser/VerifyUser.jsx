@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Formik, Form, Field } from "formik";
-// import * as Yup from "yup";
 
 import { hostname } from "../../HostnameConnect/Hostname";
 
-export default function ResetPassword() {
+export default function VerifyUser() {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   const handleSubmit = async (values) => {
     const Email = values;
-    console.info(Email);
     const response = await fetch(`${hostname}/verify-user`, {
       method: "POST",
       body: JSON.stringify(Email),

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 
-import Modal from "react-bootstrap/Modal";
+// import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import PostCard from "../../components/Posts/PostCard";
 import "./PostScreen.css";
@@ -10,8 +10,6 @@ import { usePost } from "../../contexts/PostContext";
 import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function PostScreen() {
-  const [showModal, setShowModal] = useState(false);
-
   const { posts, getPosts, comments, getComments, likes, getLikes } = usePost();
 
   useEffect(() => {
@@ -24,9 +22,6 @@ export default function PostScreen() {
   const userID = localStorage.getItem("userId");
 
   posts.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
-
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
 
   const initialValues = {
     Title: "",
@@ -60,7 +55,6 @@ export default function PostScreen() {
           console.error("Erreur lors de la requête:", res.statusText);
         }
       });
-      handleCloseModal();
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
@@ -69,10 +63,7 @@ export default function PostScreen() {
   return (
     <div className="container">
       <UserBar />
-      <div>
-        <Button className="create-btn" type="button" onClick={handleOpenModal}>
-          <i className="fas fa-plus" /> Create Post
-        </Button>
+      <div className="content-area">
         {posts.map((post) => {
           const postLikes = likes.filter(
             (like) => like.Post_ID === post.Post_ID
@@ -90,10 +81,14 @@ export default function PostScreen() {
           );
         })}
       </div>
-      <Modal show={showModal} onHide={handleCloseModal} className="modals">
-        <Modal.Header closeButton>Create Post</Modal.Header>
-        <Modal.Body>
-          <Formik initialValues={initialValues} onSubmit={handleCreatePost}>
+      <div className="sidebar">
+        <div className="sidebar-item">
+          <h3>Create Post</h3>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleCreatePost}
+            className="sidebar-form"
+          >
             {({ setFieldValue }) => (
               <Form>
                 <div className="title-content">
@@ -134,14 +129,14 @@ export default function PostScreen() {
                     }
                   />
                 </div>
-                <button id="createPost-btn" type="submit">
+                <Button id="createPost-btn" type="submit">
                   Create
-                </button>
+                </Button>
               </Form>
             )}
           </Formik>
-        </Modal.Body>
-      </Modal>
+        </div>
+      </div>
     </div>
   );
 }

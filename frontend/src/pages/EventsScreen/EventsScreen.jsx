@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import EventCard from "../../components/Events/EventCard";
 import UserBar from "../../components/UserBar/UserBar";
-
 import { useEvent } from "../../contexts/EventContext";
 import { hostname } from "../../HostnameConnect/Hostname";
-// import EventList from "../../components/Events/EventList/Eventlist";
 
 export default function EventScreen() {
-  const [showModal, setShowModal] = useState(false);
   const { events, getEvents, comments, getComments, likes, getLikes } =
     useEvent();
 
@@ -24,9 +20,6 @@ export default function EventScreen() {
   const userID = localStorage.getItem("userId");
 
   events.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
-
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
 
   const initialValues = {
     Image: null,
@@ -78,8 +71,6 @@ export default function EventScreen() {
           console.error("Erreur lors de la requête:", res.statusText);
         }
       });
-
-      handleCloseModal();
     } catch (error) {
       console.error("Erreur lors de la requête :", error);
     }
@@ -88,10 +79,7 @@ export default function EventScreen() {
   return (
     <div className="container">
       <UserBar />
-      <div>
-        <Button className="create-btn" onClick={handleOpenModal}>
-          <i className="fas fa-plus" /> Create Event
-        </Button>
+      <div className="content-area">
         {events.map((event) => {
           const eventLikes = likes.filter(
             (like) => like.Event_ID === event.Event_ID
@@ -109,9 +97,9 @@ export default function EventScreen() {
           );
         })}
       </div>
-      <Modal show={showModal} onHide={handleCloseModal} className="modals">
-        <Modal.Header closeButton>Create Event</Modal.Header>
-        <Modal.Body>
+      <div className="sidebar">
+        <div className="sidebar-item">
+          <h3>Create Event</h3>
           <Formik initialValues={initialValues} onSubmit={handleCreateEvent}>
             {({ setFieldValue }) => (
               <Form>
@@ -195,8 +183,8 @@ export default function EventScreen() {
               </Form>
             )}
           </Formik>
-        </Modal.Body>
-      </Modal>
+        </div>
+      </div>
     </div>
   );
 }

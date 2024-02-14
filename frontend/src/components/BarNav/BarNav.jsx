@@ -23,7 +23,7 @@ export default function BarNav() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:5000/logout", {
+      await fetch(`${hostname}/logout`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -36,6 +36,13 @@ export default function BarNav() {
     }
   };
 
+  const newDay = new Date();
+  const options = {
+    day: "numeric",
+    weekday: "long",
+  };
+  const today = newDay.toLocaleDateString("fr-FR", options);
+
   return (
     <div>
       {isLoggedIn ? (
@@ -44,6 +51,7 @@ export default function BarNav() {
             <img src={Logo} alt="logo" className="navbar_logo" />
           </div>
           <ul className="NavLinks-BarNav">
+            <span className="today">{today}</span>
             <li className="profileItem">
               <div className="profile-image">
                 <ImageWithJWT imageUrl={imageUrl} token={token} alt="Profile" />
