@@ -67,12 +67,16 @@ export default function BarNav() {
           <div className="logo">
             <img src={Logo} alt="logo" className="navbar_logo" />
           </div>
-          <ul className="NavLinks-BarNav">
+          <ul className="NavLinks-BarNav landing-links">
             <li>
-              <Link to="/connexion">Connexion</Link>
+              <Link to="/connexion">
+                <i className="fas fa-sign-in-alt" /> Connexion
+              </Link>
             </li>
             <li>
-              <Link to="/inscription">Inscription</Link>
+              <Link to="/inscription" id="inscription-button">
+                <i className="fas fa-user-plus" /> Inscription
+              </Link>
             </li>
           </ul>
         </nav>
