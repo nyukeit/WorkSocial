@@ -19,7 +19,7 @@ const upload = multer({ storage });
 // Create a new company
 router.post(
   "/company",
-  upload.single("CompanyLogo"),
+  upload.single("Logo"),
   companiesController.createCompany
 );
 
@@ -29,7 +29,7 @@ router.get("/companies", companiesController.getCompanies);
 // Get a specific event by ID
 router.get("/company/:id", companiesController.getCompanyByID);
 
-// Update an existing company
-router.put("/company/:id", companiesController.updateCompany);
+// // Update an existing company
+// router.put("/company/:id", companiesController.updateCompany);
 
 module.exports = router;

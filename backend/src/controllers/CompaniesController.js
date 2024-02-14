@@ -31,9 +31,8 @@ const getCompanyByID = (req, res) => {
 const createCompany = (req, res) => {
   const Company = req.body;
 
-  // Ajoute le chemin de l'image de profil à l'objet company si une image est téléchargée
   if (req.file) {
-    Company.CompanyLogo = req.file.filename; // Utilisez seulement le nom du fichier
+    Company.Logo = req.file.filename; // Utilisez seulement le nom du fichier
   }
 
   models.company
@@ -47,30 +46,30 @@ const createCompany = (req, res) => {
     });
 };
 
-const updateCompany = (req, res) => {
-  const company = req.body;
-  const companyID = req.Company_ID;
+// const updateCompany = (req, res) => {
+//   const company = req.body;
+//   const companyID = req.Company_ID;
 
-  company.id = parseInt(req.params.id, 10);
+//   company.id = parseInt(req.params.id, 10);
 
-  models.company
-    .update(company, companyID)
-    .then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404);
-      } else {
-        res.sendStatus(204);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-};
+//   models.company
+//     .update(company, companyID)
+//     .then(([result]) => {
+//       if (result.affectedRows === 0) {
+//         res.sendStatus(404);
+//       } else {
+//         res.sendStatus(204);
+//       }
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.sendStatus(500);
+//     });
+// };
 
 module.exports = {
   getCompanies,
   getCompanyByID,
   createCompany,
-  updateCompany,
+  // updateCompany,
 };

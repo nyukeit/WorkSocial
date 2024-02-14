@@ -11,7 +11,7 @@ import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function CompaniesScreen() {
   const [showModal, setShowModal] = useState(false);
-  const { companies, getCompanies } = useCompany(); // Utilisation du contexte pour les entreprises
+  const { companies, getCompanies } = useCompany();
 
   useEffect(() => {
     getCompanies(); // Appel de la fonction pour obtenir les entreprises lors du chargement
@@ -36,9 +36,9 @@ export default function CompaniesScreen() {
     const { Logo, Name, URL, Phone, Email, Activity, Address } = values;
     try {
       const formData = new FormData();
-      formData.append("Logo", Logo);
       formData.append("Name", Name);
       formData.append("URL", URL);
+      formData.append("Logo", Logo);
       formData.append("Phone", Phone);
       formData.append("Email", Email);
       formData.append("Activity", Activity);
@@ -52,7 +52,8 @@ export default function CompaniesScreen() {
         },
       }).then((res) => {
         if (res.ok) {
-          getCompanies(); // Rafraîchir la liste des entreprises après la création
+          console.info(res);
+          getCompanies(); // Rafraîchi la liste des entreprises après création
         } else {
           console.error("Erreur lors de la requête :", res.statusText);
         }
@@ -105,8 +106,8 @@ export default function CompaniesScreen() {
                   <input
                     name="Logo"
                     type="file"
-                    onChange={(event) =>
-                      setFieldValue("CompanyLogo", event.currentTarget.files[0])
+                    onChange={(e) =>
+                      setFieldValue("Logo", e.currentTarget.files[0])
                     }
                   />
 
