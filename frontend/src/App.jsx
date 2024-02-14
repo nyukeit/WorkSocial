@@ -10,6 +10,7 @@ import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
 import EventsScreen from "./pages/EventsScreen/EventsScreen";
+import CompaniesScreen from "./pages/CompaniesScreen/CompaniesScreen";
 import SurveyScreen from "./pages/SurveyScreen/SurveyScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
@@ -70,6 +71,14 @@ function App() {
                   <SurveyProvider>
                     <SurveyScreen />
                   </SurveyProvider>
+                }
+              />
+              <Route
+                path="/companies"
+                element={
+                  <CompanyProvider>
+                    <CompaniesScreen />
+                  </CompanyProvider>
                 }
               />
               <Route path="/members" element={<MembersScreen />} />
