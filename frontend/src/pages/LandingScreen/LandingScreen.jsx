@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./LandingScreen.css";
 
 export default function LandingScreen() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function LandingScreen() {
     }
   });
   return (
-    <div className="container">
+    <div className="container landing">
       <h1>Welcome to WorkSocial</h1>
     </div>
   );
