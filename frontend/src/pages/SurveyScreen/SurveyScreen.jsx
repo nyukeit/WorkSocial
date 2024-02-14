@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Formik, Form, Field /* useField, useFormikContext */ } from "formik";
-import Modal from "react-bootstrap/Modal";
+import React, { useEffect } from "react";
+import { Formik, Form, Field } from "formik";
 import Button from "react-bootstrap/Button";
 import UserBar from "../../components/UserBar/UserBar";
 import SurveyCard from "../../components/Surveys/SurveyCard";
 import "./SurveyScreen.css";
 import { useSurvey } from "../../contexts/SurveyContext";
 import { hostname } from "../../HostnameConnect/Hostname";
-// import { useSurveyVotes } from "../../contexts/SurveyVotesContext";
 
 export default function SurveyScreen() {
-  const [showModal, setShowModal] = useState(false);
   const {
     surveys,
     getSurveys,
@@ -33,9 +30,6 @@ export default function SurveyScreen() {
   const userID = localStorage.getItem("userId");
 
   surveys.sort((a, b) => (b.Updated_At > a.Updated_At ? 1 : -1));
-
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
 
   const initialValues = {
     Title: "",
@@ -87,7 +81,6 @@ export default function SurveyScreen() {
       } else {
         console.error("Erreur lors de la requête:", response.statusText);
       }
-      handleCloseModal();
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
@@ -96,10 +89,7 @@ export default function SurveyScreen() {
   return (
     <div className="container">
       <UserBar />
-      <div>
-        <Button className="create-btn" onClick={handleOpenModal}>
-          <i className="fas fa-plus" /> Create Survey
-        </Button>
+      <div className="content-area">
         {surveys.map((survey) => {
           const surveyVotes = votes.filter(
             (vote) => vote.Survey_ID === survey.Survey_ID
@@ -121,11 +111,9 @@ export default function SurveyScreen() {
           );
         })}
       </div>
-      <Modal show={showModal} onHide={handleCloseModal} className="modals">
-        <Modal.Header closeButton>
-          <Modal.Title>Create Survey</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <div className="sidebar">
+        <div className="sidebar-item">
+          <h3>Create Survey</h3>
           <Formik initialValues={initialValues} onSubmit={handleCreateSurvey}>
             {({ setFieldValue }) => (
               <Form>
@@ -189,8 +177,8 @@ export default function SurveyScreen() {
               </Form>
             )}
           </Formik>
-        </Modal.Body>
-      </Modal>
+        </div>
+      </div>
     </div>
   );
 }

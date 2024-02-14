@@ -5,7 +5,7 @@ import BarNav from "./components/BarNav/BarNav";
 
 // Import des Pages
 import LandingScreen from "./pages/LandingScreen/LandingScreen";
-import Feed from "./pages/Feed/Feed";
+import Dashboard from "./pages/Feed/Dashboard";
 import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
@@ -37,7 +37,14 @@ function App() {
           <UserProvider>
             <Routes>
               <Route path="/" element={<LandingScreen />} />
-              <Route path="/feed" element={<Feed />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <EventProvider>
+                    <Dashboard />
+                  </EventProvider>
+                }
+              />
               <Route
                 path="/posts"
                 element={
