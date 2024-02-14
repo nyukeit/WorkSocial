@@ -31,6 +31,11 @@ export default function UserBar() {
             <i className="fas fa-users" /> Membres
           </Link>
         </li>
+        <li>
+          <Link to="/companies">
+            <i className="fas fa-building" /> Companies
+          </Link>
+        </li>
       </ul>
     </nav>
   );

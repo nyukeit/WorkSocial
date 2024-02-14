@@ -8,18 +8,6 @@ import { hostname } from "../../HostnameConnect/Hostname";
 import DropdownMenu from "./DropdownMenu";
 
 export default function BarNav() {
-  // const fetchWeather = async () => {
-  //   const response = await fetch(
-  //     "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m"
-  //   );
-  //   const data = await response.json();
-  //   console.info(data);
-  // };
-
-  // useEffect(() => {
-  //   fetchWeather();
-  // });
-
   const { isLoggedIn, logout } = useAuth();
   const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const navigate = useNavigate();
@@ -79,12 +67,16 @@ export default function BarNav() {
           <div className="logo">
             <img src={Logo} alt="logo" className="navbar_logo" />
           </div>
-          <ul className="NavLinks-BarNav">
+          <ul className="NavLinks-BarNav landing-links">
             <li>
-              <Link to="/connexion">Connexion</Link>
+              <Link to="/connexion">
+                <i className="fas fa-sign-in-alt" /> Connexion
+              </Link>
             </li>
             <li>
-              <Link to="/inscription">Inscription</Link>
+              <Link to="/inscription" id="inscription-button">
+                <i className="fas fa-user-plus" /> Inscription
+              </Link>
             </li>
           </ul>
         </nav>

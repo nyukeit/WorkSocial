@@ -48,7 +48,7 @@
 }
 
 /* Style des liens */
-.NavLinks-BarNav li a {
+.BarNav-loggedOut .NavLinks-BarNav li a {
   color: #4a4e69;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -69,8 +69,18 @@
 }
 
 .today {
-  font-size: 2em;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2em;
   font-weight: 300;
   margin-right: 1em;
   color: white;
+}
+
+#inscription-button {
+  background-color: #4a4e69;
+  border: none;
+  color: white;
+  padding: 0.5em 0.7em;
+  border-radius: 8px;
 }
