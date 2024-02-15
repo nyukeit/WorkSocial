@@ -1,9 +1,8 @@
 .user-card {
   display: flex;
-  column-gap: 1em;
-  align-items: start;
-  justify-content: start;
-  margin-bottom: 1.5em;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   padding: 1em;
@@ -16,14 +15,45 @@
   object-fit: cover;
 }
 
+.user-info {
+  text-align: center;
+}
+
 .user-info h2 {
   font-size: 1.2em;
   color: #333;
+  margin-top: 1em;
 }
 
 .user-info p {
   font-size: 0.9em;
   color: #666;
+}
+
+.user-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.company {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5em;
+}
+
+.company span {
+  font-size: 0.9em;
+  color: #666;
+  margin: 1em 0;
+}
+
+.company-logo img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .chat-container {
@@ -34,23 +64,13 @@
 
 .chat-button {
   background-color: transparent;
-  border: none;
+  border: 1px solid #4A4E69;
+  border-radius: 5px;
+  font-size: 0.8em;
+  padding: 0.3em 1em;
 }
 
-@media (max-width: 1024px) {
-  .user-card {
-    width: calc(22.333% - 40px); /* 3 cartes par ligne sur tablettes */
-  }
-}
-
-@media (max-width: 768px) {
-  .user-card {
-    width: calc(50% - 40px); /* 2 cartes par ligne sur mobiles */
-  }
-}
-
-@media (max-width: 480px) {
-  .user-card {
-    width: 100%; /* 1 carte par ligne sur très petits écrans */
-  }
+.chat-button:hover {
+  background-color: #4A4E69;
+  color: white;
 }

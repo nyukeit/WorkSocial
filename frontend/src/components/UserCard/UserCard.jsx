@@ -5,12 +5,17 @@ import { useNavigate } from "react-router-dom";
 import ChatWebSocket from "../ChatPrivate/ChatWebSocket/ChatWebSocket";
 import { hostname } from "../../HostnameConnect/Hostname";
 import ImageWithJWT from "../../utils/ImageWithJWT";
+import { useCompany } from "../../contexts/CompanyContext";
 
 function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   const [isChatWebSocketOpen, setIsChatWebSocketOpen] = useState(false);
   const navigate = useNavigate();
   const [isModalMinimized, setIsModalMinimized] = useState(false);
   const userIdLoggedIn = localStorage.getItem("userId");
+  const { companies } = useCompany();
+  const userCompany = companies.find(
+    (company) => company.Company_ID === user.Company_ID
+  );
   const handleCardClick = () => {
     navigate(`/profile/${user.User_ID}`);
   };
@@ -21,23 +26,17 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
     }
   };
 
-  function translateGender(gender) {
-    const genderTranslations = {
-      male: "Homme",
-      female: "Femme",
-      other: "Autre",
-    };
-
-    return genderTranslations[gender.toLowerCase()] || gender;
-  }
-
   const handleChatClick = (e) => {
     e.stopPropagation();
     onOpenChat();
     setIsChatWebSocketOpen(true);
   };
-  // const imageName = user.ProfileImage.split("\\").pop();
-  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
+
+  const imageUrl = [
+    `${hostname}/upload/${user.ProfileImage}`,
+    `${hostname}/upload/${userCompany.Logo}`,
+  ];
+
   return (
     <>
       <div
@@ -47,16 +46,20 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
         role="button"
         tabIndex={0}
       >
-        <div>
-          <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
-        </div>
         <div className="user-info">
+          <ImageWithJWT imageUrl={imageUrl[0]} alt={user.FirstName} />
           <h2>
             {user.FirstName} {user.LastName}
           </h2>
-          <p>
-            {translateGender(user.Gender)}, {user.Age}
-          </p>
+          <p>{user.Role}</p>
+        </div>
+        <div className="user-footer">
+          <div className="company">
+            <div className="company-logo">
+              <ImageWithJWT imageUrl={imageUrl[1]} alt={userCompany.Name} />
+            </div>
+            <span>{userCompany.Name}</span>
+          </div>
           {userIdLoggedIn && userIdLoggedIn !== String(user.User_ID) && (
             <button
               className="chat-button"
@@ -96,6 +99,8 @@ UserCard.propTypes = {
     Email: PropTypes.string,
     Address: PropTypes.string,
     BirthDate: PropTypes.string,
+    Role: PropTypes.string,
+    Company_ID: PropTypes.number,
   }).isRequired,
   onOpenChat: PropTypes.func.isRequired,
   onCloseChat: PropTypes.func.isRequired,
