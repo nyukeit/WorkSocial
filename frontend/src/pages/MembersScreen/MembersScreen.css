@@ -1,15 +1,15 @@
 .userlist {
   display: grid;
   grid-template-columns: repeat(
-    3,
+    5,
     1fr
   ); /* 5 colonnes sur les ecrans plus grands */
   grid-gap: 1em;
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
 }
 
-@media (max-width: 1200px) {
-  .users-list {
+@media (max-width: 1199px) {
+  .userlist {
     grid-template-columns: repeat(
       4,
       1fr
@@ -17,8 +17,17 @@
   }
 }
 
-@media (max-width: 800px) {
-  .users-list {
+@media (max-width: 991px) {
+  .userlist {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); /* 2 colonnes sur les écrans encore plus petits */
+  }
+}
+
+@media (max-width: 767px) {
+  .userlist {
     grid-template-columns: repeat(
       2,
       1fr
@@ -26,8 +35,10 @@
   }
 }
 
-@media (max-width: 500px) {
-  .users-list {
+
+
+@media (max-width: 576px) {
+  .userlist {
     grid-template-columns: 1fr; /* 1 colonne sur les petits appareils */
   }
 }

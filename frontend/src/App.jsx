@@ -81,7 +81,14 @@ function App() {
                   </CompanyProvider>
                 }
               />
-              <Route path="/members" element={<MembersScreen />} />
+              <Route
+                path="/members"
+                element={
+                  <CompanyProvider>
+                    <MembersScreen />
+                  </CompanyProvider>
+                }
+              />
               <Route path="/profile/:userId" element={<MyUserProfilScreen />} />
               <Route path="/myprofil" element={<MyUserProfilScreen />} />
               <Route path="/editprofil" element={<EditUserProfilScreen />} />
