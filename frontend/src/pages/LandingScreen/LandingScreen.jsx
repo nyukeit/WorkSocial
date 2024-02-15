@@ -4,6 +4,8 @@ import "./LandingScreen.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import heroImage from "../../assets/images/hero-image.png";
+import footerLogo from "../../assets/images/logo.png";
 
 export default function LandingScreen() {
   const navigate = useNavigate();
@@ -24,11 +26,7 @@ export default function LandingScreen() {
         <a className="hero-button" href="/inscription">
           Commencez Gratuite
         </a>
-        <img
-          src="src/assets/images/hero-image.png"
-          alt="Hero"
-          id="hero-image"
-        />
+        <img src={heroImage} alt="Hero" id="hero-image" />
       </section>
       <div id="features" className="centered-text">
         <Row>
@@ -97,7 +95,7 @@ export default function LandingScreen() {
         </a>
       </section>
       <footer>
-        <img src="src/assets/images/logo.png" alt="Logo" id="footer-logo" />
+        <img src={footerLogo} alt="Logo" id="footer-logo" />
         <p id="footer-text">
           WorkSocial est le meilleur moyen de trouver des pairs et des collègues
           travaillant dans n'importe quelle entreprise.
