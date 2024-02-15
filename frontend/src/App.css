@@ -228,6 +228,7 @@ code {
 .content-area {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   width: 50%;
   flex-grow: 2;
 }

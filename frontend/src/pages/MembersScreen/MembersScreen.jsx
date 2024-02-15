@@ -25,7 +25,7 @@ function MembersScreen() {
   return (
     <div className="container">
       <UserBar />
-      <div>
+      <div className="content-area">
         <h2 className="page-title">Members</h2>
         <div className="userlist">
           {users.map((user) => {
