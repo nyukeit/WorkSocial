@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import copy from "vite-plugin-copy";
+import copy from "rollup-plugin-copy";
 
 const path = require("path");
 
@@ -8,7 +8,10 @@ const path = require("path");
 export default defineConfig({
   plugins: [
     react(),
-    copy({ patterns: [{ from: "src/_redirects", to: "dist" }] }),
+    copy({
+      targets: [{ src: "src/_redirects", dest: "dist" }],
+      hook: "writeBundle",
+    }),
   ],
   resolve: {
     alias: {
