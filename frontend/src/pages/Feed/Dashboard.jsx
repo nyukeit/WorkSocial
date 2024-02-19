@@ -7,11 +7,18 @@ import { useEvent } from "../../contexts/EventContext";
 
 export default function Dashboard() {
   const [value, setValue] = useState(new Date());
+  const currentUserID = parseInt(localStorage.getItem("userId"), 10);
   const onChange = () => {
     setValue(value);
   };
 
-  const { events, getEvents } = useEvent();
+  const { events, getEvents, invites, getInvites } = useEvent();
+
+  const userIsInvited = invites
+    .filter((invite) => invite.User_ID === currentUserID)
+    .map((invite) => {
+      return events.find((event) => event.Event_ID === invite.Event_ID);
+    });
   const sortedEvents = events.sort((a, b) =>
     a.StartDate > b.StartDate ? 1 : -1
   );
@@ -19,15 +26,54 @@ export default function Dashboard() {
     (event) => new Date(event.StartDate) >= new Date()
   );
 
+  const options = {
+    month: "short",
+  };
+
   useEffect(() => {
     getEvents();
-  }, []);
+    getInvites();
+  }, [events, invites]);
 
   return (
     <div className="container">
       <UserBar />
       <div className="content-area">
-        <div>
+        <div className="section">
+          <h4>Invitations</h4>
+          <hr />
+          {userIsInvited ? (
+            userIsInvited.map((event) => (
+              <div className="invite-card" key={event.Event_ID}>
+                <div className="left-section">
+                  <div className="event-date">
+                    <span id="numeric-day">
+                      {new Date(event.StartDate).getDate()}
+                    </span>
+                    <span id="month">
+                      {new Date(event.StartDate).toLocaleDateString(
+                        "fr-FR",
+                        options
+                      )}
+                    </span>
+                  </div>
+                  <p id="event-title">{event.EventName}</p>
+                </div>
+                <div className="right-section">
+                  <button type="button" className="invite-action-btn">
+                    <i className="fas fa-check" /> Accept
+                  </button>
+                  <button type="button" className="invite-action-btn">
+                    <i className="fas fa-times" /> Decline
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No invitations</p>
+          )}
+        </div>
+        <div className="section">
           <h4>Upcoming Events</h4>
           <hr />
           {upcomingEvents.length > 0 ? (

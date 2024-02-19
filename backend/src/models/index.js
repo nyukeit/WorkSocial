@@ -67,6 +67,11 @@ const EventLikeManager = require("./Manager/EventLikeManager");
 models.eventLike = new EventLikeManager();
 models.eventLike.setDatabase(pool);
 
+const EventInvitesManager = require("./Manager/EventInvitesManager");
+
+models.eventInvite = new EventInvitesManager();
+models.eventInvite.setDatabase(pool);
+
 const EventCommentsLikesManager = require("./Manager/EventCommentsLikesManager");
 
 models.eventCommentsLikes = new EventCommentsLikesManager();

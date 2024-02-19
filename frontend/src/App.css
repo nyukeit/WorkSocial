@@ -233,6 +233,15 @@ code {
   flex-grow: 2;
 }
 
+#context-menu-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #4A4E69;
+  margin: 0;
+  padding: 0;
+}
+
 .sidebar {
   width: 25%;
   flex-grow: 1;
