@@ -46,7 +46,7 @@ export default function EventCard({
   // Mapping Creators
   const eventCreator = users.find((user) => user.User_ID === event.User_ID);
 
-  if (eventCreator.User_ID === currentUserID) {
+  if (eventCreator && eventCreator.User_ID === currentUserID) {
     eventCreator.FirstName = "You";
   }
 
@@ -109,7 +109,7 @@ export default function EventCard({
   const handleCloseDelModal = () => setShowDelModal(false);
   const handleOpenCommentModal = () => setShowCommentModal(true);
   const handleCloseCommentModal = () => setShowCommentModal(false);
-  // const handleOpenInviteModal = () => setShowInviteModal(true);
+  const handleOpenInviteModal = () => setShowInviteModal(true);
   const handleCloseInviteModal = () => setShowInviteModal(false);
 
   // Handle Event Edit
@@ -353,14 +353,15 @@ export default function EventCard({
           <Card.Text>{event.Description}</Card.Text>
         </Card.Body>
         <Card.Footer>
-          {/* {event.EndDate < new Date() ? (
-            <span id="event-ended-text">This event has Ended</span>
-          ) : null}
-          {eventCreator.User_ID === currentUserID ? (
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {new Date().toLocaleDateString("fr-FR") >
+          new Date(event.EndDate).toLocaleDateString("fr-FR") ? (
+            <span id="event-ended-text">This event has ended</span>
+          ) : eventCreator.User_ID === currentUserID ? (
             <Button onClick={handleOpenInviteModal}>Invite</Button>
           ) : (
             <Button>Attend</Button>
-          )} */}
+          )}
         </Card.Footer>
       </Card>
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
@@ -600,18 +601,9 @@ EventCard.propTypes = {
       Comment: PropTypes.string.isRequired,
     })
   ),
-
-  // eventInvites: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     Event_ID: PropTypes.number.isRequired,
-  //     User_ID: PropTypes.number.isRequired,
-  //     action: PropTypes.string.isRequired,
-  //   })
-  // ),
 };
 
 EventCard.defaultProps = {
   eventComments: [],
   eventLikes: [],
-  // eventInvites: [],
 };

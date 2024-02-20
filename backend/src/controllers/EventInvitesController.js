@@ -49,6 +49,7 @@ const unInviteUser = (req, res) => {
 const acceptDeclineInvite = (req, res) => {
   const { eventId } = req.params;
   const { userId, action } = req.body;
+  console.info(action, eventId, userId);
   models.eventInvite
     .acceptDeclineInvite(action, eventId, userId)
     .then(() => {
