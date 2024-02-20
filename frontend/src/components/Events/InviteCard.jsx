@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import { useEvent } from "../../contexts/EventContext";
 import { hostname } from "../../HostnameConnect/Hostname";
@@ -18,6 +19,11 @@ export default function InviteCard({ event, inviteStatus }) {
     users.length > 0
       ? users.find((user) => user.User_ID === event.User_ID)
       : "Unknown";
+
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/events/${event.Event_ID}`);
+  };
 
   useEffect(() => {
     getInvites();
@@ -71,50 +77,57 @@ export default function InviteCard({ event, inviteStatus }) {
   };
 
   return (
-    <div className="invite-card" key={event.Event_ID}>
-      <div className="left-section">
-        <div className="event-date">
-          <span id="numeric-day">{new Date(event.StartDate).getDate()}</span>
-          <span id="month">
-            {new Date(event.StartDate).toLocaleDateString("fr-FR", options)}
-          </span>
+    <>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div
+        className="invite-card clickable"
+        key={event.Event_ID}
+        onClick={handleCardClick}
+      >
+        <div className="left-section">
+          <div className="event-date">
+            <span id="numeric-day">{new Date(event.StartDate).getDate()}</span>
+            <span id="month">
+              {new Date(event.StartDate).toLocaleDateString("fr-FR", options)}
+            </span>
+          </div>
+          <div className="event-meta">
+            <span id="event-title">{event.EventName}</span>
+            <span id="event-creator">{eventCreator.FirstName}</span>
+          </div>
         </div>
-        <div className="event-meta">
-          <span id="event-title">{event.EventName}</span>
-          <span id="event-creator">{eventCreator.FirstName}</span>
+        <div className="right-section">
+          {inviteStatus === "Pending" && (
+            <>
+              <button
+                type="button"
+                className="invite-action-btn"
+                onClick={() => handleAcceptDeclineInvite("Accept")}
+              >
+                <i className="fas fa-check" /> Accept
+              </button>
+              <button
+                type="button"
+                className="invite-action-btn"
+                onClick={() => handleAcceptDeclineInvite("Decline")}
+              >
+                <i className="fas fa-times" /> Decline
+              </button>
+            </>
+          )}
+          {inviteStatus === "Accepted" && (
+            <div id="accepted">
+              <span className="invite-status">Accepted</span>
+            </div>
+          )}
+          {inviteStatus === "Declined" && (
+            <div id="declined">
+              <span className="invite-status">Declined</span>
+            </div>
+          )}
         </div>
       </div>
-      <div className="right-section">
-        {inviteStatus === "Pending" && (
-          <>
-            <button
-              type="button"
-              className="invite-action-btn"
-              onClick={() => handleAcceptDeclineInvite("Accept")}
-            >
-              <i className="fas fa-check" /> Accept
-            </button>
-            <button
-              type="button"
-              className="invite-action-btn"
-              onClick={() => handleAcceptDeclineInvite("Decline")}
-            >
-              <i className="fas fa-times" /> Decline
-            </button>
-          </>
-        )}
-        {inviteStatus === "Accepted" && (
-          <div id="accepted">
-            <span className="invite-status">Accepted</span>
-          </div>
-        )}
-        {inviteStatus === "Declined" && (
-          <div id="declined">
-            <span className="invite-status">Declined</span>
-          </div>
-        )}
-      </div>
-    </div>
+    </>
   );
 }
 

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 // Import Styles
 import "./EventCard.css";
@@ -92,6 +93,11 @@ export default function EventCard({
   if (!eventCreator) {
     return <div>Loading...</div>;
   }
+
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/events/${event.Event_ID}`);
+  };
 
   const imageUrl = [
     `${hostname}/upload/${event.Image}`,
@@ -292,7 +298,7 @@ export default function EventCard({
 
   return (
     <>
-      <Card>
+      <Card className="clickable" onClick={handleCardClick}>
         <Card.Header>
           <span>
             {formattedStartDate}, {formattedStartTime}

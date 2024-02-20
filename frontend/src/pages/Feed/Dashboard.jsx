@@ -44,7 +44,7 @@ export default function Dashboard() {
         <div className="section">
           <h4>Invitations</h4>
           <hr />
-          {userIsInvited ? (
+          {userIsInvited.length > 0 ? (
             userIsInvited.map((invite) => (
               <InviteCard
                 event={invite.event}

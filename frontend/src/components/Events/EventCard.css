@@ -9,9 +9,9 @@
   font-weight: 600;
 }
 
-/* #event-card {
-  width: 48%;
-} */
+.clickable {
+  cursor: pointer;
+}
 
 .dropdown-select {
   position: relative;

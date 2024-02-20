@@ -1,6 +1,7 @@
 // Import Modules
 import React from "react";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 // Import Styles
 import "./EventMiniCard.css";
@@ -25,10 +26,15 @@ export default function EventMiniCard({ event, daysRemaining }) {
     "fr-FR"
   );
 
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/events/${event.Event_ID}`);
+  };
+
   const imageUrl = `${hostname}/upload/${event.Image}`;
 
   return (
-    <Card>
+    <Card className="clickable" onClick={handleCardClick}>
       <Card.Header>
         <span>
           <strong>{formattedStartDate}</strong>
