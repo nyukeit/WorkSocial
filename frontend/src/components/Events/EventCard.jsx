@@ -298,7 +298,7 @@ export default function EventCard({
 
   return (
     <>
-      <Card className="clickable" onClick={handleCardClick}>
+      <Card>
         <Card.Header>
           <span>
             {formattedStartDate}, {formattedStartTime}
@@ -308,7 +308,7 @@ export default function EventCard({
             parseInt(eventCreator.User_ID, 10) ? (
               <DropdownButton id="context-menu-btn">
                 <Dropdown.Item onClick={handleOpenModal}>Edit</Dropdown.Item>
-                <Dropdown.Item onClick={handleOpenModal}>Manage</Dropdown.Item>
+                <Dropdown.Item onClick={handleCardClick}>Manage</Dropdown.Item>
                 <Dropdown.Item onClick={handleOpenDelModal}>
                   Delete
                 </Dropdown.Item>
