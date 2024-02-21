@@ -1,0 +1,61 @@
+.event-card-header-right {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.dropdown-select {
+  position: relative;
+  display: inline-block;
+  width: 200px; /* Set width as desired */
+}
+
+.dropdown-select select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  overflow: hidden; /* Hide overflowing options */
+  height: 38px; /* Set fixed height */
+}
+
+.dropdown-select select:focus {
+  height: auto; /* Expand height when focused */
+}
+
+.dropdown-select select::-ms-expand {
+  display: none;
+}
+
+.dropdown-select select option {
+  padding: 8px 12px;
+}
+
+/* Style for the dropdown arrow */
+.dropdown-select::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#event-ended-text {
+  color: #ccc;
+}

@@ -1,0 +1,8 @@
+/* #events-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 50%;
+  flex-grow: 2;
+} */
