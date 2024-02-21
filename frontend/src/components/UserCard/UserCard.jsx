@@ -13,9 +13,9 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   const [isModalMinimized, setIsModalMinimized] = useState(false);
   const userIdLoggedIn = localStorage.getItem("userId");
   const { companies } = useCompany();
-  const userCompany = companies.find(
-    (company) => company.Company_ID === user.Company_ID
-  );
+  const userCompany = companies
+    ? companies.find((company) => company.Company_ID === user.Company_ID)
+    : [];
   const handleCardClick = () => {
     navigate(`/profile/${user.User_ID}`);
   };

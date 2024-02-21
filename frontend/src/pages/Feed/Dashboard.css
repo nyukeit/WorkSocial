@@ -3,3 +3,11 @@
   padding: 0;
   color: lightslategray;
 }
+
+.section {
+  margin-bottom: 1.5em;
+}
+
+.section hr {
+  margin-top: 0;
+}

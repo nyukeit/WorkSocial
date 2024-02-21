@@ -10,6 +10,7 @@ import PostScreen from "./pages/PostScreen/PostScreen";
 import ConnexionScreen from "./pages/ConnexionScreen/ConnexionScreen";
 import InscriptionScreen from "./pages/InscriptionScreen/InscriptionScreen";
 import EventsScreen from "./pages/EventsScreen/EventsScreen";
+import EventPage from "./pages/EventPage/EventPage";
 import CompaniesScreen from "./pages/CompaniesScreen/CompaniesScreen";
 import SurveyScreen from "./pages/SurveyScreen/SurveyScreen";
 import MembersScreen from "./pages/MembersScreen/MembersScreen";
@@ -62,6 +63,14 @@ function App() {
                 element={
                   <EventProvider>
                     <EventsScreen />
+                  </EventProvider>
+                }
+              />
+              <Route
+                path="/events/:eventId"
+                element={
+                  <EventProvider>
+                    <EventPage />
                   </EventProvider>
                 }
               />

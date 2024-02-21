@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 // Import Styles
+import "./EventCard.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -19,7 +21,13 @@ import { hostname } from "../../HostnameConnect/Hostname";
 import { useUser } from "../../contexts/UserContext";
 import { useEvent } from "../../contexts/EventContext";
 
-export default function EventCard({ event, eventComments, eventLikes }) {
+export default function EventCard({
+  event,
+  eventComments,
+  eventLikes,
+  // eventInvites,
+  // daysRemaining,
+}) {
   // Contexts
   const { users, loading } = useUser();
   const { getEvents, getComments, getLikes } = useEvent();
@@ -28,7 +36,9 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
   const [comment, setComment] = useState("");
+  // const [selectedUsers, setSelectedUsers] = useState([]);
 
   // Local Storage Variables
   const currentUserID = parseInt(localStorage.getItem("userId"), 10);
@@ -37,9 +47,29 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   // Mapping Creators
   const eventCreator = users.find((user) => user.User_ID === event.User_ID);
 
+  if (eventCreator && eventCreator.User_ID === currentUserID) {
+    eventCreator.FirstName = "You";
+  }
+
   // Formatage de la date
-  const formattedStartDate = new Date(event.StartDate).toLocaleDateString(
-    "en-GB"
+  const options = {
+    day: "numeric",
+    month: "short",
+    weekday: "short",
+    year: "numeric",
+  };
+  const formattedStartDate = new Date(event.StartDate)
+    .toLocaleDateString("fr-FR", options)
+    .toUpperCase();
+
+  const formattedStartTime = new Date(event.StartDate).toLocaleTimeString(
+    "fr-FR",
+    {
+      timeZone: "CET",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }
   );
 
   const commentUserPairs = eventComments.map((cmt) => {
@@ -64,6 +94,11 @@ export default function EventCard({ event, eventComments, eventLikes }) {
     return <div>Loading...</div>;
   }
 
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/events/${event.Event_ID}`);
+  };
+
   const imageUrl = [
     `${hostname}/upload/${event.Image}`,
     `${hostname}/upload/${eventCreator.ProfileImage}`,
@@ -80,6 +115,8 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   const handleCloseDelModal = () => setShowDelModal(false);
   const handleOpenCommentModal = () => setShowCommentModal(true);
   const handleCloseCommentModal = () => setShowCommentModal(false);
+  const handleOpenInviteModal = () => setShowInviteModal(true);
+  const handleCloseInviteModal = () => setShowInviteModal(false);
 
   // Handle Event Edit
   const initialValues = {
@@ -187,6 +224,31 @@ export default function EventCard({ event, eventComments, eventLikes }) {
     }
   };
 
+  const handleInviteUser = async (values) => {
+    const selectedUsers = values;
+    console.info(selectedUsers);
+    try {
+      const response = await fetch(
+        `${hostname}/events/${event.Event_ID}/invites`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(selectedUsers),
+        }
+      );
+      if (response.ok) {
+        console.info("Invites Sent");
+      } else {
+        console.error("Erreur lors de la requête:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la requête:", error);
+    }
+  };
+
   // Handle Post Like / Dislike
   const handleEventLikeDislike = async (action, userId) => {
     if (action === "like") {
@@ -237,21 +299,23 @@ export default function EventCard({ event, eventComments, eventLikes }) {
   return (
     <>
       <Card>
-        <div className="card-header">
-          <div className="profile">
-            <div className="profileImgDiv">
-              <ImageWithJWT className="pcProfileImg" imageUrl={imageUrl[1]} />
-            </div>
-            <span className="username">{eventCreator.Username}</span>
+        <Card.Header>
+          <span>
+            {formattedStartDate}, {formattedStartTime}
+          </span>
+          <div>
+            {parseInt(currentUserID, 10) ===
+            parseInt(eventCreator.User_ID, 10) ? (
+              <DropdownButton id="context-menu-btn">
+                <Dropdown.Item onClick={handleOpenModal}>Edit</Dropdown.Item>
+                <Dropdown.Item onClick={handleCardClick}>Manage</Dropdown.Item>
+                <Dropdown.Item onClick={handleOpenDelModal}>
+                  Delete
+                </Dropdown.Item>
+              </DropdownButton>
+            ) : null}
           </div>
-          {parseInt(currentUserID, 10) ===
-          parseInt(eventCreator.User_ID, 10) ? (
-            <DropdownButton id="context-menu-btn" title="">
-              <Dropdown.Item onClick={handleOpenModal}>Edit</Dropdown.Item>
-              <Dropdown.Item onClick={handleOpenDelModal}>Delete</Dropdown.Item>
-            </DropdownButton>
-          ) : null}
-        </div>
+        </Card.Header>
         <Card.Body>
           <div className="card-img">
             <ImageWithJWT className="post-img" imageUrl={imageUrl[0]} />
@@ -286,35 +350,25 @@ export default function EventCard({ event, eventComments, eventLikes }) {
           >
             <i className="fa-regular fa-comment" />
           </button>
-          <p>
-            Le {formattedStartDate} de {event.StartTime} à {event.EndTime}
-          </p>
-
-          <Card.Title>{event.EventName}</Card.Title>
+          <Card.Title className="card-title">{event.EventName}</Card.Title>
+          {eventCreator ? (
+            <p>{eventCreator.FirstName}</p>
+          ) : (
+            <strong>Unknown</strong>
+          )}
           <Card.Text>{event.Description}</Card.Text>
-
-          <Card.Link
-            onClick={handleOpenCommentModal}
-            className="view-comments-btn"
-          >
-            View All Comments
-          </Card.Link>
-          <MyForm className="submit-comment-form">
-            <MyForm.Control
-              type="text"
-              placeholder="Write a comment..."
-              value={comment}
-              onChange={handleComment}
-            />
-            <button
-              id="submit-comment-btn"
-              type="submit"
-              onClick={handleSubmitComment}
-            >
-              Post
-            </button>
-          </MyForm>
         </Card.Body>
+        <Card.Footer>
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {new Date().toLocaleDateString("fr-FR") >
+          new Date(event.EndDate).toLocaleDateString("fr-FR") ? (
+            <span id="event-ended-text">This event has ended</span>
+          ) : eventCreator.User_ID === currentUserID ? (
+            <Button onClick={handleOpenInviteModal}>Invite</Button>
+          ) : (
+            <Button>Attend</Button>
+          )}
+        </Card.Footer>
       </Card>
       <Modal show={showModal} onHide={handleCloseModal} className="modals">
         <Modal.Header closeButton>
@@ -466,6 +520,60 @@ export default function EventCard({ event, eventComments, eventLikes }) {
               <i className="fa-regular fa-paper-plane" />
             </button>
           </MyForm>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showInviteModal}
+        onHide={handleCloseInviteModal}
+        className="modals"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Invite Users</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Formik
+            initialValues={{
+              selectedUsers: [],
+            }}
+            onSubmit={handleInviteUser}
+          >
+            {({ values, setFieldValue }) => (
+              <Form>
+                <Field
+                  name="selectedUsers"
+                  as="select"
+                  multiple
+                  className="form-control custom-select"
+                  onChange={(evt) => {
+                    const selectedUserIds = Array.from(
+                      evt.target.selectedOptions,
+                      (option) => option.value
+                    );
+                    setFieldValue("selectedUsers", selectedUserIds);
+                  }}
+                >
+                  {users.map((user) => (
+                    <option key={user.User_ID} value={user.User_ID}>
+                      {user.FirstName} {user.LastName}
+                    </option>
+                  ))}
+                </Field>
+                <div>
+                  {values.selectedUsers.map((userId) => {
+                    const user = users.find(
+                      (u) => u.User_ID.toString() === userId
+                    );
+                    return (
+                      <div key={userId}>
+                        {user.FirstName} {user.LastName}
+                      </div>
+                    );
+                  })}
+                </div>
+                <button type="submit">Submit</button>
+              </Form>
+            )}
+          </Formik>
         </Modal.Body>
       </Modal>
     </>

@@ -5,15 +5,25 @@ import EventCard from "../../components/Events/EventCard";
 import UserBar from "../../components/UserBar/UserBar";
 import { useEvent } from "../../contexts/EventContext";
 import { hostname } from "../../HostnameConnect/Hostname";
+import "./EventsScreen.css";
 
 export default function EventScreen() {
-  const { events, getEvents, comments, getComments, likes, getLikes } =
-    useEvent();
+  const {
+    events,
+    getEvents,
+    comments,
+    getComments,
+    likes,
+    getLikes,
+    invites,
+    getInvites,
+  } = useEvent();
 
   useEffect(() => {
     getLikes();
     getEvents();
     getComments();
+    getInvites();
   }, []);
 
   const token = localStorage.getItem("userToken");
@@ -87,12 +97,16 @@ export default function EventScreen() {
           const eventComments = comments.filter(
             (comment) => comment.Event_ID === event.Event_ID
           );
+          const eventInvites = invites.filter(
+            (invite) => invite.Event_ID === event.Event_ID
+          );
           return (
             <EventCard
               key={event.Event_ID}
               event={event}
               eventComments={eventComments}
               eventLikes={eventLikes}
+              eventInvites={eventInvites}
             />
           );
         })}
