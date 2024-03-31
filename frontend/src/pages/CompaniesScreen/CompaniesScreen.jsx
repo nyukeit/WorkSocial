@@ -43,7 +43,7 @@ export default function CompaniesScreen() {
       formData.append("Activity", Activity);
       formData.append("Address", Address);
 
-      await fetch(`${import.meta.VITE_BACKEND_URL}/company`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/company`, {
         method: "POST",
         body: formData,
         headers: {

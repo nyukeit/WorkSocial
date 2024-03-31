@@ -15,11 +15,14 @@ export function UserProvider({ children }) {
 
   const getUsers = async () => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setUsers(data);

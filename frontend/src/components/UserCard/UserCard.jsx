@@ -34,8 +34,8 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   };
 
   const imageUrl = [
-    `${import.meta.VITE_BACKEND_URL}/upload/${user.ProfileImage}`,
-    `${import.meta.VITE_BACKEND_URL}/upload/${userCompany.Logo}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${user.ProfileImage}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${userCompany.Logo}`,
   ];
 
   return (

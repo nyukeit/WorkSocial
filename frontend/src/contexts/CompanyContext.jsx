@@ -15,7 +15,7 @@ export function CompanyProvider({ children }) {
 
   const getCompanies = async () => {
     try {
-      await fetch(`${import.meta.VITE_BACKEND_URL}/companies`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/companies`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",

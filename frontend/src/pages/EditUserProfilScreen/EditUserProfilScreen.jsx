@@ -19,7 +19,7 @@ function EditUserProfilScreen() {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
+          `${import.meta.env.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
           {
             method: "GET",
             headers: {
@@ -132,7 +132,7 @@ function EditUserProfilScreen() {
     // }
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
+        `${import.meta.env.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
         {
           method: "PUT",
           headers: {
@@ -184,7 +184,7 @@ function EditUserProfilScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
-  const imageUrl = `${import.meta.VITE_BACKEND_URL}/upload/${
+  const imageUrl = `${import.meta.env.VITE_BACKEND_URL}/upload/${
     user.ProfileImage
   }`;
   return (

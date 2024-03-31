@@ -67,13 +67,16 @@ export default function SurveyScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/surveys`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/surveys`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         console.info("Survey Created");
         getSurveys();

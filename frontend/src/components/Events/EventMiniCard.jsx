@@ -31,7 +31,7 @@ export default function EventMiniCard({ event, daysRemaining }) {
     navigate(`/events/${event.Event_ID}`);
   };
 
-  const imageUrl = `${import.meta.VITE_BACKEND_URL}/upload/${event.Image}`;
+  const imageUrl = `${import.meta.env.VITE_BACKEND_URL}/upload/${event.Image}`;
 
   return (
     <Card className="clickable" onClick={handleCardClick}>

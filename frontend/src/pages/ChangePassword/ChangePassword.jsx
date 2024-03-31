@@ -17,7 +17,7 @@ function ChangePassword() {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
+          `${import.meta.env.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
           {
             method: "GET",
             headers: {

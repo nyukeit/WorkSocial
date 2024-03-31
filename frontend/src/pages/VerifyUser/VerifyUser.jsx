@@ -8,7 +8,7 @@ export default function VerifyUser() {
   const handleSubmit = async (values) => {
     const Email = values;
     const response = await fetch(
-      `${import.meta.VITE_BACKEND_URL}/verify-user`,
+      `${import.meta.env.VITE_BACKEND_URL}/verify-user`,
       {
         method: "POST",
         body: JSON.stringify(Email),
