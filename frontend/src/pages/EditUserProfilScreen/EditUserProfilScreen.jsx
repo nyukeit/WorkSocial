@@ -7,8 +7,6 @@ import Button from "react-bootstrap/Button";
 import UserBar from "../../components/UserBar/UserBar";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 
-import { hostname } from "../../HostnameConnect/Hostname";
-
 function EditUserProfilScreen() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
@@ -20,13 +18,16 @@ function EditUserProfilScreen() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${hostname}/users/${userIdLoggedIn}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorBody = await response.text();
@@ -131,7 +132,7 @@ function EditUserProfilScreen() {
     // }
     try {
       const response = await fetch(
-        `http://localhost:5000/users/${userIdLoggedIn}`,
+        `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
         {
           method: "PUT",
           headers: {
@@ -183,7 +184,9 @@ function EditUserProfilScreen() {
   if (!user) {
     return <div>Chargement...</div>;
   }
-  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
+  const imageUrl = `${import.meta.VITE_BACKEND_URL}/upload/${
+    user.ProfileImage
+  }`;
   return (
     <div className="container">
       <UserBar />

@@ -6,9 +6,9 @@ import * as Yup from "yup";
 import "./ChangePassword.css";
 import UserBar from "../../components/UserBar/UserBar";
 
-import { hostname } from "../../HostnameConnect/Hostname";
-
 function ChangePassword() {
+  // Variables
+
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const userIdLoggedIn = localStorage.getItem("userId");
@@ -16,13 +16,16 @@ function ChangePassword() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${hostname}/users/${userIdLoggedIn}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorBody = await response.text();

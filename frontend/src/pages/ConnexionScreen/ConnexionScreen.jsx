@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "./ConnexionScreen.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/useConnecte";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 function ConnexionScreen() {
+  // Variables
+
   // React States
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -18,7 +19,7 @@ function ConnexionScreen() {
     const passwordValue = pass.value;
 
     try {
-      const response = await fetch(`${hostname}/login`, {
+      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

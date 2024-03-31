@@ -64,13 +64,13 @@
 
 .chat-button {
   background-color: transparent;
-  border: 1px solid #4A4E69;
+  border: 1px solid #4a4e69;
   border-radius: 5px;
   font-size: 0.8em;
   padding: 0.3em 1em;
 }
 
 .chat-button:hover {
-  background-color: #4A4E69;
+  background-color: #4a4e69;
   color: white;
 }

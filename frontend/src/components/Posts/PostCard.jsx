@@ -14,7 +14,6 @@ import { Form as MyForm } from "react-bootstrap";
 
 // Import Utitlities
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 // Import Contexts
 import { useUser } from "../../contexts/UserContext";
@@ -22,10 +21,13 @@ import { usePost } from "../../contexts/PostContext";
 
 export default function PostCard({ post, postLikes, postComments }) {
   // Contexts
-  const { users, loading } = useUser();
+  const { users, getUsers } = useUser();
   const { getPosts, getLikes, getComments } = usePost();
 
+  // Variables
+
   // States
+  // const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -54,22 +56,15 @@ export default function PostCard({ post, postLikes, postComments }) {
   );
 
   useEffect(() => {
+    getUsers();
     getLikes();
     getComments();
   }, []);
 
-  if (!postCreator) {
-    return <div>Loading...</div>;
-  }
-
   const imageUrl = [
-    `${hostname}/upload/${post.Image}`,
-    `${hostname}/upload/${postCreator.ProfileImage}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${post.Image}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${postCreator.ProfileImage}`,
   ];
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   // Handle Modals
   const handleOpenModal = () => setShowModal(true);
@@ -100,13 +95,16 @@ export default function PostCard({ post, postLikes, postComments }) {
         formData.append("Image", Image);
       }
 
-      const response = await fetch(`${hostname}/posts/${post.Post_ID}`, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}`,
+        {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         // console.info("Post Edited");
       } else {
@@ -122,12 +120,15 @@ export default function PostCard({ post, postLikes, postComments }) {
   // Handle Post Delete
   const handleDeletePost = async () => {
     try {
-      const response = await fetch(`${hostname}/posts/${post.Post_ID}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         // console.info("Post Deleted");
       } else {
@@ -145,7 +146,7 @@ export default function PostCard({ post, postLikes, postComments }) {
     if (action === "like") {
       try {
         const response = await fetch(
-          `${hostname}/posts/${post.Post_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
           {
             method: "POST",
             headers: {
@@ -166,7 +167,7 @@ export default function PostCard({ post, postLikes, postComments }) {
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${hostname}/posts/${post.Post_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
           {
             method: "DELETE",
             headers: {
@@ -194,7 +195,7 @@ export default function PostCard({ post, postLikes, postComments }) {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${hostname}/posts/${post.Post_ID}/comments`,
+        `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/comments`,
         {
           method: "POST",
           headers: {
@@ -388,7 +389,9 @@ export default function PostCard({ post, postLikes, postComments }) {
                 {user && (
                   <div className="profileImgDiv-comments">
                     <ImageWithJWT
-                      imageUrl={`${hostname}/upload/${user.ProfileImage}`}
+                      imageUrl={`${import.meta.VITE_BACKEND_URL}/upload/${
+                        user.ProfileImage
+                      }`}
                     />
                   </div>
                 )}

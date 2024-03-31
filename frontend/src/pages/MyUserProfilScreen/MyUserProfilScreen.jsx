@@ -5,7 +5,6 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UserBar from "../../components/UserBar/UserBar";
 import "./MyUserProfilScreen.css";
-import { hostname } from "../../HostnameConnect/Hostname";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 
 function MyUserProfilScreen() {
@@ -16,13 +15,16 @@ function MyUserProfilScreen() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${hostname}/users/${userIdLoggedIn}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${import.meta.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorBody = await response.text();
@@ -51,7 +53,9 @@ function MyUserProfilScreen() {
   }
   const showModifyProfileButton = userIdLoggedIn === userId;
 
-  const imageUrl = `${hostname}/upload/${user.ProfileImage}`;
+  const imageUrl = `${import.meta.VITE_BACKEND_URL}/upload/${
+    user.ProfileImage
+  }`;
   return (
     <div className="container">
       <UserBar />

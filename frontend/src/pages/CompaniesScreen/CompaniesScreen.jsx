@@ -7,7 +7,6 @@ import CompanyCard from "../../components/Companies/CompanyCard";
 import UserBar from "../../components/UserBar/UserBar";
 
 import { useCompany } from "../../contexts/CompanyContext";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function CompaniesScreen() {
   const [showModal, setShowModal] = useState(false);
@@ -44,7 +43,7 @@ export default function CompaniesScreen() {
       formData.append("Activity", Activity);
       formData.append("Address", Address);
 
-      await fetch(`${hostname}/company`, {
+      await fetch(`${import.meta.VITE_BACKEND_URL}/company`, {
         method: "POST",
         body: formData,
         headers: {

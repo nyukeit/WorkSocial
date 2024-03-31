@@ -1,15 +1,15 @@
-// Company Card
+// Import Modules
 import PropTypes from "prop-types";
 
+// Import Components
 import Card from "react-bootstrap/Card";
 
+// Import Images
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { hostname } from "../../HostnameConnect/Hostname";
-
-// import { useCompany } from "../../contexts/CompanyContext";
 
 export default function CompanyCard({ company }) {
-  const imageUrl = `${hostname}/upload/${company.Logo}`;
+  // Variables
+  const imageUrl = `${import.meta.env.VITE_BACKEND_URL}/upload/${company.Logo}`;
 
   return (
     <div>
@@ -20,7 +20,7 @@ export default function CompanyCard({ company }) {
         <Card.Body>
           <Card.Title>{company.Name}</Card.Title>
           <Card.Text>
-            <strong>URL:</strong> {company.URL}
+            <strong>URL:</strong> {company.url}
             <br />
             <strong>Phone:</strong> {company.Phone}
             <br />
@@ -40,7 +40,7 @@ CompanyCard.propTypes = {
   company: PropTypes.shape({
     Company_ID: PropTypes.number.isRequired,
     Name: PropTypes.string.isRequired,
-    URL: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     Logo: PropTypes.string,
     Phone: PropTypes.string,
     Email: PropTypes.string,

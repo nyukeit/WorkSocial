@@ -35,8 +35,6 @@
   }
 }
 
-
-
 @media (max-width: 576px) {
   .userlist {
     grid-template-columns: 1fr; /* 1 colonne sur les petits appareils */

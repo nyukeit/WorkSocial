@@ -7,7 +7,6 @@ import PostCard from "../../components/Posts/PostCard";
 import "./PostScreen.css";
 import UserBar from "../../components/UserBar/UserBar";
 import { usePost } from "../../contexts/PostContext";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function PostScreen() {
   const { posts, getPosts, comments, getComments, likes, getLikes } = usePost();
@@ -42,7 +41,7 @@ export default function PostScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      await fetch(`${hostname}/posts`, {
+      await fetch(`${import.meta.VITE_BACKEND_URL}/posts`, {
         method: "POST",
         body: formData,
         headers: {

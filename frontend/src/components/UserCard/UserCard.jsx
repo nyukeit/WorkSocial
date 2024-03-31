@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import "./UserCard.css";
 import { useNavigate } from "react-router-dom";
 import ChatWebSocket from "../ChatPrivate/ChatWebSocket/ChatWebSocket";
-import { hostname } from "../../HostnameConnect/Hostname";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 import { useCompany } from "../../contexts/CompanyContext";
 
 function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
+  // Variables
+
   const [isChatWebSocketOpen, setIsChatWebSocketOpen] = useState(false);
   const navigate = useNavigate();
   const [isModalMinimized, setIsModalMinimized] = useState(false);
@@ -33,8 +34,8 @@ function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   };
 
   const imageUrl = [
-    `${hostname}/upload/${user.ProfileImage}`,
-    `${hostname}/upload/${userCompany.Logo}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${user.ProfileImage}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${userCompany.Logo}`,
   ];
 
   return (

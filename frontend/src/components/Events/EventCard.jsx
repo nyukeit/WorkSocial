@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 // Import Styles
 import "./EventCard.css";
+
+// Import Components
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -13,9 +15,8 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Modal from "react-bootstrap/Modal";
 import { Form as MyForm } from "react-bootstrap";
 
-// Import Utils
+// Import Images
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 // Import Contexts
 import { useUser } from "../../contexts/UserContext";
@@ -28,6 +29,8 @@ export default function EventCard({
   // eventInvites,
   // daysRemaining,
 }) {
+  // Variables
+
   // Contexts
   const { users, loading } = useUser();
   const { getEvents, getComments, getLikes } = useEvent();
@@ -100,8 +103,8 @@ export default function EventCard({
   };
 
   const imageUrl = [
-    `${hostname}/upload/${event.Image}`,
-    `${hostname}/upload/${eventCreator.ProfileImage}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${event.Image}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${eventCreator.ProfileImage}`,
   ];
 
   if (loading) {
@@ -156,13 +159,16 @@ export default function EventCard({
         formData.append("Image", Image);
       }
 
-      const response = await fetch(`${hostname}/events/${event.Event_ID}`, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}`,
+        {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         console.info("Event Edit !!");
       } else {
@@ -178,12 +184,15 @@ export default function EventCard({
   // Handle Delete
   const handleDeleteEvent = async () => {
     try {
-      const response = await fetch(`${hostname}/events/${event.Event_ID}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         // console.info("Post Deleted");
       } else {
@@ -202,7 +211,7 @@ export default function EventCard({
     e.preventDefault();
     try {
       const response = await fetch(
-        `${hostname}/events/${event.Event_ID}/comments`,
+        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/comments`,
         {
           method: "POST",
           headers: {
@@ -229,7 +238,7 @@ export default function EventCard({
     console.info(selectedUsers);
     try {
       const response = await fetch(
-        `${hostname}/events/${event.Event_ID}/invites`,
+        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
         {
           method: "POST",
           headers: {
@@ -254,7 +263,7 @@ export default function EventCard({
     if (action === "like") {
       try {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
           {
             method: "POST",
             headers: {
@@ -275,7 +284,7 @@ export default function EventCard({
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
           {
             method: "DELETE",
             headers: {
@@ -493,7 +502,9 @@ export default function EventCard({
                 {user && (
                   <div className="profileImgDiv-comments">
                     <ImageWithJWT
-                      imageUrl={`${hostname}/upload/${user.ProfileImage}`}
+                      imageUrl={`${import.meta.VITE_BACKEND_URL}/upload/${
+                        user.ProfileImage
+                      }`}
                     />
                   </div>
                 )}
