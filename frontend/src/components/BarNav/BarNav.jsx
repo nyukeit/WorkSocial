@@ -1,16 +1,33 @@
+/**
+ * Description placeholder
+ * @date 3/31/2024 - 11:26:10 AM
+ *
+ * @export
+ * @returns {*}
+ */
+
+// Import Modules
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+// Import Assets
 import Logo from "../../assets/images/logo.png";
-import { useAuth } from "../../utils/useConnecte";
-import "./BarNav.css";
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { hostname } from "../../HostnameConnect/Hostname";
+
+// Import Contexts
+import { useAuth } from "../../utils/useConnecte";
+
+// Import Components
 import DropdownMenu from "./DropdownMenu";
+import "./BarNav.css";
 
 export default function BarNav() {
+  // Contexts
   const { isLoggedIn, logout } = useAuth();
-  const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const navigate = useNavigate();
+
+  // Variables
+  const user = isLoggedIn ? JSON.parse(localStorage.getItem("user")) : null;
   const token = localStorage.getItem("userToken");
   const firstName = user ? user.FirstName : "Visiteur";
   const imageName =
@@ -18,12 +35,12 @@ export default function BarNav() {
       ? user.ProfileImage.split("\\").pop()
       : "default-profile-image.png";
   const imageUrl = user
-    ? `${hostname}/upload/${imageName}`
+    ? `${import.meta.env.VITE_BACKEND_URL}/upload/${imageName}`
     : "default-profile-image-url";
 
   const handleLogout = async () => {
     try {
-      await fetch(`${hostname}/logout`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

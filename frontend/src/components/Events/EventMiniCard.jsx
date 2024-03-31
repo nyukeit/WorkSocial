@@ -6,17 +6,17 @@ import { useNavigate } from "react-router-dom";
 // Import Styles
 import "./EventMiniCard.css";
 import Card from "react-bootstrap/Card";
-// import Button from "react-bootstrap/Button";
 
 import { useUser } from "../../contexts/UserContext";
 
 // Import Utils
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function EventMiniCard({ event, daysRemaining }) {
   // Contexts
   const { users } = useUser();
+
+  // Variables
 
   // Mapping Creators
   const eventCreator = users.find((user) => user.User_ID === event.User_ID);
@@ -31,7 +31,7 @@ export default function EventMiniCard({ event, daysRemaining }) {
     navigate(`/events/${event.Event_ID}`);
   };
 
-  const imageUrl = `${hostname}/upload/${event.Image}`;
+  const imageUrl = `${import.meta.VITE_BACKEND_URL}/upload/${event.Image}`;
 
   return (
     <Card className="clickable" onClick={handleCardClick}>

@@ -1,6 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { hostname } from "../HostnameConnect/Hostname";
 
 const SurveyContext = createContext(null);
 
@@ -9,6 +8,8 @@ export function useSurvey() {
 }
 
 export function SurveyProvider({ children }) {
+  // Variables
+
   const [surveys, setSurveys] = useState([]);
   const [votes, setVotes] = useState([]);
   const [comments, setComments] = useState([]);
@@ -17,7 +18,7 @@ export function SurveyProvider({ children }) {
 
   const getSurveys = async () => {
     try {
-      const response = await fetch(`${hostname}/surveys`, {
+      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/surveys`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,7 +36,7 @@ export function SurveyProvider({ children }) {
     try {
       const voteRequests = surveys.map(async (survey) => {
         const response = await fetch(
-          `${hostname}/surveys/${survey.Survey_ID}/votes`,
+          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/votes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -60,7 +61,9 @@ export function SurveyProvider({ children }) {
     try {
       const commentRequests = surveys.map(async (survey) => {
         const response = await fetch(
-          `${hostname}/surveys/${survey.Survey_ID}/comments`,
+          `${import.meta.VITE_BACKEND_URL}/surveys/${
+            survey.Survey_ID
+          }/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -85,7 +88,7 @@ export function SurveyProvider({ children }) {
     try {
       const likeRequests = surveys.map(async (survey) => {
         const response = await fetch(
-          `${hostname}/surveys/${survey.Survey_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

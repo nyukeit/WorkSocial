@@ -10,7 +10,6 @@ import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { Form as MyForm } from "react-bootstrap";
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { hostname } from "../../HostnameConnect/Hostname";
 import { useUser } from "../../contexts/UserContext";
 import { useSurvey } from "../../contexts/SurveyContext";
 
@@ -20,6 +19,8 @@ export default function SurveyCard({
   surveyLikes,
   surveyComments,
 }) {
+  // Variables
+
   const { users, loading } = useUser();
   const { getSurveys, getVotes, getComments, getLikes } = useSurvey();
   const [showModal, setShowModal] = useState(false);
@@ -68,8 +69,8 @@ export default function SurveyCard({
   }
 
   const imageUrl = [
-    `${hostname}/upload/${survey.Image}`,
-    `${hostname}/upload/${surveyCreator.ProfileImage}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${survey.Image}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${surveyCreator.ProfileImage}`,
   ];
 
   // Handle Modals
@@ -119,7 +120,7 @@ export default function SurveyCard({
     if (action === "like") {
       try {
         const response = await fetch(
-          `${hostname}/surveys/${survey.Survey_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/likes`,
           {
             method: "POST",
             headers: {
@@ -140,7 +141,7 @@ export default function SurveyCard({
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${hostname}/surveys/${survey.Survey_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/likes`,
           {
             method: "DELETE",
             headers: {
@@ -169,7 +170,7 @@ export default function SurveyCard({
     e.preventDefault();
     try {
       const response = await fetch(
-        `${hostname}/surveys/${survey.Survey_ID}/comments`,
+        `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/comments`,
         {
           method: "POST",
           headers: {
@@ -201,7 +202,7 @@ export default function SurveyCard({
     if (votedOption) {
       try {
         const response = await fetch(
-          `${hostname}/surveys/${survey.Survey_ID}/votes`,
+          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/votes`,
           {
             method: "POST",
             headers: {
@@ -267,13 +268,16 @@ export default function SurveyCard({
         formData.append("Image", Image);
       }
       console.info(formData);
-      const response = await fetch(`${hostname}/surveys/${survey.Survey_ID}`, {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}`,
+        {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         console.info("Survey Edited");
       } else {
@@ -289,12 +293,15 @@ export default function SurveyCard({
   // Handle Delete Survey
   const handleDeleteSurvey = async () => {
     try {
-      const response = await fetch(`${hostname}/surveys/${survey.Survey_ID}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         console.info("Survey Deleted");
       } else {
@@ -578,7 +585,9 @@ export default function SurveyCard({
                 {user && (
                   <div className="profileImgDiv-comments">
                     <ImageWithJWT
-                      imageUrl={`${hostname}/upload/${user.ProfileImage}`}
+                      imageUrl={`${import.meta.VITE_BACKEND_URL}/upload/${
+                        user.ProfileImage
+                      }`}
                     />
                   </div>
                 )}

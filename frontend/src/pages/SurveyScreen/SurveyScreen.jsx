@@ -5,7 +5,6 @@ import UserBar from "../../components/UserBar/UserBar";
 import SurveyCard from "../../components/Surveys/SurveyCard";
 import "./SurveyScreen.css";
 import { useSurvey } from "../../contexts/SurveyContext";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 export default function SurveyScreen() {
   const {
@@ -68,7 +67,7 @@ export default function SurveyScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      const response = await fetch(`${hostname}/surveys`, {
+      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/surveys`, {
         method: "POST",
         body: formData,
         headers: {

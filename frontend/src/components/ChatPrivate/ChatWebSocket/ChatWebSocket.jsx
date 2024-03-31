@@ -51,16 +51,16 @@ function ChatWebSocket({
 
   // Charger les messages historiques
   useEffect(() => {
-    // Remplacer cette URL par l'URL de votre API pour charger les messages
-    const url = `http://localhost:5000/individualchats/user/${userIdSend}`;
-
-    fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/individualchats/user/${userIdSend}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
       .then((response) => {
         console.info("Réponse du serveur:", response);
         if (!response.ok) {

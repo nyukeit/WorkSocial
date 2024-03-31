@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useEvent } from "../../contexts/EventContext";
 import UserBar from "../../components/UserBar/UserBar";
-import { hostname } from "../../HostnameConnect/Hostname";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 import { useUser } from "../../contexts/UserContext";
 import EventMap from "../../components/EventMap/EventMap";
@@ -31,8 +30,8 @@ export default function EventPage() {
 
   // Event Image URL
   const ImageUrl = [
-    `${hostname}/upload/${event.Image}`,
-    `${hostname}/upload/${eventCreator.ProfileImage}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${event.Image}`,
+    `${import.meta.VITE_BACKEND_URL}/upload/${eventCreator.ProfileImage}`,
   ];
 
   // Date Formatting Options

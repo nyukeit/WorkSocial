@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { hostname } from "../../HostnameConnect/Hostname";
 
 import "./InscriptionScreen.css";
 
 const fetchCompanies = async () => {
   try {
-    const response = await fetch(`${hostname}/companies`);
+    const response = await fetch(`${import.meta.VITE_BACKEND_URL}/companies`);
     if (response.ok) {
       const data = await response.json();
       return data;

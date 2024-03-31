@@ -1,7 +1,6 @@
 // Provider
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { hostname } from "../HostnameConnect/Hostname";
 
 const EventContext = createContext(null);
 
@@ -10,6 +9,8 @@ export function useEvent() {
 }
 
 export function EventProvider({ children }) {
+  // Variables
+
   const [events, setEvents] = useState([]);
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -18,7 +19,7 @@ export function EventProvider({ children }) {
 
   const getEvents = async () => {
     try {
-      const response = await fetch(`${hostname}/events`, {
+      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/events`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,7 +39,7 @@ export function EventProvider({ children }) {
     try {
       const commentRequests = events.map(async (event) => {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/comments`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ export function EventProvider({ children }) {
     try {
       const likeRequests = events.map(async (event) => {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -88,7 +89,7 @@ export function EventProvider({ children }) {
     try {
       const inviteRequests = events.map(async (event) => {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/invites`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
