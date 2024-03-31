@@ -69,8 +69,8 @@ export default function SurveyCard({
   }
 
   const imageUrl = [
-    `${import.meta.VITE_BACKEND_URL}/upload/${survey.Image}`,
-    `${import.meta.VITE_BACKEND_URL}/upload/${surveyCreator.ProfileImage}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${survey.Image}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${surveyCreator.ProfileImage}`,
   ];
 
   // Handle Modals
@@ -120,7 +120,9 @@ export default function SurveyCard({
     if (action === "like") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/surveys/${
+            survey.Survey_ID
+          }/likes`,
           {
             method: "POST",
             headers: {
@@ -141,7 +143,9 @@ export default function SurveyCard({
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/surveys/${
+            survey.Survey_ID
+          }/likes`,
           {
             method: "DELETE",
             headers: {
@@ -170,7 +174,9 @@ export default function SurveyCard({
     e.preventDefault();
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/comments`,
+        `${import.meta.env.VITE_BACKEND_URL}/surveys/${
+          survey.Survey_ID
+        }/comments`,
         {
           method: "POST",
           headers: {
@@ -202,7 +208,9 @@ export default function SurveyCard({
     if (votedOption) {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/votes`,
+          `${import.meta.env.VITE_BACKEND_URL}/surveys/${
+            survey.Survey_ID
+          }/votes`,
           {
             method: "POST",
             headers: {
@@ -269,7 +277,7 @@ export default function SurveyCard({
       }
       console.info(formData);
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}`,
         {
           method: "PUT",
           body: formData,
@@ -294,7 +302,7 @@ export default function SurveyCard({
   const handleDeleteSurvey = async () => {
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}`,
         {
           method: "DELETE",
           headers: {
@@ -585,7 +593,7 @@ export default function SurveyCard({
                 {user && (
                   <div className="profileImgDiv-comments">
                     <ImageWithJWT
-                      imageUrl={`${import.meta.VITE_BACKEND_URL}/upload/${
+                      imageUrl={`${import.meta.env.VITE_BACKEND_URL}/upload/${
                         user.ProfileImage
                       }`}
                     />

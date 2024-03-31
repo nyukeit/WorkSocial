@@ -34,7 +34,9 @@ export default function InviteCard({ event, inviteStatus }) {
     if (action === "Accept") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${
+            event.Event_ID
+          }/invites`,
           {
             method: "PUT",
             headers: {
@@ -55,7 +57,9 @@ export default function InviteCard({ event, inviteStatus }) {
     } else if (action === "Decline") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${
+            event.Event_ID
+          }/invites`,
           {
             method: "PUT",
             headers: {

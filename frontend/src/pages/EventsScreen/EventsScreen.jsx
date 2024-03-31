@@ -67,7 +67,7 @@ export default function EventScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      await fetch(`${import.meta.VITE_BACKEND_URL}/events`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/events`, {
         method: "POST",
         body: formData,
         headers: {

@@ -62,8 +62,8 @@ export default function PostCard({ post, postLikes, postComments }) {
   }, []);
 
   const imageUrl = [
-    `${import.meta.VITE_BACKEND_URL}/upload/${post.Image}`,
-    `${import.meta.VITE_BACKEND_URL}/upload/${postCreator.ProfileImage}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${post.Image}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${postCreator.ProfileImage}`,
   ];
 
   // Handle Modals
@@ -96,7 +96,7 @@ export default function PostCard({ post, postLikes, postComments }) {
       }
 
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}`,
         {
           method: "PUT",
           body: formData,
@@ -121,7 +121,7 @@ export default function PostCard({ post, postLikes, postComments }) {
   const handleDeletePost = async () => {
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}`,
         {
           method: "DELETE",
           headers: {
@@ -146,7 +146,7 @@ export default function PostCard({ post, postLikes, postComments }) {
     if (action === "like") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
           {
             method: "POST",
             headers: {
@@ -167,7 +167,7 @@ export default function PostCard({ post, postLikes, postComments }) {
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
           {
             method: "DELETE",
             headers: {
@@ -195,7 +195,7 @@ export default function PostCard({ post, postLikes, postComments }) {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/comments`,
+        `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}/comments`,
         {
           method: "POST",
           headers: {
@@ -389,7 +389,7 @@ export default function PostCard({ post, postLikes, postComments }) {
                 {user && (
                   <div className="profileImgDiv-comments">
                     <ImageWithJWT
-                      imageUrl={`${import.meta.VITE_BACKEND_URL}/upload/${
+                      imageUrl={`${import.meta.env.VITE_BACKEND_URL}/upload/${
                         user.ProfileImage
                       }`}
                     />

@@ -30,8 +30,8 @@ export default function EventPage() {
 
   // Event Image URL
   const ImageUrl = [
-    `${import.meta.VITE_BACKEND_URL}/upload/${event.Image}`,
-    `${import.meta.VITE_BACKEND_URL}/upload/${eventCreator.ProfileImage}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${event.Image}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${eventCreator.ProfileImage}`,
   ];
 
   // Date Formatting Options

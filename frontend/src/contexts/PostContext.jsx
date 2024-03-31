@@ -18,7 +18,7 @@ export function PostProvider({ children }) {
 
   const getPosts = async () => {
     try {
-      await fetch(`${import.meta.VITE_BACKEND_URL}/posts`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +32,7 @@ export function PostProvider({ children }) {
     try {
       const commentRequests = posts.map(async (post) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/comments`,
+          `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ export function PostProvider({ children }) {
     try {
       const likeRequests = posts.map(async (post) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

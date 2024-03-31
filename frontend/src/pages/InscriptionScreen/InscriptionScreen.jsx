@@ -7,7 +7,9 @@ import "./InscriptionScreen.css";
 
 const fetchCompanies = async () => {
   try {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URL}/companies`);
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/companies`
+    );
     if (response.ok) {
       const data = await response.json();
       return data;

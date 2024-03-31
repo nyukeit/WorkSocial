@@ -18,11 +18,14 @@ export function SurveyProvider({ children }) {
 
   const getSurveys = async () => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/surveys`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/surveys`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setSurveys(data);
@@ -36,7 +39,9 @@ export function SurveyProvider({ children }) {
     try {
       const voteRequests = surveys.map(async (survey) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/votes`,
+          `${import.meta.env.VITE_BACKEND_URL}/surveys/${
+            survey.Survey_ID
+          }/votes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,7 +66,7 @@ export function SurveyProvider({ children }) {
     try {
       const commentRequests = surveys.map(async (survey) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/surveys/${
+          `${import.meta.env.VITE_BACKEND_URL}/surveys/${
             survey.Survey_ID
           }/comments`,
           {
@@ -88,7 +93,9 @@ export function SurveyProvider({ children }) {
     try {
       const likeRequests = surveys.map(async (survey) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/surveys/${survey.Survey_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/surveys/${
+            survey.Survey_ID
+          }/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

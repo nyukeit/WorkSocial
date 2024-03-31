@@ -19,11 +19,14 @@ export function EventProvider({ children }) {
 
   const getEvents = async () => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/events`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/events`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setEvents(data);
@@ -39,7 +42,9 @@ export function EventProvider({ children }) {
     try {
       const commentRequests = events.map(async (event) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/comments`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${
+            event.Event_ID
+          }/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -64,7 +69,7 @@ export function EventProvider({ children }) {
     try {
       const likeRequests = events.map(async (event) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -89,7 +94,9 @@ export function EventProvider({ children }) {
     try {
       const inviteRequests = events.map(async (event) => {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${
+            event.Event_ID
+          }/invites`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
