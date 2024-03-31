@@ -19,16 +19,19 @@ function ConnexionScreen() {
     const passwordValue = pass.value;
 
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Email: emailValue,
-          Password: passwordValue,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Email: emailValue,
+            Password: passwordValue,
+          }),
+        }
+      );
 
       const data = await response.json();
 

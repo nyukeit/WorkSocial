@@ -46,7 +46,7 @@
 //       if (Image && Image instanceof File) {
 //         formData.append("Image", Image);
 //       }
-//       await fetch(`${import.meta.VITE_BACKEND_URL}/posts`, {
+//       await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts`, {
 //         method: "POST",
 //         body: formData,
 //         headers: {

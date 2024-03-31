@@ -103,8 +103,8 @@ export default function EventCard({
   };
 
   const imageUrl = [
-    `${import.meta.VITE_BACKEND_URL}/upload/${event.Image}`,
-    `${import.meta.VITE_BACKEND_URL}/upload/${eventCreator.ProfileImage}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${event.Image}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${eventCreator.ProfileImage}`,
   ];
 
   if (loading) {
@@ -160,7 +160,7 @@ export default function EventCard({
       }
 
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}`,
         {
           method: "PUT",
           body: formData,
@@ -185,7 +185,7 @@ export default function EventCard({
   const handleDeleteEvent = async () => {
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}`,
+        `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}`,
         {
           method: "DELETE",
           headers: {
@@ -211,7 +211,7 @@ export default function EventCard({
     e.preventDefault();
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/comments`,
+        `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}/comments`,
         {
           method: "POST",
           headers: {
@@ -238,7 +238,7 @@ export default function EventCard({
     console.info(selectedUsers);
     try {
       const response = await fetch(
-        `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
+        `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
         {
           method: "POST",
           headers: {
@@ -263,7 +263,7 @@ export default function EventCard({
     if (action === "like") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
           {
             method: "POST",
             headers: {
@@ -284,7 +284,7 @@ export default function EventCard({
     } else if (action === "unlike") {
       try {
         const response = await fetch(
-          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
+          `${import.meta.env.VITE_BACKEND_URL}/events/${event.Event_ID}/likes`,
           {
             method: "DELETE",
             headers: {
@@ -502,7 +502,7 @@ export default function EventCard({
                 {user && (
                   <div className="profileImgDiv-comments">
                     <ImageWithJWT
-                      imageUrl={`${import.meta.VITE_BACKEND_URL}/upload/${
+                      imageUrl={`${import.meta.env.VITE_BACKEND_URL}/upload/${
                         user.ProfileImage
                       }`}
                     />
