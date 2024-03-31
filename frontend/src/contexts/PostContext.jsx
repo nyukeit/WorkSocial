@@ -1,7 +1,6 @@
 // PostProvider
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { hostname } from "../HostnameConnect/Hostname";
 
 const PostContext = createContext(null);
 
@@ -10,6 +9,8 @@ export function usePost() {
 }
 
 export function PostProvider({ children }) {
+  // Variables
+
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -17,7 +18,7 @@ export function PostProvider({ children }) {
 
   const getPosts = async () => {
     try {
-      await fetch(`${hostname}/posts`, {
+      await fetch(`${import.meta.VITE_BACKEND_URL}/posts`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,7 +32,7 @@ export function PostProvider({ children }) {
     try {
       const commentRequests = posts.map(async (post) => {
         const response = await fetch(
-          `${hostname}/posts/${post.Post_ID}/comments`,
+          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/comments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -56,7 +57,7 @@ export function PostProvider({ children }) {
     try {
       const likeRequests = posts.map(async (post) => {
         const response = await fetch(
-          `${hostname}/posts/${post.Post_ID}/likes`,
+          `${import.meta.VITE_BACKEND_URL}/posts/${post.Post_ID}/likes`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

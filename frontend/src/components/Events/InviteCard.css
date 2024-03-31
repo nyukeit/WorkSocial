@@ -27,17 +27,16 @@
   align-items: center;
 }
 
-
 #numeric-day {
   font-size: 1.4em;
   font-weight: bold;
-  color: #4A4E69;
+  color: #4a4e69;
   line-height: 0.7;
 }
 
 #month {
   line-height: 1;
-  color: #4A4E69;
+  color: #4a4e69;
 }
 
 #event-title {
@@ -57,7 +56,7 @@
 }
 
 .invite-action-btn:hover {
-  background-color: #4A4E69;
+  background-color: #4a4e69;
   color: white;
 }
 
