@@ -7,11 +7,14 @@ import PostCard from "../../components/Posts/PostCard";
 import "./PostScreen.css";
 import UserBar from "../../components/UserBar/UserBar";
 import { usePost } from "../../contexts/PostContext";
+import { useUser } from "../../contexts/UserContext";
 
 export default function PostScreen() {
+  const { users, getUsers } = useUser();
   const { posts, getPosts, comments, getComments, likes, getLikes } = usePost();
 
   useEffect(() => {
+    getUsers();
     getPosts();
     getComments();
     getLikes();
@@ -64,6 +67,9 @@ export default function PostScreen() {
       <UserBar />
       <div className="content-area">
         {posts.map((post) => {
+          const postCreator = users.find(
+            (user) => user.User_ID === post.User_ID
+          );
           const postLikes = likes.filter(
             (like) => like.Post_ID === post.Post_ID
           );
@@ -74,6 +80,7 @@ export default function PostScreen() {
             <PostCard
               key={post.Post_ID}
               post={post}
+              postCreator={postCreator}
               postLikes={postLikes}
               postComments={postComments}
             />

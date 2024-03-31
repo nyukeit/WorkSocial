@@ -19,7 +19,12 @@ import ImageWithJWT from "../../utils/ImageWithJWT";
 import { useUser } from "../../contexts/UserContext";
 import { usePost } from "../../contexts/PostContext";
 
-export default function PostCard({ post, postLikes, postComments }) {
+export default function PostCard({
+  post,
+  postCreator,
+  postLikes,
+  postComments,
+}) {
   // Contexts
   const { users, getUsers } = useUser();
   const { getPosts, getLikes, getComments } = usePost();
@@ -38,7 +43,7 @@ export default function PostCard({ post, postLikes, postComments }) {
   const token = localStorage.getItem("userToken");
 
   // Mapping Creators
-  const postCreator = users.find((user) => user.User_ID === post.User_ID);
+  // const postCreator = users.find((user) => user.User_ID === post.User_ID);
 
   const commentUserPairs = postComments.map((cmt) => {
     const commentCreator = users.find(
@@ -62,8 +67,8 @@ export default function PostCard({ post, postLikes, postComments }) {
   }, []);
 
   const imageUrl = [
-    `${import.meta.env.VITE_BACKEND_URL}/upload/${post.Image}`,
-    `${import.meta.env.VITE_BACKEND_URL}/upload/${postCreator.ProfileImage}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${post?.Image}`,
+    `${import.meta.env.VITE_BACKEND_URL}/upload/${postCreator?.ProfileImage}`,
   ];
 
   // Handle Modals
@@ -432,6 +437,11 @@ PostCard.propTypes = {
     Image: PropTypes.string,
     Post_ID: PropTypes.number.isRequired,
     Visibility: PropTypes.string.isRequired,
+    User_ID: PropTypes.number.isRequired,
+  }).isRequired,
+  postCreator: PropTypes.shape({
+    Username: PropTypes.string.isRequired,
+    ProfileImage: PropTypes.string,
     User_ID: PropTypes.number.isRequired,
   }).isRequired,
   postLikes: PropTypes.arrayOf(
