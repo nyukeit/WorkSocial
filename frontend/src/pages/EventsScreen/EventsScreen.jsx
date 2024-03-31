@@ -4,7 +4,6 @@ import { Button } from "react-bootstrap";
 import EventCard from "../../components/Events/EventCard";
 import UserBar from "../../components/UserBar/UserBar";
 import { useEvent } from "../../contexts/EventContext";
-import { hostname } from "../../HostnameConnect/Hostname";
 import "./EventsScreen.css";
 
 export default function EventScreen() {
@@ -68,7 +67,7 @@ export default function EventScreen() {
       if (Image && Image instanceof File) {
         formData.append("Image", Image);
       }
-      await fetch(`${hostname}/events`, {
+      await fetch(`${import.meta.VITE_BACKEND_URL}/events`, {
         method: "POST",
         body: formData,
         headers: {

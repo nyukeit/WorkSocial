@@ -2,20 +2,21 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Formik, Form, Field } from "formik";
 
-import { hostname } from "../../HostnameConnect/Hostname";
-
 export default function VerifyUser() {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   const handleSubmit = async (values) => {
     const Email = values;
-    const response = await fetch(`${hostname}/verify-user`, {
-      method: "POST",
-      body: JSON.stringify(Email),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.VITE_BACKEND_URL}/verify-user`,
+      {
+        method: "POST",
+        body: JSON.stringify(Email),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.ok) {
       setEmailSubmitted(true);
     }

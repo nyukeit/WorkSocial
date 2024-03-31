@@ -4,8 +4,6 @@ import { Formik, Form, Field } from "formik";
 import { useParams, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
-import { hostname } from "../../HostnameConnect/Hostname";
-
 export default function ResetPassword() {
   const navigate = useNavigate();
   const { key } = useParams();
@@ -13,7 +11,7 @@ export default function ResetPassword() {
   const userLoggedIn = localStorage.getItem("userId");
 
   const verifyKey = async () => {
-    const response = await fetch(`${hostname}/verify-key`, {
+    const response = await fetch(`${import.meta.VITE_BACKEND_URL}/verify-key`, {
       method: "POST",
       body: JSON.stringify({ key }),
       headers: {
@@ -47,13 +45,16 @@ export default function ResetPassword() {
 
   const handlePasswordSubmit = async (values) => {
     const { Password } = values;
-    const response = await fetch(`${hostname}/reset-password`, {
-      method: "POST",
-      body: JSON.stringify({ Password, key }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${import.meta.VITE_BACKEND_URL}/reset-password`,
+      {
+        method: "POST",
+        body: JSON.stringify({ Password, key }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.ok) {
       navigate("/connexion");
     }

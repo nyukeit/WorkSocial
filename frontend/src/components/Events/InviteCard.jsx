@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import { useEvent } from "../../contexts/EventContext";
-import { hostname } from "../../HostnameConnect/Hostname";
 import "./InviteCard.css";
 
 export default function InviteCard({ event, inviteStatus }) {
   const { getInvites } = useEvent();
   const { users } = useUser();
+
   const userId = parseInt(localStorage.getItem("userId"), 10);
   const token = localStorage.getItem("userToken");
   const options = {
@@ -34,7 +34,7 @@ export default function InviteCard({ event, inviteStatus }) {
     if (action === "Accept") {
       try {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/invites`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
           {
             method: "PUT",
             headers: {
@@ -55,7 +55,7 @@ export default function InviteCard({ event, inviteStatus }) {
     } else if (action === "Decline") {
       try {
         const response = await fetch(
-          `${hostname}/events/${event.Event_ID}/invites`,
+          `${import.meta.VITE_BACKEND_URL}/events/${event.Event_ID}/invites`,
           {
             method: "PUT",
             headers: {

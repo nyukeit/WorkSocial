@@ -1,7 +1,6 @@
 // CompanyProvider
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { hostname } from "../HostnameConnect/Hostname";
 
 const CompanyContext = createContext(null);
 
@@ -10,17 +9,18 @@ export function useCompany() {
 }
 
 export function CompanyProvider({ children }) {
+  // Variables
+
   const [companies, setCompanies] = useState([]);
 
   const getCompanies = async () => {
     try {
-      await fetch(`${hostname}/companies`, {
+      await fetch(`${import.meta.VITE_BACKEND_URL}/companies`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       }).then((res) => res.json().then((data) => setCompanies(data)));
-      console.info(companies);
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
