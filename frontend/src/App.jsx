@@ -21,7 +21,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import VerifyUser from "./pages/VerifyUser/VerifyUser";
 
 // Import des Contexts
-import { AuthProvider } from "./utils/useConnecte";
+import { AuthProvider } from "./contexts/AuthContext";
 import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
 import { SurveyProvider } from "./contexts/SurveyContext";

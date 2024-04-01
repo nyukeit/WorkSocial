@@ -15,7 +15,7 @@ import Logo from "../../assets/images/logo.png";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 
 // Import Contexts
-import { useAuth } from "../../utils/useConnecte";
+import { useAuth } from "../../contexts/AuthContext";
 
 // Import Components
 import DropdownMenu from "./DropdownMenu";

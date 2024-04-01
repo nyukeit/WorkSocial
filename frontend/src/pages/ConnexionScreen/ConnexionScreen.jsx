@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ConnexionScreen.css";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../utils/useConnecte";
+import { useAuth } from "../../contexts/AuthContext";
 
 function ConnexionScreen() {
   // Variables
