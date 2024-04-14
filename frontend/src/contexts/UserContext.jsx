@@ -11,9 +11,11 @@ export function UserProvider({ children }) {
   // Variables
 
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("userToken");
 
   const getUsers = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/users`,
@@ -26,14 +28,14 @@ export function UserProvider({ children }) {
       if (response.ok) {
         const data = await response.json();
         setUsers(data);
-        console.info(data);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Erreur lors de la requête:", error);
     }
   };
 
-  const value = useMemo(() => ({ users, getUsers }), [users]);
+  const value = useMemo(() => ({ users, getUsers, loading }), [users, loading]);
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
