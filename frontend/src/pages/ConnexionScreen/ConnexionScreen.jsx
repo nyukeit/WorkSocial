@@ -65,7 +65,7 @@ function ConnexionScreen() {
     <div className="form-container">
       <form onSubmit={handleSubmit} className="connexion-form">
         <div className="form-group">
-          <label htmlFor="mail">eMail</label>
+          <label htmlFor="mail">Email</label>
           <input type="email" id="mail" name="mail" required />
           {renderErrorMessage("mail")}
         </div>
@@ -84,6 +84,9 @@ function ConnexionScreen() {
 
   return (
     <div className="connexion-screen">
+      <h4>Demo Compte</h4>
+      <p>Email : meme@me.me</p>
+      <p>Mot de passe : helloworld123</p>
       {isSubmitted ? (
         <div className="success-message">Connexion réussie !!</div>
       ) : (

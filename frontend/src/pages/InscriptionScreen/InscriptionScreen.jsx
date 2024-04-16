@@ -22,7 +22,7 @@ const fetchCompanies = async () => {
 };
 function InscriptionScreen() {
   const navigate = useNavigate();
-  const [usernameError, setUsernameError] = useState("");
+  // const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [companies, setCompanies] = useState([]);
 
@@ -36,27 +36,27 @@ function InscriptionScreen() {
     fetchData();
   }, []);
   const initialValues = {
-    username: "",
+    // username: "",
     lastName: "",
     firstName: "",
     birthDate: "",
-    address: "",
+    // address: "",
     email: "",
     password: "",
     passwordConfirmation: "",
     gender: "",
-    phone: "",
+    // phone: "",
     biography: "",
     ProfileImage: null,
     company: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Pseudo requis"),
+    // username: Yup.string().required("Pseudo requis"),
     lastName: Yup.string().required("Nom requis"),
     firstName: Yup.string().required("Prénom requis"),
     birthDate: Yup.date().required("Date de naissance requise"),
-    address: Yup.string().required("Adresse requise"),
+    // address: Yup.string().required("Adresse requise"),
     email: Yup.string().email("Email invalide").required("Email requis"),
     password: Yup.string()
       .min(6, "Le mot de passe doit avoir au moins 6 caractères")
@@ -68,7 +68,7 @@ function InscriptionScreen() {
       )
       .required("La confirmation du mot de passe est requise"),
     gender: Yup.string().required("Genre requis"),
-    phone: Yup.string().required("Téléphone requis"),
+    // phone: Yup.string().required("Téléphone requis"),
     biography: Yup.string().required("Biographie requise"),
     ProfileImage: Yup.mixed().required("Image requise"),
   });
@@ -87,17 +87,17 @@ function InscriptionScreen() {
 
   const handleSubmit = async (values) => {
     const {
-      username,
+      // username,
       lastName,
       firstName,
       birthDate,
-      address,
+      // address,
       email,
       password,
       gender,
       ProfileImage,
       biography,
-      phone,
+      // phone,
       company,
     } = values;
 
@@ -110,17 +110,17 @@ function InscriptionScreen() {
     }
 
     const formData = new FormData();
-    formData.append("Username", username);
+    // formData.append("Username", username);
     formData.append("LastName", lastName);
     formData.append("FirstName", firstName);
     formData.append("BirthDate", birthDate);
     formData.append("Age", age.toString());
-    formData.append("Address", address);
+    // formData.append("Address", address);
     formData.append("Email", email);
     formData.append("Password", password);
     formData.append("Role", "User");
     formData.append("Gender", gender);
-    formData.append("Phone", phone);
+    // formData.append("Phone", phone);
     formData.append("Biography", biography);
     formData.append("Company_Id", company);
 
@@ -150,11 +150,11 @@ function InscriptionScreen() {
           // Handle JSON response
           const data = await response.json();
           if (response.status === 409) {
-            if (data.error.includes("nom d'utilisateur")) {
-              setUsernameError(
-                "Ce pseudo est déjà utilisé. Veuillez choisir un autre pseudo."
-              );
-            }
+            // if (data.error.includes("nom d'utilisateur")) {
+            //   setUsernameError(
+            //     "Ce pseudo est déjà utilisé. Veuillez choisir un autre pseudo."
+            //   );
+            // }
             if (data.error.includes("email")) {
               setEmailError(
                 "Cet email est déjà utilisé. Veuillez choisir un autre email."
@@ -190,14 +190,14 @@ function InscriptionScreen() {
         ) => (
           <Form>
             <h2>Inscription</h2>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="username">Pseudo</label>
               <Field name="username" type="text" />
               <ErrorMessage name="username" component="div" className="error" />
               {usernameError && (
                 <div className="error-message">{usernameError}</div>
               )}
-            </div>
+            </div> */}
             <div className="form-group">
               <label htmlFor="lastName">Nom</label>
               <Field name="lastName" type="text" />
@@ -221,22 +221,22 @@ function InscriptionScreen() {
                 className="error"
               />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="address">Adresse</label>
               <Field name="address" type="text" />
               <ErrorMessage name="address" component="div" className="error" />
-            </div>
+            </div> */}
             <div className="form-group">
               <label htmlFor="email">E-mail</label>
               <Field name="email" type="email" />
               <ErrorMessage name="email" component="div" className="error" />
               {emailError && <div className="error-message">{emailError}</div>}
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label htmlFor="phone">Téléphone</label>
               <Field name="phone" type="text" />
               <ErrorMessage name="phone" component="div" className="error" />
-            </div>
+            </div> */}
             <div className="form-group">
               <label htmlFor="password">Mot de Passe</label>
               <Field name="password" type="password" />
@@ -302,86 +302,6 @@ function InscriptionScreen() {
                 ))}
               </select>
             </div>
-            {/* <button
-              type="button"
-              onClick={() => setFieldValue("showCompanyForm", true)}
-              id="signup-btn"
-            >
-              Ajouter une société
-            </button> */}
-
-            {/* Formulaire pour ajouter une société */}
-            {/* {values.showCompanyForm && (
-              <div>
-                <div className="form-group">
-                  <label htmlFor="companyName">Nom de la société</label>
-                  <Field name="companyName" type="text" />
-                  <ErrorMessage
-                    name="companyName"
-                    component="div"
-                    className="error"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="companyURL">URL de la société</label>
-                  <Field name="companyURL" type="text" />
-                  <ErrorMessage
-                    name="companyURL"
-                    component="div"
-                    className="error"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="companyLogo">Logo de la société</label>
-                  <input
-                    id="companyLogo"
-                    name="companyLogo"
-                    type="file"
-                    onChange={(event) =>
-                      setFieldValue("companyLogo", event.currentTarget.files[0])
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="companyPhone">Téléphone de la société</label>
-                  <Field name="companyPhone" type="text" />
-                  <ErrorMessage
-                    name="companyPhone"
-                    component="div"
-                    className="error"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="companyEmail">E-mail de la société</label>
-                  <Field name="companyEmail" type="email" />
-                  <ErrorMessage
-                    name="companyEmail"
-                    component="div"
-                    className="error"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="companyActivity">
-                    Activité de la société
-                  </label>
-                  <Field name="companyActivity" as="textarea" />
-                  <ErrorMessage
-                    name="companyActivity"
-                    component="div"
-                    className="error"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="companyAddress">Adresse de la société</label>
-                  <Field name="companyAddress" as="textarea" />
-                  <ErrorMessage
-                    name="companyAddress"
-                    component="div"
-                    className="error"
-                  />
-                </div>
-              </div>
-            )} */}
             <button type="submit" id="signup-btn">
               S'inscrire
             </button>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Calendar from "react-calendar";
+import React, { useEffect } from "react";
+// import Calendar from "react-calendar";
 import "./Dashboard.css";
 import UserBar from "../../components/UserBar/UserBar";
 import EventMiniCard from "../../components/Events/EventMiniCard";
@@ -7,11 +7,11 @@ import InviteCard from "../../components/Events/InviteCard";
 import { useEvent } from "../../contexts/EventContext";
 
 export default function Dashboard() {
-  const [value, setValue] = useState(new Date());
+  // const [value, setValue] = useState(new Date());
   const currentUserID = parseInt(localStorage.getItem("userId"), 10);
-  const onChange = () => {
-    setValue(value);
-  };
+  // const onChange = () => {
+  //   setValue(value);
+  // };
 
   const { events, getEvents, invites, getInvites } = useEvent();
   const userIsInvited = invites
@@ -80,9 +80,9 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="sidebar">
-        <div className="sidebar-item">
+        {/* <div className="sidebar-item">
           <Calendar onChange={onChange} value={value} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

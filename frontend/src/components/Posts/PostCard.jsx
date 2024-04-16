@@ -231,7 +231,7 @@ export default function PostCard({
             <div className="profileImgDiv">
               <ImageWithJWT className="pcProfileImg" imageUrl={imageUrl[1]} />
             </div>
-            <span className="username">{postCreator.Username}</span>
+            <span className="username">{postCreator?.Username}</span>
           </div>
           {parseInt(currentUserID, 10) === parseInt(postCreator.User_ID, 10) ? (
             <DropdownButton id="context-menu-btn">
