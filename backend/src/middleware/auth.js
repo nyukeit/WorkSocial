@@ -13,6 +13,7 @@ const hashingOptions = {
 
 const hashPassword = async (req, res, next) => {
   // hash the password using argon2 then call next()
+  console.info(req.body.Password);
   try {
     const hash = await argon2.hash(req.body.Password, hashingOptions);
     req.body.hashedPassword = hash;

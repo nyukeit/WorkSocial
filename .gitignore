@@ -1,3 +1,5 @@
 node_modules
 backend/assets/
+db/db_password.txt
+db/db_root_password.txt
 .env

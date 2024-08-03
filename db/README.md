@@ -7,9 +7,9 @@ Docker Compose plugin
 Environment File in the Backend Folder (.env)
 
 ## Instructions
-1. Navigate to `backend/db/`
-2. Make a new `.env` file using the `.env.sample`
-3. Use `DB_HOST=localhost`, `DB_PORT=3308`
+1. Make a new `.env` file using the `.env.sample` in the `backend` folder.
+2. Use `DB_HOST=localhost`, `DB_PORT=3308`
+3. Navigate to `db/` and create two files `db_root_password.txt` and `db_password.txt`. These files won't be synced to the repo.
 4. Initiate the Docker container with the command
    ```bash
    docker-compose up -d
