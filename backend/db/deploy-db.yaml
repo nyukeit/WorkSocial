@@ -4,10 +4,10 @@ services:
     image: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: sistine03
+      MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: worksocial-db
       MYSQL_USER: pilgrim
-      MYSQL_PASSWORD: sistine03
+      MYSQL_PASSWORD:
     ports:
       - 3308:3306
     volumes:
