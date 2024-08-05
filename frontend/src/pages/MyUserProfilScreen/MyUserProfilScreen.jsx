@@ -1,60 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+// Import Modules
+import { Link } from "react-router-dom";
+
+// Import Components
 import Button from "react-bootstrap/Button";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UserBar from "../../components/UserBar/UserBar";
-import "./MyUserProfilScreen.css";
 import ImageWithJWT from "../../utils/ImageWithJWT";
 
+// Import Store
+import useUserStore from "../../store/userStore";
+
+// Import Styles
+import "./MyUserProfilScreen.css";
+
+/**
+ * Component for showing details of the current user.
+ *
+ * @component
+ * @function MyUserProfilScreen
+ * @returns {JSX.Element}
+ */
+
 function MyUserProfilScreen() {
-  const [user, setUser] = useState(null);
-  const { userId } = useParams();
-  const userIdLoggedIn = localStorage.getItem("userId");
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/users/${userIdLoggedIn}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const errorBody = await response.text();
-          console.error(
-            "Erreur lors de la récupération des données de l'utilisateur",
-            errorBody
-          );
-          return;
-        }
-
-        const userData = await response.json();
-        setUser(userData);
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des données de l'utilisateur:",
-          error
-        );
-      }
-    };
-
-    fetchUser();
-  }, [userId]);
-
-  if (!user) {
-    return <div>Chargement...</div>;
-  }
-  const showModifyProfileButton = userIdLoggedIn === userId;
+  const currentUser = useUserStore((state) => state.currentUser);
 
   const imageUrl = `${import.meta.env.VITE_BACKEND_URL}/upload/${
-    user.ProfileImage
+    currentUser.ProfileImage
   }`;
   return (
     <div className="container">
@@ -63,19 +35,17 @@ function MyUserProfilScreen() {
         {/* <h2 className="page-title">User Profile</h2> */}
         <div className="profilePage-leftSection">
           <div className="profilePage-image">
-            <ImageWithJWT imageUrl={imageUrl} alt={user.FirstName} />
+            <ImageWithJWT imageUrl={imageUrl} alt={currentUser.FirstName} />
           </div>
           <div className="profilePage-userInfo">
             <h4>
-              {user.FirstName} {user.LastName}
+              {currentUser.FirstName} {currentUser.LastName}
             </h4>
-            <p>{user.Email}</p>
-            <p>{user.Biography}</p>
-            {showModifyProfileButton && (
-              <Link to="/editprofil" className="linkButton">
-                <Button type="button">Modifier</Button>
-              </Link>
-            )}
+            <p>{currentUser.Email}</p>
+            <p>{currentUser.Biography}</p>
+            <Link to="/editprofil" className="linkButton">
+              <Button type="button">Modifier</Button>
+            </Link>
           </div>
         </div>
         <div className="profilePage-rightSection">

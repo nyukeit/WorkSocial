@@ -25,7 +25,7 @@ import VerifyUser from "./pages/VerifyUser/VerifyUser";
 // import { ThemeProvider } from "./contexts/ThemeContext";
 import { AuthProvider } from "./utils/useConnecte";
 import { PostProvider } from "./contexts/PostContext";
-import { UserProvider } from "./contexts/UserContext";
+// import { UserProvider } from "./contexts/UserContext";
 import { SurveyProvider } from "./contexts/SurveyContext";
 import { EventProvider } from "./contexts/EventContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
@@ -42,79 +42,76 @@ function App() {
         <AuthProvider>
           <Router>
             <BarNav />
-            <UserProvider>
-              <Routes>
-                <Route path="/" element={<LandingScreen />} />
-                <Route
-                  path="/dashboard"
-                  element={
-                    <EventProvider>
-                      <Dashboard />
-                    </EventProvider>
-                  }
-                />
-                <Route
-                  path="/posts"
-                  element={
-                    <PostProvider>
-                      <PostScreen />
-                    </PostProvider>
-                  }
-                />
-                <Route path="/connexion" element={<ConnexionScreen />} />
-                <Route path="/inscription" element={<InscriptionScreen />} />
-                <Route
-                  path="/events"
-                  element={
-                    <EventProvider>
-                      <EventsScreen />
-                    </EventProvider>
-                  }
-                />
-                <Route
-                  path="/events/:eventId"
-                  element={
-                    <EventProvider>
-                      <EventPage />
-                    </EventProvider>
-                  }
-                />
-                <Route
-                  path="/surveys"
-                  element={
-                    <SurveyProvider>
-                      <SurveyScreen />
-                    </SurveyProvider>
-                  }
-                />
-                <Route
-                  path="/companies"
-                  element={
-                    <CompanyProvider>
-                      <CompaniesScreen />
-                    </CompanyProvider>
-                  }
-                />
-                <Route
-                  path="/members"
-                  element={
-                    <CompanyProvider>
-                      <MembersScreen />
-                    </CompanyProvider>
-                  }
-                />
-                <Route
-                  path="/profile/:userId"
-                  element={<MyUserProfilScreen />}
-                />
-                <Route path="/myprofil" element={<MyUserProfilScreen />} />
-                <Route path="/editprofil" element={<EditUserProfilScreen />} />
-                <Route path="/changepassword" element={<ChangePassword />} />
-                <Route path="/verify-user" element={<VerifyUser />} />
-                <Route path="/resetpassword/:key" element={<ResetPassword />} />
-                <Route path="/resetpassword" element={<ResetPassword />} />
-              </Routes>
-            </UserProvider>
+            {/* <UserProvider> */}
+            <Routes>
+              <Route path="/" element={<LandingScreen />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <EventProvider>
+                    <Dashboard />
+                  </EventProvider>
+                }
+              />
+              <Route
+                path="/posts"
+                element={
+                  <PostProvider>
+                    <PostScreen />
+                  </PostProvider>
+                }
+              />
+              <Route path="/connexion" element={<ConnexionScreen />} />
+              <Route path="/inscription" element={<InscriptionScreen />} />
+              <Route
+                path="/events"
+                element={
+                  <EventProvider>
+                    <EventsScreen />
+                  </EventProvider>
+                }
+              />
+              <Route
+                path="/events/:eventId"
+                element={
+                  <EventProvider>
+                    <EventPage />
+                  </EventProvider>
+                }
+              />
+              <Route
+                path="/surveys"
+                element={
+                  <SurveyProvider>
+                    <SurveyScreen />
+                  </SurveyProvider>
+                }
+              />
+              <Route
+                path="/companies"
+                element={
+                  <CompanyProvider>
+                    <CompaniesScreen />
+                  </CompanyProvider>
+                }
+              />
+              <Route
+                path="/members"
+                element={
+                  <CompanyProvider>
+                    <MembersScreen />
+                  </CompanyProvider>
+                }
+              />
+              <Route path="/profile/:userId" element={<MyUserProfilScreen />} />
+              <Route path="/myprofil" element={<MyUserProfilScreen />} />
+              <Route path="/editprofil" element={<EditUserProfilScreen />} />
+              <Route path="/changepassword" element={<ChangePassword />} />
+              <Route path="/verify-user" element={<VerifyUser />} />
+              <Route path="/resetpassword/:key" element={<ResetPassword />} />
+              <Route path="/resetpassword" element={<ResetPassword />} />
+            </Routes>
+            {/* </UserProvider> */}
           </Router>
         </AuthProvider>
       </QueryClientProvider>
