@@ -5,6 +5,7 @@ const { generateVerificationCode } = require("../../utils/helperFunctions");
 
 const login = async (req, res, next) => {
   const Email = req.body;
+  console.info(Email);
   await models.user
     .login(Email)
     .then(([result]) => {
