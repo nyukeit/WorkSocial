@@ -1,6 +1,7 @@
 // Import des Modules
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import BarNav from "./components/BarNav/BarNav";
 
 // Import des Pages
@@ -21,7 +22,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import VerifyUser from "./pages/VerifyUser/VerifyUser";
 
 // Import des Contexts
-import { ThemeProvider } from "./contexts/ThemeContext";
+// import { ThemeProvider } from "./contexts/ThemeContext";
 import { AuthProvider } from "./utils/useConnecte";
 import { PostProvider } from "./contexts/PostContext";
 import { UserProvider } from "./contexts/UserContext";
@@ -32,10 +33,12 @@ import { CompanyProvider } from "./contexts/CompanyContext";
 // Import des CSS
 import "./App.css";
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <React.StrictMode>
-      <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Router>
             <BarNav />
@@ -114,7 +117,7 @@ function App() {
             </UserProvider>
           </Router>
         </AuthProvider>
-      </ThemeProvider>
+      </QueryClientProvider>
     </React.StrictMode>
   );
 }
