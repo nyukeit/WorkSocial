@@ -1,19 +1,22 @@
 import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import "./UserCard.css";
 import { useNavigate } from "react-router-dom";
 import ChatWebSocket from "../ChatPrivate/ChatWebSocket/ChatWebSocket";
 import ImageWithJWT from "../../utils/ImageWithJWT";
-import { useCompany } from "../../contexts/CompanyContext";
+import getCompanies from "../../services/companyApi";
 
 function UserCard({ user, onOpenChat, onCloseChat, chatPosition }) {
   // Variables
-
+  const { data: companies } = useQuery({
+    queryKey: ["companies"],
+    queryFn: getCompanies,
+  });
   const [isChatWebSocketOpen, setIsChatWebSocketOpen] = useState(false);
   const navigate = useNavigate();
   const [isModalMinimized, setIsModalMinimized] = useState(false);
   const userIdLoggedIn = localStorage.getItem("userId");
-  const { companies } = useCompany();
   const userCompany = companies
     ? companies.find((company) => company.Company_ID === user.Company_ID)
     : [];

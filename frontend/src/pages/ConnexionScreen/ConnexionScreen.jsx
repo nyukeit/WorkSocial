@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./ConnexionScreen.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../utils/useConnecte";
+import useUserStore from "../../store/userStore";
 
 function ConnexionScreen() {
   // Variables
@@ -37,6 +38,8 @@ function ConnexionScreen() {
 
       if (response.ok) {
         const { authToken, user } = data;
+        console.info(user);
+        useUserStore.getState().setCurrentUser(user);
         localStorage.setItem("userToken", authToken);
         localStorage.setItem("userId", user.User_ID);
         localStorage.setItem("username", user.Username);
